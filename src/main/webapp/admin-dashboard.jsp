@@ -44,13 +44,6 @@
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
 
-        <!-- =======================================================
-        * Template Name: NiceAdmin
-        * Updated: Sep 18 2023 with Bootstrap v5.3.2
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
     </head>
 
     <body>
@@ -74,18 +67,7 @@
             }
 
             AdminDao ac = new AdminDao();
-            ResultSet coutO = ac.countOrder(month);
-            ResultSet coutC = ac.countCustomer();
-            ResultSet coutR = ac.countTotalOrder(month);
-            ResultSet topPro = ac.topProduct(month);
-
-            while (coutO.next()) {
-                totalOrder = coutO.getInt("TotalOrders");
-            }
-            while (coutC.next()) {
-                totalCustomer = coutC.getInt("TotalCustomers");
-            }
-     
+//           
 
         %>
         
@@ -221,20 +203,7 @@
                                                     <th scope="col"></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <%
-                                                while (topPro.next()) {%>
-                                                <tr>
-                                                    <th scope="row"><a href="#"><%=topPro.getInt("ProID")%></a></th>
-                                                    <td><%=topPro.getString("CateName")%></td>
-                                                    <td><a href="#" class="text-primary"><%=topPro.getString("ProName")%></a></td>
-                                                    <td><%=topPro.getInt("TotalSold")%></td>
-                                                    <td><a target="_blank" href="/ProductController/Edit/<%=topPro.getInt("ProID")%>">Chi tiết sản phẩm</a></td>
-                                                </tr>
-                                                <%}%>
-                                                
-                                                
-                                            </tbody>
+                                            
                                         </table>
 
                                     </div>

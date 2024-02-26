@@ -39,14 +39,14 @@ public class AdminDao {
 
     public ResultSet countCustomer() {
         ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT COUNT( Username) AS TotalCustomers FROM Users");
-
-            rs = ps.executeQuery();
-            return rs;
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            PreparedStatement ps = conn.prepareStatement("SELECT COUNT( Username) AS TotalCustomers FROM Users");
+//
+//            rs = ps.executeQuery();
+//            return rs;
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         return rs;
     }
@@ -72,39 +72,38 @@ public class AdminDao {
     }
 
     public ResultSet countTotalOrder(int month) {
-        ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT SUM(OrderTotal) AS TotalRevenue\n"
-                    + "FROM Orders\n"
-                    + "WHERE OrderDate >= DATEADD(MONTH, -?, GETDATE()) AND OrderStatus = 4");
-            ps.setInt(1, month);
-            rs = ps.executeQuery();
-            return rs;
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        ResultSet rs = null;
+//        try {
+//            PreparedStatement ps = conn.prepareStatement("SELECT SUM(OrderTotal) AS TotalRevenue\n"
+//                    + "FROM Orders\n"
+//                    + "WHERE OrderDate >= DATEADD(MONTH, -?, GETDATE()) AND OrderStatus = 4");
+//            ps.setInt(1, month);
+//            rs = ps.executeQuery();
+//            return rs;
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return null;
     }
 
     public ResultSet topProduct(int month) {
-        ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT Products.ProID, Products.ProName,Categories.CateName, SUM(OrderDetails.Quantity) AS TotalSold\n"
-                    + "FROM OrderDetails\n"
-                    + "JOIN Orders ON OrderDetails.OrderID = Orders.OrderID\n"
-                    + "JOIN Products ON OrderDetails.ProID = Products.ProID\n"
-                    + "JOIN Categories ON Products.CateID = Categories.CateID\n"
-                    + "WHERE Orders.OrderDate >= DATEADD(MONTH, -?, GETDATE())\n"
-                    + "GROUP BY Products.ProID, Products.ProName, Categories.CateName\n"
-                    + "ORDER BY TotalSold DESC");
-            ps.setInt(1, month);
-            rs = ps.executeQuery();
-            return rs;
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        ResultSet rs = null;
+//        try {
+//            PreparedStatement ps = conn.prepareStatement("SELECT Products.ProID, Products.ProName,Categories.CateName, SUM(OrderDetails.Quantity) AS TotalSold\n"
+//                    + "FROM OrderDetails\n"
+//                    + "JOIN Orders ON OrderDetails.OrderID = Orders.OrderID\n"
+//                    + "JOIN Products ON OrderDetails.ProID = Products.ProID\n"
+//                    + "JOIN Categories ON Products.CateID = Categories.CateID\n"
+//                    + "GROUP BY Products.ProID, Products.ProName, Categories.CateName\n"
+//                    + "ORDER BY TotalSold DESC");
+//            ps.setInt(1, month);
+//            rs = ps.executeQuery();
+//            return rs;
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return null;
     }
 
