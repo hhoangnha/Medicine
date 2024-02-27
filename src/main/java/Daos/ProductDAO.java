@@ -79,12 +79,12 @@ public class ProductDAO {
 
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products JOIN Brands ON Brands.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' AND ProStatus =1 ORDER BY Products.ProID OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY ");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products JOIN Brands ON Brands.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' ORDER BY Products.ProID");
 //            ps.setString(1, keyword);
 //            ps.setInt(2, start);
 //            ps.setInt(3, recordsPerPage);
             rs = ps.executeQuery();
-            System.out.println("SELECT * FROM Products JOIN Brand ON Brand.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' ORDER BY Products.ProID OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY ");
+            System.out.println("SELECT * FROM Products JOIN Brand ON Brand.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' ORDER BY Products.ProID");
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,7 +139,7 @@ public class ProductDAO {
     public ResultSet getProduct2(int pro_id) {
         ResultSet kh = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products LEFT JOIN Brands ON Brands.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProID=?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products LEFT JOIN Brand ON Brand.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProID=?");
             ps.setInt(1, pro_id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

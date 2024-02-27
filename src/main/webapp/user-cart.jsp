@@ -157,15 +157,14 @@
             CartDAO cd = new CartDAO();
             List<CartItem> cartItems = null;
             if(uM != null){
-            cartItems = cd.getCartItems(uM.getUserID());
+                cartItems = cd.getCartItems(uM.getUserID());
             }
             
         %>
 
 
         <%--<jsp:include page="user-header.jsp" />--%>
-        
-        <section class="section" id="product">
+        <section class="section " id="product">
             <div class="container">
                 <%    if (session.getAttribute("errorCartMsg") != null) {
                 %>
@@ -189,7 +188,7 @@
                                     
                                     for (CartItem item : cartItems) {
                                         ProductModel pdm = pd.getProduct(item.getProId());
-                                           System.out.println(pdm);
+                                        
                                     
                             %>
 
@@ -204,7 +203,15 @@
                                         <small>chỉ còn: <%=pdm.getQuantity()%> sản phẩm</small>
                                     </div>
                                     <div class="col">
-                                        <a  onclick='decreaseQuantity(<%=pdm.getProID()%>)'>-</a><a href="#" id="val<%=pdm.getProID()%>" class="border"><%=item.getQuantity()%></a><a onclick='increaseQuantity(<%=pdm.getProID()%>)'>+</a>
+                                        <a  onclick='decreaseQuantity(<%=pdm.getProID()%>)'>-</a><a href="#" id="val<%=pdm.getProID()%>" class="border"><%=item.getQuantity()%></a>
+                                        <%
+                                            if(pdm.getQuantity() > item.getQuantity()){
+                                            %>
+                                             <a onclick='increaseQuantity(<%=pdm.getProID()%>)'>+</a>
+                                              <%  
+                                            }
+                                        %>
+                                       
                                     </div>
                                     <div class="col"> <%=pdm.getProName()%> <span class="close" onclick="confirmRemove(<%=pdm.getProID()%>)">&#10005;</span></div>
                                 </div>

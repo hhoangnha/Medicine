@@ -8,3 +8,5 @@
 # Ignore dependency directories
 /lib/
 /bin/
+/src/main/java/DB/DBConnection.java
+/pom.xml

@@ -66,23 +66,12 @@
             }
 
             AdminDao ac = new AdminDao();
-            ResultSet coutO = ac.countOrder(month);
-            ResultSet coutC = ac.countCustomer();
-            ResultSet coutR = ac.countTotalOrder(month);
-            ResultSet topPro = ac.topProduct(month);
+//            ResultSet coutO = ac.countOrder(month);
+//            ResultSet coutC = ac.countCustomer();
+//            ResultSet coutR = ac.countTotalOrder(month);
+//            ResultSet topPro = ac.topProduct(month);
 
-            while (coutO.next()) {
-                totalOrder = coutO.getInt("TotalOrder");
-                on = coutO.getInt("NewOrders");
-                oc = coutO.getInt("CanceledOrders");
-                os = coutO.getInt("DeliveredOrders");
-            }
-            while (coutC.next()) {
-                totalCustomer = coutC.getInt("TotalCustomers");
-            }
- while (coutR.next()) {
-                totalRe = coutR.getInt("TotalRevenue");
-            }
+            
         %>
 
         <main id="main" class="main">
@@ -226,16 +215,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <%
-                                                    while (topPro.next()) {%>
-                                                <tr>
-                                                    <th scope="row"><a href="#"><%=topPro.getInt("ProID")%></a></th>
-                                                    <td><%=topPro.getString("CateName")%></td>
-                                                    <td><a href="#" class="text-primary"><%=topPro.getString("ProName")%></a></td>
-                                                    <td><%=topPro.getInt("TotalSold")%></td>
-                                                    <td><a target="_blank" href="/ProductController/Edit/<%=topPro.getInt("ProID")%>">Chi tiết sản phẩm</a></td>
-                                                </tr>
-                                                <%}%>
+                                              
 
 
                                             </tbody>

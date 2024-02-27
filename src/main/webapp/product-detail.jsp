@@ -4,6 +4,9 @@
     Author     : Nguyen Hoang Nha - CE170092
 --%>
 
+<%@page import="Daos.UnitProductDAO"%>
+<%@page import="Model.UnitProductModel"%>
+<%@page import="java.util.List"%>
 <%@page import="jakarta.servlet.jsp.jstl.sql.Result"%>
 <%@page import="Model.BrandModel"%>
 <%@page import="Model.ProductModel"%>
@@ -52,18 +55,27 @@
 
                 //    response.sendRedirect("/CustomerController");
             }
+            
+            
+            
+            List<UnitProductModel> unitItems = null;
+            UnitProductDAO udD = new UnitProductDAO();
+            unitItems = udD.getProductUnits(p.getProID());
+           
 
         %>
 
-        <jsp:include page="user-header.jsp" />
+        <%--<jsp:include page="user-header.jsp" />--%>
         <!-- ***** Header Area End ***** -->
 
+    
         <!-- ***** Main Banner Area Start ***** -->
         <div class="" id="top">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
+                               
                             <h2>Single Product Page</h2>
                             <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
                         </div>
@@ -80,17 +92,31 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="left-images">
-                            <img src='/resources/images/<%=p.getImage()%>' alt="">
+                            <img src='/resources/images/<%=p.getProImage()%>' alt="">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="right-content">
                             <h4><%=rs.getString("ProName")%></h4>
-                            <span class="price"><%=rs.getInt("Price")%></span>
-                            <span>Description: <%= p.getDescription()%></span>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                
+                                 <%
+                                for (UnitProductModel item : unitItems) { %>
+                                     <label class="btn btn-secondary active">
+                                  <input type="radio" name="options" id="option1" >
+                                     </label>
+                                 <%  }
+                               %>
+                                
+                                
+                              </div>
+                            <span class="price">
+                                giá (*)
+                            </span>
+                            <span>Description: <%= p.getProDescription()%></span>
                             <span>Type: <%=rs.getString("CateName")%></span>
                              <span>Brand: <%=rs.getString("BrandName")%></span>
-                               <span>Element: <%=rs.getString("BrandName")%></span>
+                               <span>Element: <%=rs.getString("Element")%></span>
                             <div class="quantity-content">
                                 <div class="left-content">
                                     <h6>Số lượng </h6>
