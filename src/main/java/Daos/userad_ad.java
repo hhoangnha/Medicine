@@ -40,10 +40,10 @@ public class userad_ad {
         ResultSet rs = null;
         try {
             // Create a PreparedStatement with a parameterized query
-            String sql = "SELECT * FROM Users WHERE UserType = ? and UserStatus=?";
+            String sql = "SELECT * FROM Users";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, usertype);
-            ps.setInt(2, st);  // 0 là tồn tại nên để lại 
+            // ps.setString(1, usertype);
+            // ps.setInt(2, st);  // 0 là tồn tại nên để lại 
             // Execute the query and store the result in the ResultSet
             rs = ps.executeQuery();
         } catch (SQLException ex) {
