@@ -56,7 +56,7 @@
         %>
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Add new Category</h5>
+              <h5 class="card-title">Edit Category</h5>
 
               <!-- Horizontal Form -->
               <form  name="productForm" method="post" action='/AdminCateController' onsubmit="return validateFormOrder()">

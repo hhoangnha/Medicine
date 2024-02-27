@@ -15,7 +15,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Category</title>
+        <title>User</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -57,6 +57,11 @@
     </head>
 
     <body>
+        <style>
+            .CateNameColumn{
+                width: 15%;
+            }
+        </style>
         <%
             // Lấy dữ liệu từ session
             String msgSuccess = (String) session.getAttribute("msgSuccess");
@@ -103,7 +108,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Name</th>
+                                            <th class="CateNameColumn">Name</th>
                                             <th>Description</th>
 
                                             <th></th>
@@ -115,7 +120,7 @@
 
                                         <% //CusDAO cd = new CusDAO();
                                             cate_ad d = new cate_ad();
-                                            ResultSet rs = d.getAll(1);
+                                            ResultSet rs = d.getAll();
 
                                             // list<user> lu = d.getAdminUser("user");
                                             while (rs.next()) {
@@ -123,12 +128,12 @@
 
                                         <tr>
                                             <td><%=  rs.getInt("CateID")%></td>
-                                            <td><%= rs.getString("Catename")%> </td>
+                                            <td class="CateNameColumn"><%= rs.getString("Catename")%> </td>
 
                                             <td><%=  rs.getString("CateDescription")%></td>
 
 
-                                            <td>
+                                            <td style="width: 20%; text-align: center">
                                                 <a style="color:white" class="btn bg-primary btn-sm " href="/AdminCateController/Edit/<%= rs.getInt("CateID")%>" >Edit</a>
                                                 <a style="color:white" onclick="return confirm('Are you sure? Category can not restore');" class="btn bg-warning btn-sm " href="/AdminCateController/Delete/<%= rs.getInt("CateID")%>" >Hiden</a> <br>  
 

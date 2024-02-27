@@ -92,7 +92,7 @@
                     
                   <% //CusDAO cd = new CusDAO();
                         cate_ad d = new cate_ad();
-                        ResultSet rs = d.getAll(0);
+                        ResultSet rs = d.getAll();
 
                         // list<user> lu = d.getAdminUser("user");
                         while (rs.next()) {

@@ -87,7 +87,7 @@
                                 <select name="catid" id="catid" class="form-control">
                                     <%
                                         cate_ad cDAO = new cate_ad();
-                                        ResultSet rs = cDAO.getAll(1);
+                                        ResultSet rs = cDAO.getAll();
                                         while (rs.next()) {
 
                                     %>

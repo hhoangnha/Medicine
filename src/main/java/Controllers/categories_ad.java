@@ -34,7 +34,7 @@ public class categories_ad extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -88,7 +88,8 @@ public class categories_ad extends HttpServlet {
                 try {
                     int cateid = Integer.parseInt(s[s.length - 1]);
                     cate_ad ct = new cate_ad();
-                    ct.delete(cateid, 0);
+//                    ct.delete(cateid, 0);
+                    ct.delete(cateid);
 
                     response.sendRedirect("/categories_ad");
                 } catch (Exception ex) {
@@ -126,7 +127,14 @@ public class categories_ad extends HttpServlet {
             int st = Integer.parseInt(request.getParameter("st"));
             //   CategorieModel cm = new CategorieModel(cateID, catename, des);
             cate_ad ct = new cate_ad();
-            h = ct.updateCategory(cateID, catename, des, st);
+//            h = ct.updateCategory(cateID, catename, des, st);
+            h = ct.updateCategory(cateID, catename, des);
+            if (h == 0) {
+                response.sendRedirect("/edit");
+            } else {
+                session.setAttribute("msgSuccess", "Thành công");
+                response.sendRedirect("/categories_ad");
+            }
             response.sendRedirect("/categories_ad");
         }
         if (request.getParameter("add") != null) {
@@ -156,5 +164,4 @@ public class categories_ad extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

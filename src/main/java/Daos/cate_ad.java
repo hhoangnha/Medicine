@@ -32,7 +32,8 @@ public class cate_ad {
             Logger.getLogger(cate_ad.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-        public ResultSet getAll() {
+
+    public ResultSet getAll() {
         ResultSet rs = null;
         try {
             // Create a PreparedStatement with a parameterized query
@@ -48,18 +49,20 @@ public class cate_ad {
         return rs;
     }
 
-    public int updateCategory(int cateid, String cateName, String cateDescription, int cateStatus) {
+//    public int updateCategory(int cateid, String cateName, String cateDescription, int cateStatus) {
+    public int updateCategory(int cateid, String cateName, String cateDescription) {
         int h = 0;
         try {
             // Sử dụng PreparedStatement để thực hiện truy vấn UPDATE
-            String sql = "UPDATE Categories SET CateName=?, CateDescription=?, CateStatus=? WHERE CateID=?";
+//            String sql = "UPDATE Categories SET CateName=?, CateDescription=?, CateStatus=? WHERE CateID=?";
+            String sql = "UPDATE Categories SET CateName=?, CateDescription=? WHERE CateID=?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             // Đặt các tham số cho câu truy vấn
             ps.setString(1, cateName);
             ps.setString(2, cateDescription);
-            ps.setInt(3, cateStatus);
-            ps.setInt(4, cateid);
+//            ps.setInt(3, cateStatus);
+            ps.setInt(3, cateid);
 
             // Thực hiện truy vấn UPDATE
             h = ps.executeUpdate();   // nếu trả về 0 update that bai neu tra ve >0 update thanh cong dung đieu kien !=0 
@@ -72,14 +75,15 @@ public class cate_ad {
     public int addNewCategory(String cateName, String cateDescription) {
         try {
             // Sử dụng PreparedStatement để thực hiện truy vấn INSERT
-            String sql = "INSERT INTO Categories ( CateName, CateDescription, CateStatus) VALUES ( ?, ?, ?)";
+//            String sql = "INSERT INTO Categories ( CateName, CateDescription, CateStatus) VALUES ( ?, ?, ?)";
+            String sql = "INSERT INTO Categories ( CateName, CateDescription) VALUES ( ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             // Đặt các tham số cho câu truy vấn
-           // ps.setInt(1, id);
+            // ps.setInt(1, id);
             ps.setString(1, cateName);
             ps.setString(2, cateDescription);
-            ps.setInt(3, 1);
+//            ps.setInt(3, 1);
 
             // Thực hiện truy vấn INSERT
             int result = ps.executeUpdate();
@@ -93,14 +97,16 @@ public class cate_ad {
         }
     }
 
-    public int delete(int cateid, int st) {
+//    public int delete(int cateid, int st) {
+        public int delete(int cateid) {
         int result = 0;
         try {
-            String sql = "UPDATE Categories SET CateStatus = ? WHERE CateID = ?";
+//            String sql = "UPDATE Categories SET CateStatus = ? WHERE CateID = ?";
+            String sql = "delete from Categories where CateID = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             // Đặt các tham số cho câu truy vấn
-            ps.setInt(1, st);
-            ps.setInt(2, cateid);
+//            ps.setInt(1, st);
+            ps.setInt(1, cateid);
 
             result = ps.executeUpdate();
 
@@ -128,10 +134,11 @@ public class cate_ad {
                 int id = rs.getInt("CateID");
                 String cateName = rs.getString("CateName");
                 String cateDescription = rs.getString("CateDescription");
-                int cateStatus = rs.getInt("CateStatus");
+//                int cateStatus = rs.getInt("CateStatus");
 
                 // Tạo đối tượng CategorieModel từ dữ liệu truy vấn
-                ct = new CategorieModel(id, cateName, cateDescription, cateStatus);
+//                ct = new CategorieModel(id, cateName, cateDescription, cateStatus);
+                ct = new CategorieModel(id, cateName, cateDescription);
             }
         } catch (SQLException ex) {
             Logger.getLogger(cate_ad.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,5 +146,9 @@ public class cate_ad {
 
         return ct;
     }
-
+    public static void main(String[] args) {
+        cate_ad ct = new cate_ad();
+         ResultSet rs = ct.getAll();
+        System.out.println(rs);
+    }
 }

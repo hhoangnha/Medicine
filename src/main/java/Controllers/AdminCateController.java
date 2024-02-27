@@ -32,7 +32,7 @@ public class AdminCateController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -88,7 +88,8 @@ public class AdminCateController extends HttpServlet {
                 try {
                     int cateid = Integer.parseInt(s[s.length - 1]);
                     cate_ad ct = new cate_ad();
-                    ct.delete(cateid, 0);
+//                    ct.delete(cateid, 0);
+                    ct.delete(cateid);
                     session.setAttribute("msgSuccess", "Thành công");
                     response.sendRedirect("/AdminCateController");
                 } catch (Exception ex) {
@@ -103,7 +104,7 @@ public class AdminCateController extends HttpServlet {
                 try {
                     int cateid = Integer.parseInt(s[s.length - 1]);
                     cate_ad ct = new cate_ad();
-                    ct.delete(cateid, 1);
+//                    ct.delete(cateid, 1);
                     session.setAttribute("msgSuccess", "Thành công");
                     response.sendRedirect("/AdminCateController");
                 } catch (Exception ex) {
@@ -116,7 +117,7 @@ public class AdminCateController extends HttpServlet {
 
             }
         } else {
-               response.sendRedirect("/UserHomeController");
+            response.sendRedirect("/UserHomeController");
         }
 
     }
@@ -138,12 +139,18 @@ public class AdminCateController extends HttpServlet {
             int cateID = Integer.parseInt(request.getParameter("oid"));
             String catename = request.getParameter("name");
             String des = request.getParameter("des");
-            int st = 1;
+//            int st = 1;
             //   CategorieModel cm = new CategorieModel(cateID, catename, des);
             cate_ad ct = new cate_ad();
-            h = ct.updateCategory(cateID, catename, des, st);
-            session.setAttribute("msgSuccess", "Thành công");
-            response.sendRedirect("/AdminCateController");
+//            h = ct.updateCategory(cateID, catename, des, st);
+            h = ct.updateCategory(cateID, catename, des);
+            if (h == 0) {
+                response.sendRedirect("/AdminCateController/Create");
+            } else {
+                session.setAttribute("msgSuccess", "Thành công");
+                response.sendRedirect("/AdminCateController");
+            }
+
         }
         if (request.getParameter("add") != null) {
             // int cateID = Integer.parseInt(request.getParameter("oid"));
