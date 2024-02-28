@@ -49,7 +49,10 @@ public class ProductDAO {
     public ResultSet getAll() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select p.ProID, p.ProName, p.CateID, p.BrandID, p.ManuID, p.Quantity, p.ProImage from Products p");
+            ResultSet rs = st.executeQuery("select p.ProID, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
+                    + "join Categories c on c.CateID = p.CateID\n"
+                    + "join Brand b on b.BrandID = p.BrandID\n"
+                    + "join Manufacturer m on m.ManuID = p.ManuID");
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,18 +184,20 @@ public class ProductDAO {
         return (count == 0) ? 0 : 1;
     }
 
-    public ProductModel delete(int ProID) {
-        int count = 0;
+    public void delete(int ProID) {
+//        int count = 0;
         try {
 //            PreparedStatement ps = conn.prepareStatement("UPDATE Products SET ProStatus=? WHERE ProID=?");
             PreparedStatement ps = conn.prepareStatement(" DELETE FROM Products WHERE ProID=?");
 //            ps.setInt(1, 0);
             ps.setInt(1, ProID);
-            count = ps.executeUpdate();
+            ResultSet rs = ps.executeQuery();
+            ps = conn.prepareStatement("DBCC CHECKIDENT ('[Products]', RESEED, 0);\n"
+                    + "GO");
+            rs = ps.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return (count == 0) ? null : getProduct(ProID);
     }
 
     public ProductModel updateStatus(int ProID) {
@@ -212,7 +217,7 @@ public class ProductDAO {
     public int addNew(String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
         int count = 0;
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setString(1, ProName);
             ps.setString(2, ProDescription);
             ps.setInt(3, CateID);
@@ -231,14 +236,15 @@ public class ProductDAO {
             count = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
-        return (count == 0) ? null : 1;
+        return (count == 0) ? 0 : 1;
     }
 
     public static void main(String[] args) {
         ProductDAO call = new ProductDAO();
 //        int rs = call.addNew("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "asd", "asd", "asd", "asd", "asd.png");
-        int rs = call.update("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "asd", "asd", "asd", "asd", "asd.png", 11);
+        int rs = call.addNew("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "indication", "asd", "asd", "asd", "asd.png");
         System.out.println(rs);
 
     }

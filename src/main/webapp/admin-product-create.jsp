@@ -79,6 +79,7 @@
                                 <div class="col-sm-4 col-xs-8"><p>Categories</p></div>
                                 <div class="col-sm-8">
                                     <select name="catid" id="catid" class="form-control">
+                                        <option>Select Category</option>
                                         <%
                                             cate_ad cDAO = new cate_ad();
                                             ResultSet rs = cDAO.getAll();
@@ -97,6 +98,7 @@
                                 <div class="col-sm-4 col-xs-8"><p>Brand ID</p></div>
                                 <div class="col-sm-8">
                                     <select name="brandid" id="brandid" class="form-control">
+                                        <option>Select Brand</option>
                                         <%
                                             BrandDAO cDAO2 = new BrandDAO();
                                             ResultSet r = cDAO2.getAll();
@@ -114,6 +116,7 @@
                                 <div class="col-sm-4 col-xs-8"><p>Manufacture</p></div>
                                 <div class="col-sm-8">
                                     <select name="manuid" id="manuid" class="form-control">
+                                        <option>Select Manufacture</option>
                                         <%
                                             ManufacturerDAO manuDAO = new ManufacturerDAO();
                                             List<ManufacturerModel> rsManu = manuDAO.getAllManufacturer();

@@ -90,7 +90,7 @@
                                                 //                                    String brandName = r.getString("BrandName");
                                                 // Kiểm tra xem BrandID có phải là giá trị cũ không
                                                 //                                    boolean isSelected = (selectedBrandID == brandID);
-                                        %>
+%>
                                         <option value="<%= rs.getInt("CateID")%>"<%= brandID.equals(selectedID) ? "selected" : ""%>><%= rs.getString("CateName")%></option>
                                         <%
                                             }
@@ -114,7 +114,7 @@
                                                 //                                    String brandName = r.getString("BrandName");
                                                 // Kiểm tra xem BrandID có phải là giá trị cũ không
                                                 //                                    boolean isSelected = (selectedBrandID == brandID);
-%>
+                                        %>
                                         <option value="<%= r.getInt("BrandID")%>"<%= brandID.equals(selectedID) ? "selected" : ""%>><%= r.getString("BrandName")%></option>
                                         <%
                                             }
@@ -135,7 +135,7 @@
                                                 //                                    String brandName = r.getString("BrandName");
                                                 // Kiểm tra xem BrandID có phải là giá trị cũ không
                                                 //                                    boolean isSelected = (selectedBrandID == brandID);
-%>
+                                        %>
                                         <option value="<%= rsManu.get(i).getManuID()%>"<%= ManuID.equals(selectedID) ? "selected" : ""%>><%= rsManu.get(i).getManuName()%></option>
                                         <%
                                             }
@@ -143,19 +143,23 @@
                                     </select>                    
                                 </div>
                             </div>
-                            <div class="row"><br/>
-                                <div class="col-sm-4 "><p>Old Image:</p></div>
-                                <div class="col-sm-8">
-                                    <img src="/resources/images/<%= sp.getProImage()%>" alt="Product Image" width="100px" height="100px">
-                                    <input id="oldImage" name="oldImage" value="<%= sp.getProImage()%>" hidden="">
+                            <div class="d-flex flex-row ">
+                                <div class="w-50">
+                                    <div class="col-sm-12 "><p>Old Image:</p></div>
+                                    <div class="col-sm-12">
+                                        <img src="/resources/images/<%= sp.getProImage()%>" alt="Product Image" width="100px" height="100px">
+                                        <input id="oldImage" name="oldImage" value="<%= sp.getProImage()%>" hidden="">
+                                    </div>
                                 </div>
-                                <br>
-                                <div class="col-sm-4"><p>Image Options:</p></div>
-                                <div class="col-sm-8">
-                                    <!--                                <input  id="updateImage" name="updateImage" >
-                                                                    <label for="updateImage">Cập nhật ảnh</label>
-                                                                    <br>-->
-                                    <input type="file"  id="newImage" name="newImage" size="50" >
+                                    <div class="w-50">
+                                    <div class="col-sm-12"><p>Image Options:</p></div>
+                                    <br>
+                                    <div class="col-sm-12">
+                                        <!--                                <input  id="updateImage" name="updateImage" >
+                                                                        <label for="updateImage">Cập nhật ảnh</label>
+                                                                        <br>-->
+                                        <input type="file" id="newImage" name="newImage" size="50" >
+                                    </div>
                                 </div>
 
                             </div>
@@ -193,9 +197,9 @@
                                 <div class="col-sm-8"><input class="form-control" id="madein" type="text" name="madein"value="<%= sp.getMadeIn()%>"/></div>                        
                             </div>
                             <div class="col-sm-4 col-xs-8"></div>
-                            <div class="col-sm-4 w-100 d-flex flex-row justify-content-end" id="lbtn">
-                                <a href='/ProductController' class="btn btn-secondary mx-3" id="btl">Back to List</a>  
-                                <input class="btn btn-primary me-3" id="submit" type="submit" name="btnAddNew" value="Add New"/>
+                            <div class="col-sm-4 w-100 p-4 d-flex flex-row justify-content-center" id="lbtn">
+                                <a href='/ProductController' style="margin: 0 0 0 30%" class="btn btn-secondary ms-5" id="btl">Back to List</a>  
+                                <input class="btn btn-primary ms-3" id="submit" type="submit" name="btnAddNew" value="Add New"/>
                             </div>
                         </div>
 

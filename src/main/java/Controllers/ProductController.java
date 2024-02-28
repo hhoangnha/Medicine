@@ -164,7 +164,7 @@ public class ProductController extends HttpServlet {
 
             String des = request.getParameter("des");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
-            String indicaction = request.getParameter("indicaction");
+            String indicaction = request.getParameter("indication");
             String contraindication = request.getParameter("contraindication");
             String using = request.getParameter("using");
             String element = request.getParameter("element");
@@ -209,7 +209,7 @@ public class ProductController extends HttpServlet {
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
             int manuid = Integer.parseInt(request.getParameter("manuid"));
-            Part filePart = request.getPart("image");
+            Part filePart = request.getPart("newImage");
 
             String des = request.getParameter("des");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -218,7 +218,7 @@ public class ProductController extends HttpServlet {
             String using = request.getParameter("using");
             String element = request.getParameter("element");
             String madein = request.getParameter("madein");
-            String fileName = "";
+            String fileName = extractFileName(filePart);
             if (filePart != null) {
                 String allowedExtensions = ".jpg,.jpeg,.png,.gif";
                 String[] fileParts = fileName.split("\\.");
@@ -226,23 +226,31 @@ public class ProductController extends HttpServlet {
 
                 if (filePart != null && allowedExtensions.contains(fileExtension)) {
                     // Đường dẫn đến thư mục lưu trữ ảnh trên máy chủ
-
+                    String realPart = getServletContext().getRealPath("/resources/images");
+                    fileName = extractFileName(filePart);
+                    File imgDir = new File(realPart);
+                    // is can't see then Create new Founder img in path f
+                    if (!imgDir.exists()) {
+                        imgDir.mkdir();
+                    }
+                    // tiếp tục code ghi file
+                    filePart.write(realPart + "/" + fileName);
                 } else {
                     // Tệp không hợp lệ, xử lý lỗi ở đây
                     response.sendRedirect("/errorPage.jsp"); // Chuyển hướng đến trang lỗi
                 }
-                String realPart = getServletContext().getRealPath("/resources/images");
-                fileName = extractFileName(filePart);
-                File imgDir = new File(realPart);
-                // is can't see then Create new Founder img in path f
-                if (!imgDir.exists()) {
-                    imgDir.mkdir();
-                }
-                if (fileName.equals("")) {
-                    fileName = request.getParameter("oldImage");
-                }
-                // tiếp tục code ghi file
-                filePart.write(realPart + "/" + fileName);
+//                String realPart = getServletContext().getRealPath("/resources/images");
+//                fileName = extractFileName(filePart);
+//                File imgDir = new File(realPart);
+//                // is can't see then Create new Founder img in path f
+//                if (!imgDir.exists()) {
+//                    imgDir.mkdir();
+//                }
+//                if (fileName.equals("")) {
+//                    fileName = request.getParameter("oldImage");
+//                }
+//                // tiếp tục code ghi file
+//                filePart.write(realPart + "/" + fileName);
 
             }
             if (!fileName.contains(".jpg") && !fileName.contains(".jpeg") && !fileName.contains(".png") && !fileName.contains(".webp") && !fileName.contains(".gif")) {

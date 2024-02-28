@@ -102,7 +102,7 @@
                                             <th>Picture</th>
                                             <th>CateID</th>
                                             <th>BrandID</th>
-                                            <th>ManuID</th>
+                                            <th class="w-50">ManuID</th>
                                             <th></th>
 
                                         </tr>
@@ -125,9 +125,9 @@
                                                 <!-- Hi?n th? ?nh -->
                                                 <img src="resources/images/<%=rs.getString("ProImage")%>" alt="Product Image" width="100px" height="100px">
                                             </td>
-                                            <td><%=  rs.getString("CateID")%></td>
-                                            <td><%=  rs.getString("BrandID")%></td>
-                                            <td><%=  rs.getString("ManuID")%></td>
+                                            <td><%=  rs.getString("CateName")%></td>
+                                            <td><%=  rs.getString("BrandName")%></td>
+                                            <td><%=  rs.getString("ManuName")%></td>
                                             <td>
                                                 <a class="btn btn-sm btn-info" href="/ProductController/Edit/<%=rs.getString("ProID")%>">Edit </a>
                                                 <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure');" href="/ProductController/Delete/<%=rs.getString("ProID")%>">Delete</a>
