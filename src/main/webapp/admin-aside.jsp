@@ -187,7 +187,7 @@
       >
         <li>
           <a href="/UnitController">
-            <i class="bi bi-circle"></i><span>Unit Manager</span>
+            <i class="bi bi-circle"></i><span>Unit Manager.</span>
           </a>
         </li>
       </ul>
