@@ -79,22 +79,26 @@ public class UserCartController extends HttpServlet {
         UserModel uM = (UserModel) session.getAttribute("acc");
         CartDAO cd = new CartDAO();
         if (path.startsWith("/UserCartController/AddToCart")) {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{ \"success\": true }");
+            
             int quan = Integer.parseInt(request.getParameter("quan"));
+            int unit = Integer.parseInt(request.getParameter("unit"));
             String[] s = path.split("/");
             // response.sendRedirect("/product-detail.jsp");
             int pro_id = Integer.parseInt(s[s.length - 1]);
 
-            cd.addOrUpdateCartItem(uM.getUserID(), pro_id, quan);
+            cd.addOrUpdateCartItem(uM.getUserID(), pro_id, quan, unit);
+            
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{ \"success\": true }");
 
         } else if (path.startsWith(
                 "/UserCartController/RemoveFromCart")) {
             String[] s = path.split("/");
             int pro_id = Integer.parseInt(s[s.length - 1]);
+            int unit = Integer.parseInt(request.getParameter("unit"));
 
-            cd.removeCartItem(uM.getUserID(), pro_id);
+            cd.removeCartItem(uM.getUserID(), pro_id, unit);
             
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -103,8 +107,9 @@ public class UserCartController extends HttpServlet {
             int quan = Integer.parseInt(request.getParameter("quan"));
             String[] s = path.split("/");
             int pro_id = Integer.parseInt(s[s.length - 1]);
+            int unit = Integer.parseInt(request.getParameter("unit"));
 
-            cd.increaseOrDecreaseCartItemQuantity(uM.getUserID(), pro_id, quan);
+            cd.increaseOrDecreaseCartItemQuantity(uM.getUserID(), pro_id, quan, unit);
 
             // Trả về JSON hoặc thông báo khác (tùy thuộc vào logic của bạn)
             response.setContentType("application/json");
@@ -115,8 +120,9 @@ public class UserCartController extends HttpServlet {
             int quan = Integer.parseInt(request.getParameter("quan"));
             String[] s = path.split("/");
             int pro_id = Integer.parseInt(s[s.length - 1]);
+            int unit = Integer.parseInt(request.getParameter("unit"));
 
-            cd.increaseOrDecreaseCartItemQuantity(uM.getUserID(), pro_id, quan);
+            cd.increaseOrDecreaseCartItemQuantity(uM.getUserID(), pro_id, quan, unit);
             
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

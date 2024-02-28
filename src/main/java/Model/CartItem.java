@@ -13,15 +13,17 @@ public class CartItem {
     private int CustomerID;
     private int ProId;
     private int Quantity;
+    private int UnitID;
 
     public CartItem() {
     }
 
-    public CartItem(int CartID, int CustomerID, int ProId, int Quantity) {
+    public CartItem(int CartID, int CustomerID, int ProId, int Quantity, int UnitID) {
         this.CartID = CartID;
         this.CustomerID = CustomerID;
         this.ProId = ProId;
         this.Quantity = Quantity;
+        this.UnitID = UnitID;
     }
 
     public int getCartID() {
@@ -38,6 +40,14 @@ public class CartItem {
 
     public int getQuantity() {
         return Quantity;
+    }
+
+    public int getUnitID() {
+        return UnitID;
+    }
+
+    public void setUnitID(int UnitProductID) {
+        this.UnitID = UnitProductID;
     }
     
     
