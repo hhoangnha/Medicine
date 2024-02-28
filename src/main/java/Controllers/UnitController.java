@@ -114,11 +114,9 @@ public class UnitController extends HttpServlet {
             throws ServletException, IOException {
         UnitDAO udao = new UnitDAO();
         if (request.getParameter("btnAddUnit") != null) {
-            int UnitID = Integer.parseInt(request.getParameter("UnitID"));
             String UnitName = request.getParameter("UnitName");
-            UnitModel unit = new UnitModel(UnitID, UnitName);
+            UnitModel unit = new UnitModel(1, UnitName);
             UnitModel newUnit = udao.addnew(unit);
-
             if (newUnit != null) {
                 response.sendRedirect("/UnitController");
             } else {
