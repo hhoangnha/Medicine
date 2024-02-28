@@ -135,7 +135,7 @@ public class ProductDAO {
         return kh;
     }
 
-    public ResultSet getProduct2(int pro_id) {
+    public ResultSet getProductRS(int pro_id) {
         ResultSet kh = null;
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products LEFT JOIN Brand ON Brand.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProID=?");

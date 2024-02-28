@@ -1,3 +1,6 @@
+<%@page import="Model.ManufacturerModel"%>
+<%@page import="java.util.List"%>
+<%@page import="Daos.ManufacturerDAO"%>
 <%@page import="Daos.cate_ad"%>
 <%@page import="Daos.BrandDAO"%>
 <%@page import="java.sql.ResultSet"%>
@@ -110,14 +113,14 @@
                                 <br>
                                 <div class="col-sm-4 col-xs-8"><p>Manufacture</p></div>
                                 <div class="col-sm-8">
-                                    <select name="catid" id="catid" class="form-control">
+                                    <select name="manuid" id="manuid" class="form-control">
                                         <%
-                                            cDAO = new cate_ad();
-                                            rs = cDAO.getAll();
-                                            while (rs.next()) {
+                                            ManufacturerDAO manuDAO = new ManufacturerDAO();
+                                            List<ManufacturerModel> rsManu = manuDAO.getAllManufacturer();
+                                            for (int i = 0; i < rsManu.size(); i++) {
 
                                         %>
-                                        <option value="<%= rs.getInt("CateID")%>"><%= rs.getString("CateName")%></option>
+                                        <option value="<%= rsManu.get(i).getManuID()%>"><%= rsManu.get(i).getManuName()%></option>
 
                                         <%
                                             }

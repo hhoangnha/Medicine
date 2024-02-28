@@ -159,7 +159,7 @@ public class ProductController extends HttpServlet {
             String expirationDate = request.getParameter("expirationdate");
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
-            int cateid = Integer.parseInt(request.getParameter("catid"));
+            int manuid = Integer.parseInt(request.getParameter("manuid"));
             Part filePart = request.getPart("image");
 
             String des = request.getParameter("des");
@@ -190,7 +190,7 @@ public class ProductController extends HttpServlet {
 //                ProductModel newSP = new ProductModel;
                 // Thêm sản phẩm mới vào cơ sở dữ liệu
                 ProductDAO cDAO = new ProductDAO();
-                int rs = cDAO.addNew(ProName, des, catid, brandid, cateid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, ProName);
+                int rs = cDAO.addNew(ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, ProName);
                 if (rs == 0) {
                     // Them that bai
                     response.sendRedirect("/ProductController/Create");
