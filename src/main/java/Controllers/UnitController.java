@@ -138,8 +138,7 @@ public class UnitController extends HttpServlet {
             }
         }
         if (request.getParameter("btnDeleteUnit") != null) {
-            String UnitID = request.getParameter("UnitID");
-
+            int UnitID = Integer.parseInt(request.getParameter("UnitID"));
             try {
                 udao.delete(UnitID);
                 response.sendRedirect("/UnitController");
