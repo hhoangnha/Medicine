@@ -16,7 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import jakarta.servlet.annotation.MultipartConfig;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -155,32 +156,10 @@ public class ProductController extends HttpServlet {
         if (request.getParameter("btnAddNew") != null) {// Nguoi dung nhan nut submit de them du lieu moi
             String ProName = request.getParameter("name");
             String manufactureDateStr = request.getParameter("manufacturedate");
-
-            if (manufactureDateStr != null && !manufactureDateStr.isEmpty()) {
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date manufactureDate = (Date) dateFormat.parse(manufactureDateStr);
-                    // Now you have the manufactureDate as a Date object
-                } catch (ParseException e) {
-                    // Handle parsing exception
-                    e.printStackTrace(); // Or log the error
-                }
-            }
-            String expirationDateStr = request.getParameter("expirationdate");
-
-            if (expirationDateStr != null && !expirationDateStr.isEmpty()) {
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date expirationDate = (Date) dateFormat.parse(manufactureDateStr);
-                    // Now you have the expirationDate as a Date object
-                } catch (ParseException e) {
-                    // Handle parsing exception
-                    e.printStackTrace(); // Or log the error
-                }
-            }
+            String expirationDate = request.getParameter("expirationdate");
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
-            int manuid = Integer.parseInt(request.getParameter("manuid"));
+            int cateid = Integer.parseInt(request.getParameter("catid"));
             Part filePart = request.getPart("image");
 
             String des = request.getParameter("des");
@@ -211,8 +190,8 @@ public class ProductController extends HttpServlet {
 //                ProductModel newSP = new ProductModel;
                 // Thêm sản phẩm mới vào cơ sở dữ liệu
                 ProductDAO cDAO = new ProductDAO();
-                ProductModel rs = cDAO.addNew(ProName, des, catid, brandid, manuid, manufactureDate, expirationDate, element, quantity, indicaction, contraindication, using, madein, ProName);
-                if (rs == null) {
+                int rs = cDAO.addNew(ProName, des, catid, brandid, cateid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, ProName);
+                if (rs == 0) {
                     // Them that bai
                     response.sendRedirect("/ProductController/Create");
                 } else {
@@ -299,5 +278,5 @@ public class ProductController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+   
 }

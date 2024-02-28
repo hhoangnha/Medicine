@@ -104,8 +104,8 @@ public class ProductDAO {
                 int CateID = rs.getInt("CateID");
                 int BrandID = rs.getInt("BrandID");
                 int ManuID = rs.getInt("ManuID");
-                Date ManufactureDate = rs.getDate("ManufactureDate");
-                Date ExpirationDate = rs.getDate("ExpirationDate");
+                String ManufactureDate = rs.getString("ManufactureDate");
+                String ExpirationDate = rs.getString("ExpirationDate");
                 String Element = rs.getString("Element");
                 int Quantity = rs.getInt("Quantity");
                 String Indication = rs.getString("Indication");
@@ -200,7 +200,7 @@ public class ProductDAO {
     }
 
 //    public ProductModel addNew(ProductModel sp) {
-    public int addNew(String ProName, String ProDescription, int CateID, int BrandID, int ManuID, Date ManufactureDate, Date ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+    public int addNew(String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
         int count = 0;
         try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO Products VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -209,8 +209,8 @@ public class ProductDAO {
             ps.setInt(3, CateID);
             ps.setInt(4, BrandID);
             ps.setInt(5, ManuID);
-            ps.setDate(6, ManufactureDate);
-            ps.setDate(7, ExpirationDate);
+            ps.setString(6, ManufactureDate);
+            ps.setString(7, ExpirationDate);
             ps.setString(8, Element);
             ps.setInt(9, Quantity);
             ps.setString(10, Indication);
@@ -227,7 +227,7 @@ public class ProductDAO {
     }
     public static void main(String[] args) {
         ProductDAO call = new ProductDAO();
-        ResultSet rs = call.getAll();
+        int rs = call.addNew("bvd","bfd",1,1,1,"2024-01-01","2026-01-01","asd",50,"asd","asd","asd","asd","asd.png");
         System.out.println(rs);
         
     }
