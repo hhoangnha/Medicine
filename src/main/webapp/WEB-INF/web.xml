@@ -56,14 +56,9 @@
         <servlet-name>ForgotController</servlet-name>
         <servlet-class>Controllers.ForgotController</servlet-class>
     </servlet>
-    <servlet>
-<<<<<<< HEAD
-        <servlet-name>UnitController</servlet-name>
-        <servlet-class>Controllers.UnitController</servlet-class>
-=======
+     <servlet>
         <servlet-name>ManufacturerController</servlet-name>
         <servlet-class>Controllers.ManufacturerController</servlet-class>
->>>>>>> origin/ThaiVinh
     </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -122,14 +117,7 @@
         <param-name>port</param-name>
         <param-value>587</param-value>
     </context-param>
-    <context-param>
-        <param-name>user</param-name>
-        <param-value>dangtrandangkhoa3715@gmail.com</param-value>
-    </context-param>
-    <context-param>
-        <param-name>pass</param-name>
-        <param-value>Nalovelu3715</param-value>
-    </context-param>
+
     <servlet-mapping>
         <servlet-name>EmailSendingServlet</servlet-name>
         <url-pattern>/EmailSendingServlet</url-pattern>
@@ -139,13 +127,8 @@
         <url-pattern>/ForgotController/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
-        <servlet-name>UnitController</servlet-name>
-        <url-pattern>/UnitController/*</url-pattern>
-=======
         <servlet-name>ManufacturerController</servlet-name>
         <url-pattern>/ManufacturerController</url-pattern>
->>>>>>> origin/ThaiVinh
     </servlet-mapping>
     <session-config>
         <session-timeout>
