@@ -15,9 +15,9 @@ public class ProductModel {
     private int ProID;
     private String ProName;
     private String ProDescription;
-    private String CateID;
-    private String BrandID;
-    private String ManuID;
+    private int CateID;
+    private int BrandID;
+    private int ManuID;
     private Date ManufactureDate;
     private Date ExpirationDate;
     private String Element;
@@ -31,7 +31,7 @@ public class ProductModel {
     public ProductModel() {
     }
 
-    public ProductModel(int ProID, String ProName, String ProDescription, String CateID, String BrandID, String ManuID, Date ManufactureDate, Date ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+    public ProductModel(int ProID, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, Date ManufactureDate, Date ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
         this.ProID = ProID;
         this.ProName = ProName;
         this.ProDescription = ProDescription;
@@ -48,7 +48,7 @@ public class ProductModel {
         this.MadeIn = MadeIn;
         this.ProImage = ProImage;
     }
-
+    
     public int getProID() {
         return ProID;
     }
@@ -61,15 +61,15 @@ public class ProductModel {
         return ProDescription;
     }
 
-    public String getCateID() {
+    public int getCateID() {
         return CateID;
     }
 
-    public String getBrandID() {
+    public int getBrandID() {
         return BrandID;
     }
 
-    public String getManuID() {
+    public int getManuID() {
         return ManuID;
     }
 
@@ -121,15 +121,15 @@ public class ProductModel {
         this.ProDescription = ProDescription;
     }
 
-    public void setCateID(String CateID) {
+    public void setCateID(int CateID) {
         this.CateID = CateID;
     }
 
-    public void setBrandID(String BrandID) {
+    public void setBrandID(int BrandID) {
         this.BrandID = BrandID;
     }
 
-    public void setManuID(String ManuID) {
+    public void setManuID(int ManuID) {
         this.ManuID = ManuID;
     }
 

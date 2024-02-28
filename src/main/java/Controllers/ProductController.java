@@ -18,6 +18,11 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.sql.Date;
 import jakarta.servlet.annotation.MultipartConfig;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -148,15 +153,44 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
 
         if (request.getParameter("btnAddNew") != null) {// Nguoi dung nhan nut submit de them du lieu moi
-            String name = request.getParameter("name");
-            String des = request.getParameter("des");
-            int price = Integer.parseInt(request.getParameter("price"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            int size = Integer.parseInt(request.getParameter("size"));
-            String color = request.getParameter("color");
-            Part filePart = request.getPart("image");
+            String ProName = request.getParameter("name");
+            String manufactureDateStr = request.getParameter("manufacturedate");
+
+            if (manufactureDateStr != null && !manufactureDateStr.isEmpty()) {
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date manufactureDate = (Date) dateFormat.parse(manufactureDateStr);
+                    // Now you have the manufactureDate as a Date object
+                } catch (ParseException e) {
+                    // Handle parsing exception
+                    e.printStackTrace(); // Or log the error
+                }
+            }
+            String expirationDateStr = request.getParameter("expirationdate");
+
+            if (expirationDateStr != null && !expirationDateStr.isEmpty()) {
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date expirationDate = (Date) dateFormat.parse(manufactureDateStr);
+                    // Now you have the expirationDate as a Date object
+                } catch (ParseException e) {
+                    // Handle parsing exception
+                    e.printStackTrace(); // Or log the error
+                }
+            }
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
+            int manuid = Integer.parseInt(request.getParameter("manuid"));
+            Part filePart = request.getPart("image");
+
+            String des = request.getParameter("des");
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String indicaction = request.getParameter("indicaction");
+            String contraindication = request.getParameter("contraindication");
+            String using = request.getParameter("using");
+            String element = request.getParameter("element");
+            String madein = request.getParameter("madein");
+
             // Lấy tệp ảnh từ request
             // Đường dẫn đến thư mục lưu trữ ảnh trên máy chủ
             String realPart = getServletContext().getRealPath("/resources/images");
@@ -173,16 +207,17 @@ public class ProductController extends HttpServlet {
             if (!fileName.contains(".jpg") && !fileName.contains(".jpeg") && !fileName.contains(".png") && !fileName.contains(".webp") && !fileName.contains(".gif")) {
                 response.sendRedirect("/ProductController/ErrorPicture");
             } else {
-//                ProductModel newSP = new ProductModel(0, name, des, price, quantity, size, color, fileName, catid, brandid, 1);
-//                // Thêm sản phẩm mới vào cơ sở dữ liệu
-//                ProductDAO cDAO = new ProductDAO();
-//                ProductModel rs = cDAO.addNew(newSP);
-//                if (rs == null) {
-//                    // Them that bai
-//                    response.sendRedirect("/ProductController/Create");
-//                } else {
-//                    response.sendRedirect("/ProductController");
-//                }
+//                ProductModel newSP = new ProductModel(0, ProName, des, price, quantity, size, color, fileName, catid, brandid, 1);
+//                ProductModel newSP = new ProductModel;
+                // Thêm sản phẩm mới vào cơ sở dữ liệu
+                ProductDAO cDAO = new ProductDAO();
+                ProductModel rs = cDAO.addNew(ProName, des, catid, brandid, manuid, manufactureDate, expirationDate, element, quantity, indicaction, contraindication, using, madein, ProName);
+                if (rs == null) {
+                    // Them that bai
+                    response.sendRedirect("/ProductController/Create");
+                } else {
+                    response.sendRedirect("/ProductController");
+                }
             }
 
         }
@@ -228,7 +263,7 @@ public class ProductController extends HttpServlet {
             if (!fileName.contains(".jpg") && !fileName.contains(".jpeg") && !fileName.contains(".png") && !fileName.contains(".webp") && !fileName.contains(".gif")) {
                 response.sendRedirect("/ProductController/ErrorPicture");
             } else {
-//                ProductModel newSP = new ProductModel(id, name, des, price, quantity, size, color, fileName, catid, brandid, 1);
+//                ProductModel newSP = new ProductModel(id, ProName, des, price, quantity, size, color, fileName, catid, brandid, 1);
 //                ProductDAO cDAO = new ProductDAO();
 //                ProductModel rs = cDAO.update(id, newSP);
 //                if (rs == null) {// cap nhat that bai

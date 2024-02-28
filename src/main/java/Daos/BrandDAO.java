@@ -34,7 +34,7 @@ public class BrandDAO {
     public ResultSet getAll() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from Brand where BrandStatus = 1");
+            ResultSet rs = st.executeQuery("select * from Brand ");
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);

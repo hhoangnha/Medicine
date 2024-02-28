@@ -6,6 +6,7 @@ package Daos;
 
 import DB.DBConnection;
 import Model.ProductModel;
+import Model.UnitProductModel;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -50,9 +51,7 @@ public class ProductDAO {
     public ResultSet getAll() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select ProID, ProName, Description, Price, Quantity, Size, Image, Categories.CateName, Brands.BrandName, Color from Products\n"
-                    + "left JOIN Categories on Products.CateID = Categories.CateID\n"
-                    + "left JOIN Brands on Products.BrandID = Brands.BrandID where ProStatus = 1");
+            ResultSet rs = st.executeQuery("select p.ProID, p.ProName, p.CateID, p.BrandID, p.ManuID, p.Quantity, p.ProImage from Products p");
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,9 +101,9 @@ public class ProductDAO {
                 int ProID = rs.getInt("ProID");
                 String ProName = rs.getString("ProName");
                 String ProDescription = rs.getString("ProDescription");
-                String CateID = rs.getString("CateID");
-                String BrandID = rs.getString("BrandID");
-                String ManuID = rs.getString("ManuID");
+                int CateID = rs.getInt("CateID");
+                int BrandID = rs.getInt("BrandID");
+                int ManuID = rs.getInt("ManuID");
                 Date ManufactureDate = rs.getDate("ManufactureDate");
                 Date ExpirationDate = rs.getDate("ExpirationDate");
                 String Element = rs.getString("Element");
@@ -156,16 +155,16 @@ public class ProductDAO {
         int count = 0;
 //        try {
 //            PreparedStatement ps = conn.prepareStatement("UPDATE Products SET ProName=?, Description=?, Price=?, Quantity=?, Size=?, Image=? ,CateID=?, BrandID=?, Color=? WHERE ProID=?");
-//            ps.setString(1, sp.getProName());
-//            ps.setString(2, sp.getDescription());
-//            ps.setInt(3, sp.getPrice());
-//            ps.setInt(4, sp.getQuantity());
-//            ps.setInt(5, sp.getSize());
-//            ps.setString(6, sp.getImage());
-//            ps.setInt(7, sp.getCateID());
-//            ps.setInt(8, sp.getBrandID());
-//            ps.setString(9, sp.getColor());
-//            ps.setInt(10, sp.getProID());
+//            ps.setString(1, ProName());
+//            ps.setString(2, Description());
+//            ps.setInt(3, Price());
+//            ps.setInt(4, Quantity());
+//            ps.setInt(5, Size());
+//            ps.setString(6, Image());
+//            ps.setInt(7, CateID());
+//            ps.setInt(8, BrandID());
+//            ps.setString(9, Color());
+//            ps.setInt(10, ProID());
 //            count = ps.executeUpdate();
 //        } catch (SQLException ex) {
 //            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -176,9 +175,10 @@ public class ProductDAO {
     public ProductModel delete(int ProID) {
         int count = 0;
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE Products SET ProStatus=? WHERE ProID=?");
-            ps.setInt(1, 0);
-            ps.setInt(2, ProID);
+//            PreparedStatement ps = conn.prepareStatement("UPDATE Products SET ProStatus=? WHERE ProID=?");
+            PreparedStatement ps = conn.prepareStatement(" DELETE FROM Products WHERE ProID=?");
+//            ps.setInt(1, 0);
+            ps.setInt(1, ProID);
             count = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,24 +199,36 @@ public class ProductDAO {
         return (count == 0) ? null : getProduct(ProID);
     }
 
-    public ProductModel addNew(ProductModel sp) {
+//    public ProductModel addNew(ProductModel sp) {
+    public int addNew(String ProName, String ProDescription, int CateID, int BrandID, int ManuID, Date ManufactureDate, Date ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
         int count = 0;
-//        try {
-//            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products VALUES(?,?,?,?,?,?,?,?,?,?)");
-//            ps.setString(1, sp.getProName());
-//            ps.setString(2, sp.getDescription());
-//            ps.setInt(3, sp.getPrice());
-//            ps.setInt(4, sp.getQuantity());
-//            ps.setInt(5, sp.getSize());
-//            ps.setString(6, sp.getImage());
-//            ps.setInt(7, sp.getCateID());
-//            ps.setInt(8, sp.getBrandID());
-//            ps.setString(9, sp.getColor());
-//            ps.setInt(10, sp.getProStatus());
-//            count = ps.executeUpdate();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        return (count == 0) ? null : sp;
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            ps.setString(1, ProName);
+            ps.setString(2, ProDescription);
+            ps.setInt(3, CateID);
+            ps.setInt(4, BrandID);
+            ps.setInt(5, ManuID);
+            ps.setDate(6, ManufactureDate);
+            ps.setDate(7, ExpirationDate);
+            ps.setString(8, Element);
+            ps.setInt(9, Quantity);
+            ps.setString(10, Indication);
+            ps.setString(11, Contraindication);
+            ps.setString(12, Using);
+            ps.setString(13, MadeIn);
+            ps.setString(14, ProImage);
+            
+            count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (count == 0) ? null : 1;
+    }
+    public static void main(String[] args) {
+        ProductDAO call = new ProductDAO();
+        ResultSet rs = call.getAll();
+        System.out.println(rs);
+        
     }
 }
