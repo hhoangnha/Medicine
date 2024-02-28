@@ -57,8 +57,13 @@
         <servlet-class>Controllers.ForgotController</servlet-class>
     </servlet>
     <servlet>
+<<<<<<< HEAD
         <servlet-name>UnitController</servlet-name>
         <servlet-class>Controllers.UnitController</servlet-class>
+=======
+        <servlet-name>ManufacturerController</servlet-name>
+        <servlet-class>Controllers.ManufacturerController</servlet-class>
+>>>>>>> origin/ThaiVinh
     </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -134,8 +139,13 @@
         <url-pattern>/ForgotController/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+<<<<<<< HEAD
         <servlet-name>UnitController</servlet-name>
         <url-pattern>/UnitController/*</url-pattern>
+=======
+        <servlet-name>ManufacturerController</servlet-name>
+        <url-pattern>/ManufacturerController</url-pattern>
+>>>>>>> origin/ThaiVinh
     </servlet-mapping>
     <session-config>
         <session-timeout>

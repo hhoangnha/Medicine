@@ -88,6 +88,7 @@
                 </li>
             </ul>
         </li>
+<<<<<<< HEAD
 <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#icons-nav4" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-crosshair"></i><span>Unit</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -99,6 +100,16 @@
                     </a>
                 </li>
             </ul>
+=======
+        
+        <!-- vinh -->
+        
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ManufacturerController">
+                <i class="bi bi-grid"></i>
+                <span>Manufacturer</span>
+            </a>
+>>>>>>> origin/ThaiVinh
         </li>
     </ul>
 
