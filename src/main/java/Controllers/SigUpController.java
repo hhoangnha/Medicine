@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 
 /**
  *
@@ -73,7 +75,7 @@ public class SigUpController extends HttpServlet {
             String pass = request.getParameter("pass");
             String repass = request.getParameter("repass");
             String phone = request.getParameter("phone");
-
+//            LocalDate dateOfBirth = LocalDate.of(request.getParameter("birthday"));
             if (pass.equals(repass)) {
                 UserDAO CDAO = new UserDAO();
                 UserModel a = CDAO.checkAccountUser(user);
@@ -92,6 +94,10 @@ public class SigUpController extends HttpServlet {
                     System.out.println("that bai");
                     request.setAttribute("trung", "Phone is duplicated.");
                     request.getRequestDispatcher("/sigup.jsp").forward(request, response);
+                } else if (isEighteenOrOlder(birthday) == false) {
+                    System.out.println("that bai");
+                    request.setAttribute("trung", "You must be 18 years old.");
+                    request.getRequestDispatcher("/sigup.jsp").forward(request, response);
                 } else {
                     System.out.println("thanh cong");
                     try {
@@ -104,6 +110,13 @@ public class SigUpController extends HttpServlet {
                 }
             }
         }
+    }
+
+    public static boolean isEighteenOrOlder(Date dateOfBirth) {
+        LocalDate birthday = dateOfBirth.toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+        Period ageDifference = Period.between(birthday, currentDate);
+        return ageDifference.getYears() >= 18;
     }
 
     /**

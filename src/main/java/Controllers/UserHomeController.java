@@ -101,8 +101,10 @@ public class UserHomeController extends HttpServlet {
             String[] s = path.split("/");
             try {
                 String Username = s[s.length - 1];
+                System.out.println("in " + Username);
                 UserDAO cDAO = new UserDAO();
                 UserModel info = cDAO.getProfile(Username);
+                System.out.println("in" + info);
                 if (info == null) {
                     System.out.println("no");
                     response.sendRedirect("/UserHomeController");
@@ -111,11 +113,13 @@ public class UserHomeController extends HttpServlet {
                     session = request.getSession();
                     session.setAttribute("gender", info.getGender());
                     session.setAttribute("thongtinkhachhang", info);
+                    System.out.println(session.getAttribute("thongtinkhachhang"));
                     request.getRequestDispatcher("/profileUser.jsp").forward(request, response);
 //                    response.sendRedirect("/editproduct.jsp");
                 }
             } catch (Exception ex) {
-                response.sendRedirect("/UserHomeController");
+                System.out.println(ex);
+//                response.sendRedirect("/UserHomeController");
             }
         } else if (path.endsWith("/UserHomeController/ChangePass")) {
             request.getRequestDispatcher("/ChangePassWord.jsp").forward(request, response);
@@ -142,33 +146,42 @@ public class UserHomeController extends HttpServlet {
             String fullname = request.getParameter("name");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
-            String usertype = request.getParameter("UserType");
+//            String usertype = request.getParameter("UserType");
             String gender = request.getParameter("gender");
+            int genderInt = Integer.parseInt(gender);
             
             Date birthday = Date.valueOf(request.getParameter("birthday"));
             String address = request.getParameter("address");
 
-//            UserModel newinfo = new UserModel(username, phone, fullname,email , phone, usertype, gender, birthday, address);
+            UserModel newinfo = new UserModel(0, username, phone, fullname, email, phone, username, address, birthday, genderInt, 0, birthday);
             UserDAO cDAO;
             cDAO = new UserDAO();
-//            UserModel kh = cDAO.updateProfile(username, newinfo);
+            UserModel kh = cDAO.updateProfile(username, newinfo);
 //            product kh = cDAO.update(Integer.parseInt(cus_id), newinfo);
 
             response.sendRedirect("/UserHomeController");
         } else if (request.getParameter("changepass") != null) {
             HttpSession session = request.getSession();
             String user = (String) session.getAttribute("user");
-            System.out.println(user);
+            System.out.println("in" +user);
             String newpass = request.getParameter("newpass");
+            System.out.println(request.getParameter("oldpass"));
+            System.out.println(getMd5(request.getParameter("oldpass")));
+            System.out.println(session.getAttribute("pass"));
             System.out.println(newpass);
             System.out.println(checkPass(session, request));
             if (checkPass(session, request)) {
                 UserDAO cDao = new UserDAO();
                 int rs = cDao.updatePass(user, newpass);
-                System.out.println(rs);
+                System.out.println("in" +rs);
                 if (rs == 1) {
                     response.sendRedirect("/UserHomeController");
-                }
+                } 
+            } else{
+                   request.setAttribute("err", "Wrong old password.");
+                   System.out.println("saiiii");
+                               request.getRequestDispatcher("/ChangePassWord.jsp").forward(request, response);
+
             }
         }
 

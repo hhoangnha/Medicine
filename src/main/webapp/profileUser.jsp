@@ -33,13 +33,13 @@
                         <div class="col-md-12">
                             <form action="/UserHomeController" method="post">
                                 <div class="form-group row">
-                                    <label for="username" class="col-4 col-form-label">Tên đăng nhập</label> 
+                                    <label for="username" class="col-4 col-form-label">UserName</label> 
                                     <div class="col-8">
                                         <input value="${sessionScope.thongtinkhachhang.username}" id="username" name="username"  class="form-control here" required="required" type="text" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="name" class="col-4 col-form-label">Họ tên</label> 
+                                    <label for="name" class="col-4 col-form-label">Fullname</label> 
                                     <div class="col-8">
                                         <input value="${sessionScope.thongtinkhachhang.fullname}" id="name" name="name" placeholder="Full Name" class="form-control here" type="text">
                                     </div>
@@ -52,35 +52,36 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="lastname" class="col-4 col-form-label">Điện thoại</label> 
+                                    <label for="lastname" class="col-4 col-form-label">Phone</label> 
                                     <div class="col-8">
                                         <input value="${sessionScope.thongtinkhachhang.phone}" id="phone" name="phone" placeholder="Phone Number" class="form-control here" type="text">
                                     </div>
                                 </div>
-<!--                                <div class="form-group row">
-                                    <label for="text" class="col-4 col-form-label">Loại tài khoản</label> 
-                                    <div class="col-8">
-                                        <input hidden="" value="${sessionScope.thongtinkhachhang.userType}" id="text" name="UserType" placeholder="Nick Name" class="form-control here"  type="text" readonly>
-                                    </div>
-                                </div>-->
+                                <!--                                <div class="form-group row">
+                                                                    <label for="text" class="col-4 col-form-label">Loại tài khoản</label> 
+                                                                    <div class="col-8">
+                                                                        <input hidden="" value="{sessionScope.thongtinkhachhang.userType}" id="text" name="UserType" placeholder="Nick Name" class="form-control here"  type="text" readonly>
+                                                                    </div>
+                                                                </div>-->
                                 <div class="form-group row">
                                     <%
-                                        String gender = (String) session.getAttribute("gender");
+                                        //String gender = (String) session.getAttribute("gender");
                                     %>
-                                    <label for="email" class="col-4 col-form-label">Giới tính</label> 
-                                    <input  type="radio" id="gender" name="gender" value="Male" <%= (gender.equals("Male")) ? "checked" : ""%>  /> Nam
-                                    <input  style="margin-left: 30px"type="radio" id="gender" name="gender" value="Female"<%= (gender.equals("Female")) ? "checked" : ""%>/> Nữ
+
+                                    <label for="email" class="col-4 col-form-label">Gender</label> 
+                                    <input  type="radio" id="gender" name="gender" value="1" <%= ((int)session.getAttribute("gender") == 1) ? "checked" : ""%>  /> Male
+                                    <input  style="margin-left: 30px"type="radio" id="gender" name="gender" value="0" <%=((int)session.getAttribute("gender") == 0) ? "checked" : ""%>/> Female
                                     <br>
-                                 
+
                                 </div>
                                 <div class="form-group row">
-                                    <label for="website" class="col-4 col-form-label">Ngày sinh</label> 
+                                    <label for="website" class="col-4 col-form-label">Birthday</label> 
                                     <div class="col-8">
                                         <input value="${sessionScope.thongtinkhachhang.birthday}" id="birthday" name="birthday" placeholder="website" class="form-control here" type="date">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="publicinfo" class="col-4 col-form-label">Địa chỉ</label> 
+                                    <label for="publicinfo" class="col-4 col-form-label">Address</label> 
                                     <div class="col-8">
                                         <textarea value="" id="addresss" name="address" cols="40" rows="4" class="form-control">${sessionScope.thongtinkhachhang.address}</textarea>
                                     </div>
@@ -93,9 +94,9 @@
                                                                 </div> -->
                                 <div class="form-group row">
                                     <div class="offset-4 col-8">
-                                        <button name="update" type="submit" class="btn btn-primary">Cập nhật</button>
-                                        <a name="back" href="/UserHomeController" class="btn btn-secondary">Về trang chủ</a>
-                                        <a name="back" href="/UserHomeController/ChangePass" class="btn btn-primary">Thay đổi mật khẩu</a>
+                                        <button name="update" type="submit" class="btn btn-primary">Update</button>
+                                        <a name="back" href="/UserHomeController" class="btn btn-secondary">Back to home</a>
+                                        <a name="back" href="/UserHomeController/ChangePass" class="btn btn-primary">Change the password</a>
 
                                     </div>
                                 </div>

@@ -115,6 +115,10 @@ public class loginController extends HttpServlet {
                 session.setAttribute("fullname", rs.getFullname());
                 session.setAttribute("gender", rs.getGender());
                 session.setAttribute("user", rs.getUsername());
+                session.setAttribute("add", rs.getAddress());
+                session.setAttribute("email", rs.getEmail());
+                session.setAttribute("phone", rs.getPhone());
+                session.setAttribute("birthday", rs.getBirthday());
                 Cookie cookieUsername = new Cookie("user", rs.getUsername());
                 cookieUsername.setMaxAge(60 * 60 * 24 * 3);
                 Cookie cookieFullname = new Cookie("fullname", URLEncoder.encode(rs.getFullname()));

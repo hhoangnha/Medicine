@@ -291,13 +291,13 @@
             <div class="form-toggle"></div>
             <div class="form-panel one">
                 <div class="form-header">
-                    <h6>Chúng tôi đã gửi đường dẫn khôi phục đến email của bạn, vui lòng kiểm tra hộp thư.</h6>
+                    <h6>We have sent the recovery link to your email, please check your inbox.</h6>
                 </div>
         </div>
 
     </div>
 </div>
-<div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Về trang chủ</a><a href="#" target="_blank">Contact ?<i class="material-icons">arrow_forward</i></a></div>
+<div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back Home</a><a href="#" target="_blank">Contact ?<i class="material-icons">arrow_forward</i></a></div>
 <!-- partial -->
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
