@@ -60,6 +60,10 @@
         <servlet-name>ManufacturerController</servlet-name>
         <servlet-class>Controllers.ManufacturerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageStaffController</servlet-name>
+        <servlet-class>Controllers.ManageStaffController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/resources/*</url-pattern>
@@ -135,7 +139,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ManufacturerController</servlet-name>
-        <url-pattern>/ManufacturerController</url-pattern>
+        <url-pattern>/ManufacturerController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageStaffController</servlet-name>
+        <url-pattern>/ManageStaffController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -20,6 +20,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/ManageStaffController" >
+                        <i class="bi bi-circle"></i><span>Staff Manager</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/AdminController/RestoreUsers">
                         <i class="bi bi-circle"></i><span>Restore Manager</span>
                     </a>
