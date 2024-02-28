@@ -41,8 +41,8 @@
         <servlet-class>UserProductController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>BrandController</servlet-name>
-        <servlet-class>Controllers.BrandController</servlet-class>
+        <servlet-name>ManageStaffController</servlet-name>
+        <servlet-class>Controllers.ManageStaffController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>OrderID_ad</servlet-name>
@@ -56,13 +56,9 @@
         <servlet-name>ForgotController</servlet-name>
         <servlet-class>Controllers.ForgotController</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>ManufacturerController</servlet-name>
         <servlet-class>Controllers.ManufacturerController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ManageStaffController</servlet-name>
-        <servlet-class>Controllers.ManageStaffController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -105,8 +101,8 @@
         <url-pattern>/UserProductController/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BrandController</servlet-name>
-        <url-pattern>/BrandController/*</url-pattern>
+        <servlet-name>ManageStaffController</servlet-name>
+        <url-pattern>/ManageStaffController/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrderID_ad</servlet-name>
@@ -121,7 +117,6 @@
         <param-name>port</param-name>
         <param-value>587</param-value>
     </context-param>
-
     <servlet-mapping>
         <servlet-name>EmailSendingServlet</servlet-name>
         <url-pattern>/EmailSendingServlet</url-pattern>
@@ -133,10 +128,6 @@
     <servlet-mapping>
         <servlet-name>ManufacturerController</servlet-name>
         <url-pattern>/ManufacturerController/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ManageStaffController</servlet-name>
-        <url-pattern>/ManageStaffController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
