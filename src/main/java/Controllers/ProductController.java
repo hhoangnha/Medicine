@@ -190,7 +190,7 @@ public class ProductController extends HttpServlet {
 //                ProductModel newSP = new ProductModel;
                 // Thêm sản phẩm mới vào cơ sở dữ liệu
                 ProductDAO cDAO = new ProductDAO();
-                int rs = cDAO.addNew(ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, ProName);
+                int rs = cDAO.addNew(ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName);
                 if (rs == 0) {
                     // Them that bai
                     response.sendRedirect("/ProductController/Create");
@@ -203,28 +203,34 @@ public class ProductController extends HttpServlet {
 
         if (request.getParameter("btnUpdate") != null) {
             int id = Integer.parseInt(request.getParameter("id"));
-            String name = request.getParameter("name");
-            String des = request.getParameter("des");
-            int price = Integer.parseInt(request.getParameter("price"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            int size = Integer.parseInt(request.getParameter("size"));
-            Part filePart = request.getPart("newImage");
+            String ProName = request.getParameter("name");
+            String manufactureDateStr = request.getParameter("manufacturedate");
+            String expirationDate = request.getParameter("expirationdate");
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
-            String color = request.getParameter("color");
+            int manuid = Integer.parseInt(request.getParameter("manuid"));
+            Part filePart = request.getPart("image");
+
+            String des = request.getParameter("des");
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String indicaction = request.getParameter("indicaction");
+            String contraindication = request.getParameter("contraindication");
+            String using = request.getParameter("using");
+            String element = request.getParameter("element");
+            String madein = request.getParameter("madein");
             String fileName = "";
             if (filePart != null) {
-//                String allowedExtensions = ".jpg,.jpeg,.png,.gif";
-//                String[] fileParts = fileName.split("\\.");
-//                String fileExtension = fileParts[fileParts.length - 1].toLowerCase();
+                String allowedExtensions = ".jpg,.jpeg,.png,.gif";
+                String[] fileParts = fileName.split("\\.");
+                String fileExtension = fileParts[fileParts.length - 1].toLowerCase();
 
-//                if (filePart != null && allowedExtensions.contains(fileExtension)) {
-//                    // Đường dẫn đến thư mục lưu trữ ảnh trên máy chủ
-//                    
-//                } else {
-//                    // Tệp không hợp lệ, xử lý lỗi ở đây
-//                    response.sendRedirect("/errorPage.jsp"); // Chuyển hướng đến trang lỗi
-//                }
+                if (filePart != null && allowedExtensions.contains(fileExtension)) {
+                    // Đường dẫn đến thư mục lưu trữ ảnh trên máy chủ
+
+                } else {
+                    // Tệp không hợp lệ, xử lý lỗi ở đây
+                    response.sendRedirect("/errorPage.jsp"); // Chuyển hướng đến trang lỗi
+                }
                 String realPart = getServletContext().getRealPath("/resources/images");
                 fileName = extractFileName(filePart);
                 File imgDir = new File(realPart);
@@ -242,17 +248,17 @@ public class ProductController extends HttpServlet {
             if (!fileName.contains(".jpg") && !fileName.contains(".jpeg") && !fileName.contains(".png") && !fileName.contains(".webp") && !fileName.contains(".gif")) {
                 response.sendRedirect("/ProductController/ErrorPicture");
             } else {
-//                ProductModel newSP = new ProductModel(id, ProName, des, price, quantity, size, color, fileName, catid, brandid, 1);
-//                ProductDAO cDAO = new ProductDAO();
-//                ProductModel rs = cDAO.update(id, newSP);
-//                if (rs == null) {// cap nhat that bai
-//                    ProductModel thongtincu = cDAO.getProduct(id);
-//                    HttpSession session = request.getSession();
-//                    session.setAttribute("thongtinsanpham", thongtincu);
-//                    response.sendRedirect("/ProductController/Edit/" + id);
-//                } else {
-//                    response.sendRedirect("/ProductController");
-//                }
+                ProductModel newSP = new ProductModel();
+                ProductDAO cDAO = new ProductDAO();
+                int rsUpdate = cDAO.update(ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
+                if (rsUpdate == 0) {// cap nhat that bai
+                    ProductModel thongtincu = cDAO.getProduct(id);
+                    HttpSession session = request.getSession();
+                    session.setAttribute("thongtinsanpham", thongtincu);
+                    response.sendRedirect("/ProductController/Edit/" + id);
+                } else {
+                    response.sendRedirect("/ProductController");
+                }
             }
 
         }
@@ -278,5 +284,5 @@ public class ProductController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-   
+
 }

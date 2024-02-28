@@ -6,9 +6,7 @@ package Daos;
 
 import DB.DBConnection;
 import Model.ProductModel;
-import Model.UnitProductModel;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -151,25 +149,36 @@ public class ProductDAO {
         return kh;
     }
 
-    public ProductModel update(int ProID, ProductModel sp) {
+    public int update(String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage, int ProID) {
         int count = 0;
-//        try {
-//            PreparedStatement ps = conn.prepareStatement("UPDATE Products SET ProName=?, Description=?, Price=?, Quantity=?, Size=?, Image=? ,CateID=?, BrandID=?, Color=? WHERE ProID=?");
-//            ps.setString(1, ProName());
-//            ps.setString(2, Description());
-//            ps.setInt(3, Price());
-//            ps.setInt(4, Quantity());
-//            ps.setInt(5, Size());
-//            ps.setString(6, Image());
-//            ps.setInt(7, CateID());
-//            ps.setInt(8, BrandID());
-//            ps.setString(9, Color());
-//            ps.setInt(10, ProID());
-//            count = ps.executeUpdate();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        return (count == 0) ? null : sp;
+        try {
+            PreparedStatement ps = conn.prepareStatement("update Products\n"
+                    + " set ProName = ?, ProDescription = ?, CateID = ?, BrandID = ?, ManuID = ?,\n"
+                    + "       ManufactureDate = ?, ExpirationDate = ?, Element = ?,\n"
+                    + "       Quantity = ?, Indication = ?, Contraindication = ?, [Using] = ?,\n"
+                    + "       MadeIn = ?, ProImage = ?\n"
+                    + " where ProID = ?");
+            ps.setString(1, ProName);
+            ps.setString(2, ProDescription);
+            ps.setInt(3, CateID);
+            ps.setInt(4, BrandID);
+            ps.setInt(5, ManuID);
+            ps.setString(6, ManufactureDate);
+            ps.setString(7, ExpirationDate);
+            ps.setString(8, Element);
+            ps.setInt(9, Quantity);
+            ps.setString(10, Indication);
+            ps.setString(11, Contraindication);
+            ps.setString(12, Using);
+            ps.setString(13, MadeIn);
+            ps.setString(14, ProImage);
+            ps.setInt(15, ProID);
+
+            count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (count == 0) ? 0 : 1;
     }
 
     public ProductModel delete(int ProID) {
@@ -218,17 +227,19 @@ public class ProductDAO {
             ps.setString(12, Using);
             ps.setString(13, MadeIn);
             ps.setString(14, ProImage);
-            
+
             count = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return (count == 0) ? null : 1;
     }
+
     public static void main(String[] args) {
         ProductDAO call = new ProductDAO();
-        int rs = call.addNew("bvd","bfd",1,1,1,"2024-01-01","2026-01-01","asd",50,"asd","asd","asd","asd","asd.png");
+//        int rs = call.addNew("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "asd", "asd", "asd", "asd", "asd.png");
+        int rs = call.update("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "asd", "asd", "asd", "asd", "asd.png", 11);
         System.out.println(rs);
-        
+
     }
 }
