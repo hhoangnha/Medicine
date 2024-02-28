@@ -88,6 +88,18 @@
                 </li>
             </ul>
         </li>
+<li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#icons-nav4" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-crosshair"></i><span>Unit</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="icons-nav4" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/UnitController">
+                        <i class="bi bi-circle"></i><span>Unit Manager</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
     </ul>
 
 </aside><!-- End Sidebar-->
