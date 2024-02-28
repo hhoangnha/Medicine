@@ -96,14 +96,13 @@
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                                            <th> Name</th>
-                                            <th> Price</th>
-                                            <th> Quantity</th>
-                                            <th> Size</th>
-                                            <th> Picture</th>
-                                            <th>Categories</th>
-                                            <th>Brand</th>
-                                            <th>Color</th>
+                                            <<th>ID</th>
+                                            <th >Name</th>  
+                                            <th>Quantity</th>
+                                            <th>Picture</th>
+                                            <th>CateID</th>
+                                            <th>BrandID</th>
+                                            <th class="w-50">ManuID</th>
                                             <th></th>
 
                                         </tr>
@@ -119,19 +118,19 @@
 
 
                                         <tr>
+                                            <td><%= rs.getInt("ProID")%></td>
                                             <td><%= rs.getString("ProName")%></td>
-                                            <td><%=  rs.getInt("Price")%></td>
-                                            <td><%= rs.getInt("Quantity")%></td>
-                                            <td><%= rs.getInt("Size")%></td>
+                                            <td><%=  rs.getInt("Quantity")%></td>
                                             <td>
                                                 <!-- Hi?n th? ?nh -->
-                                                <img src="resources/images/<%=rs.getString("Image")%>" alt="Product Image" width="100px" height="100px">
+                                                <img src="resources/images/<%=rs.getString("ProImage")%>" alt="Product Image" width="100px" height="100px">
                                             </td>
-                                            <td><%= rs.getString("CateName")%></td>
-                                            <td><%= rs.getString("BrandName")%></td>
-                                            <td><%= rs.getString("Color")%></td>
+                                            <td><%=  rs.getString("CateName")%></td>
+                                            <td><%=  rs.getString("BrandName")%></td>
+                                            <td><%=  rs.getString("ManuName")%></td>
                                             <td>
-                                                <a class="btn btn-sm btn-info" href="/ProductController/Edit/<%=rs.getString("ProID")%>">Edit </a><a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure');" href="/ProductController/Delete/<%=rs.getString("ProID")%>">Delete</a>
+                                                <a class="btn btn-sm btn-info" href="/ProductController/Edit/<%=rs.getString("ProID")%>">Edit </a>
+                                                <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure');" href="/ProductController/Delete/<%=rs.getString("ProID")%>">Delete</a>
                                             </td>
 
                                         </tr>
