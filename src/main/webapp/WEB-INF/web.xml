@@ -64,6 +64,10 @@
         <servlet-name>ManageStaffController</servlet-name>
         <servlet-class>Controllers.ManageStaffController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UnitController</servlet-name>
+        <servlet-class>Controllers.UnitController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/resources/*</url-pattern>
@@ -137,6 +141,10 @@
     <servlet-mapping>
         <servlet-name>ManageStaffController</servlet-name>
         <url-pattern>/ManageStaffController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UnitController</servlet-name>
+        <url-pattern>/UnitController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
