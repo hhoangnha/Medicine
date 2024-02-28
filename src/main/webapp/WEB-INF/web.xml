@@ -56,6 +56,10 @@
         <servlet-name>ForgotController</servlet-name>
         <servlet-class>Controllers.ForgotController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UnitController</servlet-name>
+        <servlet-class>Controllers.UnitController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/resources/*</url-pattern>
@@ -128,6 +132,10 @@
     <servlet-mapping>
         <servlet-name>ForgotController</servlet-name>
         <url-pattern>/ForgotController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UnitController</servlet-name>
+        <url-pattern>/UnitController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
