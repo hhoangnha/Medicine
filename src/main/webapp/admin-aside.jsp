@@ -36,6 +36,37 @@
     </li>
     <!-- End Tables Nav -->
 
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+           <li class="nav-item">
+                <a class="nav-link collapsed" href="/AdminController">
+                  <i class="bi bi-grid"></i>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+        <li class="nav-item">
+            <a class="nav-link " data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/AdminController/Users" >
+                        <i class="bi bi-circle"></i><span>User Manager</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/ManageStaffController" >
+                        <i class="bi bi-circle"></i><span>Staff Manager</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/AdminController/RestoreUsers">
+                        <i class="bi bi-circle"></i><span>Restore Manager</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
     <li class="nav-item">
       <a
         class="nav-link collapsed"

@@ -1,6 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 
-package Controllers;
 
+import Controllers.*;
 import static Controllers.loginController.checkAdmin;
 import Daos.BrandDAO;
 import Daos.ManufacturerDAO;
@@ -26,7 +30,7 @@ import java.util.List;
  *
  * @author C15TQK
  */
-public class ManufacturerController extends HttpServlet {
+public class ManageStaffController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -86,7 +90,11 @@ public class ManufacturerController extends HttpServlet {
         response.sendRedirect("/ManufacturerController");
     }
 
-
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";
