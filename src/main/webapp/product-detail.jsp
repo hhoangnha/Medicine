@@ -44,7 +44,7 @@
             try {
                 int pro_id = p.getProID();
                 ProductDAO cDAO = new ProductDAO();
-                rs = cDAO.getProduct2(pro_id);
+                rs = cDAO.getProductRS(pro_id);
 
                 if (rs == null) {
                     response.sendRedirect("/UserHomeController");
