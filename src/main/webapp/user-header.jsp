@@ -4,6 +4,9 @@
     Author     : Nguyen Hoang Nha - CE170092
 --%>
 
+<%@page import="Daos.UnitProductDAO"%>
+<%@page import="Model.UserModel"%>
+<%@page import="Daos.CartDAO"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Daos.cate_ad"%>
 <%@page import="java.util.List"%>
@@ -23,12 +26,20 @@
             cate_ad cateP = new cate_ad();
             ResultSet cate = cateP.getAll();
             ProductDAO pDAO = new ProductDAO();
-            List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
             int totalItems = 0;
+            
+             UserModel uM = (UserModel) session.getAttribute("acc");
+            CartDAO cd = new CartDAO();
+            List<CartItem> cartItems = null;
+            if (uM != null) {
+                cartItems = cd.getCartItems(uM.getUserID());
+            }
+            
+            UnitProductDAO udD = new UnitProductDAO();
 
-            if (cart != null) {
-                for (CartItem item : cart) {
-//                    totalItems += item.getQuantity();
+            if (cartItems != null) {
+                for (CartItem item : cartItems) {
+                    totalItems += 1;
                 }
             }
         %>        

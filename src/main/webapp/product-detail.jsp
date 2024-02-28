@@ -4,6 +4,7 @@
     Author     : Nguyen Hoang Nha - CE170092
 --%>
 
+<%@page import="Model.UnitModel"%>
 <%@page import="Daos.UnitProductDAO"%>
 <%@page import="Model.UnitProductModel"%>
 <%@page import="java.util.List"%>
@@ -44,82 +45,80 @@
                 int pro_id = p.getProID();
                 ProductDAO cDAO = new ProductDAO();
                 rs = cDAO.getProduct2(pro_id);
-               
+
                 if (rs == null) {
-                      response.sendRedirect("/UserHomeController");
+                    response.sendRedirect("/UserHomeController");
                 } else {
-                   
+
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
 
                 //    response.sendRedirect("/CustomerController");
             }
-            
-            
-            
+
             List<UnitProductModel> unitItems = null;
             UnitProductDAO udD = new UnitProductDAO();
             unitItems = udD.getProductUnits(p.getProID());
-           
+
 
         %>
 
-        <%--<jsp:include page="user-header.jsp" />--%>
+        <jsp:include page="user-header.jsp" />
         <!-- ***** Header Area End ***** -->
 
-    
+
         <!-- ***** Main Banner Area Start ***** -->
         <div class="" id="top">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="inner-content">
-                               
-                            <h2>Single Product Page</h2>
-                            <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
-                        </div>
-                    </div>
-                </div>
+                <!--                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="inner-content">
+                
+                                            <h2>Single Product Page</h2>
+                                            <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
+                                        </div>
+                                    </div>
+                                </div>-->
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
 
 
         <!-- ***** Product Area Starts ***** -->
-        <section class="section" id="product">
+        <section class="section b pt-5" id="product">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="left-images">
-                            <img src='/resources/images/<%=p.getProImage()%>' alt="">
+                            <img src='https://c8.alamy.com/comp/JM10B2/colorful-poster-in-white-background-with-medicine-bottle-in-closeup-JM10B2.jpg' alt="">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="right-content">
                             <h4><%=rs.getString("ProName")%></h4>
+                            <input value="" id="unitId" />
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                
-                                 <%
-                                for (UnitProductModel item : unitItems) { %>
-                                     <label class="btn btn-secondary active">
-                                  <input type="radio" name="options" id="option1" >
-                                     </label>
-                                 <%  }
-                               %>
-                                
-                                
-                              </div>
-                            <span class="price">
-                                giá (*)
+                                <%
+                                    for (UnitProductModel item : unitItems) {
+                                        UnitModel um = udD.getUnitByID(item.getUnitID());
+                                %>
+                                <label class="btn btn-secondary active">
+                                    <%=um.getUnitName()%>
+                                    <input type="radio" name="options" onclick="showPrice(<%= item.getPrice()%>, <%= item.getUnitID()%>)" data-price="<%= item.getPrice()%>">
+                                </label>
+                                <% }%>
+                            </div>
+                            <span class="price" >
+                                Giá: <span class="price" id="productPrice"></span>
                             </span>
                             <span>Description: <%= p.getProDescription()%></span>
                             <span>Type: <%=rs.getString("CateName")%></span>
-                             <span>Brand: <%=rs.getString("BrandName")%></span>
-                               <span>Element: <%=rs.getString("Element")%></span>
+                            <span>Brand: <%=rs.getString("BrandName")%></span>
+                            <span>Element: <%=p.getElement()%></span>
                             <div class="quantity-content">
                                 <div class="left-content">
-                                    <h6>Số lượng </h6>
+                                    <h6>Quantity </h6>
                                 </div>
                                 <div class="right-content">
                                     <div class="quantity buttons_added">
@@ -223,44 +222,53 @@
 
         <!-- Global Init -->
         <script src="/resources/UserAssets/js/custom.js"></script>
-
+   
         <script>
-
-                                        let pr = $(".price").text();
-                                        let que = $("#quan").val();
-                                        $('#total1').text(pr * que);
-
-                                        $(".minus").on('click', function (event) {
-                                            que--
-                                            $('#total1').text(pr * que);
-                                        });
-                                        $(".plus").on('click', function (event) {
-                                            que++
-                                            $('#total1').text(pr * que);
-                                        });
-
-
-                                        function addToCart(id) {
-                                            let quan = $("#quan").val();
-                                            $.ajax({
-                                                url: '/UserCartController/AddToCart/' + id + "?quan=" + quan,
-                                                method: 'GET',
-                                                success: function (response) {
-                                                    if (response.success) {
-                                                        Swal.fire({
-                                                            title: 'Thêm vào giỏ hàng thành công!',
-                                                            icon: 'success',
-                                                            showCancelButton: false,
-                                                            confirmButtonText: 'Đồng ý'
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                location.reload();
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            });
+let pr = null;
+                                        let unitID = 0;
+                                        function showPrice(p, unitID) {
+                                            pr = p
+                                            $('#productPrice').text(p);
+                                            $('#total1').text(p);
+                                            $('#unitId').val(unitID);
+                                           
                                         }
+
+            let que = $("#quan").val();
+            $('#total1').text(pr * que);
+
+            $(".minus").on('click', function (event) {
+                que--
+
+                $('#total1').text(pr * que);
+            });
+            $(".plus").on('click', function (event) {
+                que++
+                $('#total1').text(pr * que);
+            });
+
+
+            function addToCart(id) {
+                let quan = $("#quan").val();
+                $.ajax({
+                    url: '/UserCartController/AddToCart/' + id + "?quan=" + quan+'&unit='+$('#unitId').val(),
+                    method: 'GET',
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'Thêm vào giỏ hàng thành công!',
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonText: 'Đồng ý'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
 
         </script>
     </body>

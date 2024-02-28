@@ -4,6 +4,8 @@
     Author     : Nguyen Hoang Nha - CE170092
 --%>
 
+<%@page import="Model.UnitProductModel"%>
+<%@page import="Daos.UnitProductDAO"%>
 <%@page import="Daos.CartDAO"%>
 <%@page import="Model.UserModel"%>
 <%@page import="Model.CartItem"%>
@@ -151,20 +153,22 @@
     </head>
     <body>
 
-       
+
         <%
             UserModel uM = (UserModel) session.getAttribute("acc");
             CartDAO cd = new CartDAO();
             List<CartItem> cartItems = null;
-            if(uM != null){
+            if (uM != null) {
                 cartItems = cd.getCartItems(uM.getUserID());
             }
             
+            UnitProductDAO udD = new UnitProductDAO();
+
         %>
 
 
-        <%--<jsp:include page="user-header.jsp" />--%>
-        <section class="section " id="product">
+        <jsp:include page="user-header.jsp" />
+        <section class="section pt-5" id="product">
             <div class="container">
                 <%    if (session.getAttribute("errorCartMsg") != null) {
                 %>
@@ -185,11 +189,11 @@
                                 if (cartItems == null) {
 
                                 } else {
-                                    
+
                                     for (CartItem item : cartItems) {
                                         ProductModel pdm = pd.getProduct(item.getProId());
-                                        
-                                    
+                                        UnitProductModel um = udD.getUnitProduct(item.getProId(), item.getUnitID());
+
                             %>
 
 
@@ -199,21 +203,22 @@
                                 <div class="row main align-items-center">
                                     <div class="col">
                                         <div class="row text-muted"><%=pdm.getProName()%></div>
-                                        <!--<div class="row"><%=pdm.getProName()%></div>-->
+                                        <div class="row"><%= cd.getUnitName(item.getUnitID()).getUnitName()  %></div>
+                                        <small>Price: <%=um.getPrice() %></small><br/>
                                         <small>chỉ còn: <%=pdm.getQuantity()%> sản phẩm</small>
                                     </div>
                                     <div class="col">
-                                        <a  onclick='decreaseQuantity(<%=pdm.getProID()%>)'>-</a><a href="#" id="val<%=pdm.getProID()%>" class="border"><%=item.getQuantity()%></a>
+                                        <a  onclick='decreaseQuantity(<%=pdm.getProID()%>,<%=item.getUnitID()%>)'>-</a><a href="#" id="val<%=pdm.getProID()%>" class="border"><%=item.getQuantity()%></a>
                                         <%
-                                            if(pdm.getQuantity() > item.getQuantity()){
-                                            %>
-                                             <a onclick='increaseQuantity(<%=pdm.getProID()%>)'>+</a>
-                                              <%  
+                                            if (pdm.getQuantity() > item.getQuantity()) {
+                                        %>
+                                        <a onclick='increaseQuantity(<%=pdm.getProID()%>,<%=item.getUnitID()%>)'>+</a>
+                                        <%
                                             }
                                         %>
-                                       
+
                                     </div>
-                                    <div class="col"> <%=pdm.getProName()%> <span class="close" onclick="confirmRemove(<%=pdm.getProID()%>)">&#10005;</span></div>
+                                        <div class="col"> <%=um.getPrice() * item.getQuantity() %> <span class="close" onclick="confirmRemove(<%=pdm.getProID()%>,<%=item.getUnitID()%>)">&#10005;</span></div>
                                 </div>
                             </div>
                             <% }
@@ -317,7 +322,7 @@
 
                                 }
 
-                                function confirmRemove(productId) {
+                                function confirmRemove(productId, unitId) {
                                     Swal.fire({
                                         title: 'Xác nhận xoá khỏi giỏ hàng!',
                                         icon: 'warning',
@@ -328,7 +333,7 @@
                                         if (result.isConfirmed) {
                                             $.ajax({
                                                 type: "GET",
-                                                url: "UserCartController/RemoveFromCart/" + productId,
+                                                url: "UserCartController/RemoveFromCart/" + productId+'?unit='+unitId,
                                                 success: function (response) {
                                                     location.reload();
                                                 },
@@ -339,7 +344,7 @@
                                         }
                                     });
                                 }
-                                function decreaseQuantity(productId) {
+                                function decreaseQuantity(productId, unitId) {
 
 
                                     if ($('#val' + productId).text() == 1) {
@@ -353,7 +358,7 @@
                                             if (result.isConfirmed) {
                                                 $.ajax({
                                                     type: "GET",
-                                                    url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1",
+                                                    url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit="+unitId,
                                                     success: function (response) {
                                                         location.reload();
                                                     },
@@ -369,7 +374,7 @@
                                     } else {
                                         $.ajax({
                                             type: "GET",
-                                            url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1",
+                                            url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit="+unitId,
                                             success: function (response) {
                                                 location.reload();
                                             },
@@ -381,10 +386,10 @@
 
 
                                 }
-                                function increaseQuantity(productId) {
+                                function increaseQuantity(productId, unitId) {
                                     $.ajax({
                                         type: "GET",
-                                        url: "UserCartController/IncreaseQuantity/" + productId + "?quan=1",
+                                        url: "UserCartController/IncreaseQuantity/" + productId + "?quan=1&unit="+unitId,
                                         success: function (response) {
                                             location.reload();
                                         },

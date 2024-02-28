@@ -7,6 +7,7 @@ package Daos;
 import DB.DBConnection;
 import Model.BrandModel;
 import Model.CartItem;
+import Model.UnitModel;
 import Model.UnitProductModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,6 +63,44 @@ public class UnitProductDAO {
             ex.printStackTrace();
         }
         return unitItems;
+    }
+    
+    public UnitModel getUnitByID(int UID){
+        UnitModel um = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Units WHERE UnitID = ?");
+            ps.setInt(1, UID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int uID = rs.getInt("UnitID");
+                String unitName = rs.getString("UnitName");
+                um = new UnitModel(uID,unitName);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed to get cart items");
+            ex.printStackTrace();
+        }
+        return um;
+    }
+    
+    public UnitProductModel getUnitProduct(int ProID,int UID){
+        UnitProductModel um = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM UnitProduct WHERE UnitID = ? AND ProID = ?");
+            ps.setInt(1, UID);
+             ps.setInt(2, ProID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                um = new UnitProductModel(rs.getInt("UnitProductID"),rs.getInt("UnitID"),rs.getInt("ProId"),rs.getInt("Price"));
+            }
+            System.out.print(ProID);
+            System.out.println(UID);
+            System.out.println(um);
+        } catch (SQLException ex) {
+            System.out.println("Failed to get cart items");
+            ex.printStackTrace();
+        }
+        return um;
     }
 
    
