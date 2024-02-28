@@ -88,6 +88,15 @@
                 </li>
             </ul>
         </li>
+        
+        <!-- vinh -->
+        
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ManufacturerController">
+                <i class="bi bi-grid"></i>
+                <span>Manufacturer</span>
+            </a>
+        </li>
     </ul>
 
 </aside><!-- End Sidebar-->
