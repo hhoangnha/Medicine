@@ -1,4 +1,4 @@
-<%@page import="Daos.ProductDAO"%>
+<%@page import="Daos.UnitDAO"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,11 +6,17 @@
     <%@page import="Daos.userad_ad"%>
     <%@page import="java.sql.ResultSet"%>
     <%@page import="Model.UserModel"%>
+    <%@page import="Daos.cate_ad"%>
+    <%@page import="Daos.userad_ad"%>
+    <%@page import="java.sql.ResultSet"%>
+    <%@page import="Model.CategorieModel"%>
+    <%@page import="Daos.userad_ad"%>
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Product</title>
+        <title>User</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -52,23 +58,29 @@
     </head>
 
     <body>
+        <style>
+            .CateNameColumn{
+                width: 15%;
+            }
+        </style>
         <%
-            // L?y d? li?u t? session
+            // Lấy dữ liệu từ session
             String msgSuccess = (String) session.getAttribute("msgSuccess");
             if (msgSuccess != null) {
         %>
         <script>
-            // S? d?ng SweetAlert ?? hi?n th? th�ng b�o
-            alertify.success("Th�nh c�ng");
+            // Sử dụng SweetAlert để hiển thị thông báo
+            alertify.success("Thành công");
         </script>
         <%
-                // X�a th�ng b�o sau khi hi?n th?
+                // Xóa thông báo sau khi hiển thị
                 session.removeAttribute("message");
             }
         %>
-        <jsp:include page="admin-header.jsp" />
 
+        <jsp:include page="admin-header.jsp" />
         <jsp:include page="admin-aside.jsp" />
+
 
         <main id="main" class="main">
 
@@ -77,8 +89,7 @@
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Data</li>
+                        <li class="breadcrumb-item active">Unit</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -89,56 +100,34 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Product</h5>
-                                <a href="/ProductController/Create" class="btn btn-primary ">Add new</a>
-
+                                <h5 class="card-title">Unit</h5>
+                                <br/>
+                                <a href="/UnitController/AddnewUnit" class="btn btn-primary ">Add new</a>
                                 <!-- Table with stripped rows -->
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                                            <<th>ID</th>
-                                            <th >Name</th>  
-                                            <th>Quantity</th>
-                                            <th>Picture</th>
-                                            <th>CateID</th>
-                                            <th>BrandID</th>
-                                            <th class="w-50">ManuID</th>
+                                            
+                                            <th>UnitID</th>
+                                            <th>UnitName</th>
                                             <th></th>
-
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                        <%
-                                            ProductDAO cDAO = new ProductDAO();
-                                            ResultSet rs = cDAO.getAll();
+                                        <% UnitDAO d = new UnitDAO();
+                                            ResultSet rs = d.getAll();
                                             while (rs.next()) {
-
                                         %>
-
-
                                         <tr>
-                                            <td><%= rs.getInt("ProID")%></td>
-                                            <td><%= rs.getString("ProName")%></td>
-                                            <td><%=  rs.getInt("Quantity")%></td>
-                                            <td>
-                                                <!-- Hi?n th? ?nh -->
-                                                <img src="resources/images/<%=rs.getString("ProImage")%>" alt="Product Image" width="100px" height="100px">
+                                            <td><%= rs.getInt("UnitID")%></td>
+                                            <td class="CateNameColumn"><%= rs.getString("UnitName")%></td>
+                                            <td style="text-align: center">
+                                                <a style="color:white" class="btn bg-primary btn-sm " href="/UnitController/updateUnit/<%= rs.getInt("UnitID")%>" >Update</a>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Category can not restore');" class="btn btn-danger btn-sm" href="/UnitController/deleteUnit/<%= rs.getString("UnitID")%>" >Delete</a>  
                                             </td>
-                                            <td><%=  rs.getString("CateName")%></td>
-                                            <td><%=  rs.getString("BrandName")%></td>
-                                            <td><%=  rs.getString("ManuName")%></td>
-                                            <td>
-                                                <a class="btn btn-sm btn-info" href="/ProductController/Edit/<%=rs.getString("ProID")%>">Edit </a>
-                                                <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure');" href="/ProductController/Delete/<%=rs.getString("ProID")%>">Delete</a>
-                                            </td>
-
                                         </tr>
-
-                                        <%
-
-                                            }
-                                        %>
+                                        <% }%>
 
                                     </tbody>
                                 </table>
@@ -152,8 +141,6 @@
             </section>
 
         </main><!-- End #main -->
-
-
 
         <!-- Vendor JS Files -->
         <script src="/resources/AdminAssets/vendor/apexcharts/apexcharts.min.js"></script>

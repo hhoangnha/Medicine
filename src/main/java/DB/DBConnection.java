@@ -34,4 +34,9 @@ public class DBConnection {
         return null;
         
     }
+//    public static Connection connect() throws ClassNotFoundException, SQLException{
+//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=Medicine;user=sa;password=admin;encrypt=true;trustServerCertificate=true");
+//        return conn;
+//    }
 }

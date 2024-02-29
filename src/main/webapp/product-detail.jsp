@@ -44,7 +44,7 @@
             try {
                 int pro_id = p.getProID();
                 ProductDAO cDAO = new ProductDAO();
-                rs = cDAO.getProduct2(pro_id);
+                rs = cDAO.getProductRS(pro_id);
 
                 if (rs == null) {
                     response.sendRedirect("/UserHomeController");
@@ -97,7 +97,7 @@
                     <div class="col-lg-4">
                         <div class="right-content">
                             <h4><%=rs.getString("ProName")%></h4>
-                            <input value="" id="unitId" />
+                            <input hidden="" value="" id="unitId" />
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                 <%
                                     for (UnitProductModel item : unitItems) {
@@ -128,7 +128,7 @@
                             </div>
                             <div class="total">
                                 <h4>Total price: <h4 id="total1"></span></h4>
-                                    <div class="main-border-button"><a onclick='addToCart(<%=p.getProID()%>)'>Thêm vào giỏ</a></div>
+                                    <div class="main-border-button"><a onclick='addToCart(<%=p.getProID()%>)'>Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -256,16 +256,28 @@ let pr = null;
                     success: function (response) {
                         if (response.success) {
                             Swal.fire({
-                                title: 'Thêm vào giỏ hàng thành công!',
+                                title: 'Add to card successfully!',
                                 icon: 'success',
                                 showCancelButton: false,
-                                confirmButtonText: 'Đồng ý'
+                                confirmButtonText: 'Confirm'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     location.reload();
                                 }
                             });
                         }
+                    },
+                    error: function(err){
+                         Swal.fire({
+                                title: 'You are not logged in yet, log in now!',
+                                icon: 'error',
+                                showCancelButton: false,
+                                confirmButtonText: 'Login'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.href = "/loginController";
+                                }
+                            });
                     }
                 });
             }

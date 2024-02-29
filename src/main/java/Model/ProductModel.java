@@ -15,11 +15,11 @@ public class ProductModel {
     private int ProID;
     private String ProName;
     private String ProDescription;
-    private String CateID;
-    private String BrandID;
-    private String ManuID;
-    private Date ManufactureDate;
-    private Date ExpirationDate;
+    private int CateID;
+    private int BrandID;
+    private int ManuID;
+    private String ManufactureDate;
+    private String ExpirationDate;
     private String Element;
     private int Quantity;
     private String Indication;
@@ -31,7 +31,7 @@ public class ProductModel {
     public ProductModel() {
     }
 
-    public ProductModel(int ProID, String ProName, String ProDescription, String CateID, String BrandID, String ManuID, Date ManufactureDate, Date ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+    public ProductModel(int ProID, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
         this.ProID = ProID;
         this.ProName = ProName;
         this.ProDescription = ProDescription;
@@ -48,7 +48,7 @@ public class ProductModel {
         this.MadeIn = MadeIn;
         this.ProImage = ProImage;
     }
-
+    
     public int getProID() {
         return ProID;
     }
@@ -61,23 +61,23 @@ public class ProductModel {
         return ProDescription;
     }
 
-    public String getCateID() {
+    public int getCateID() {
         return CateID;
     }
 
-    public String getBrandID() {
+    public int getBrandID() {
         return BrandID;
     }
 
-    public String getManuID() {
+    public int getManuID() {
         return ManuID;
     }
 
-    public Date getManufactureDate() {
+    public String getManufactureDate() {
         return ManufactureDate;
     }
 
-    public Date getExpirationDate() {
+    public String getExpirationDate() {
         return ExpirationDate;
     }
 
@@ -121,23 +121,23 @@ public class ProductModel {
         this.ProDescription = ProDescription;
     }
 
-    public void setCateID(String CateID) {
+    public void setCateID(int CateID) {
         this.CateID = CateID;
     }
 
-    public void setBrandID(String BrandID) {
+    public void setBrandID(int BrandID) {
         this.BrandID = BrandID;
     }
 
-    public void setManuID(String ManuID) {
+    public void setManuID(int ManuID) {
         this.ManuID = ManuID;
     }
 
-    public void setManufactureDate(Date ManufactureDate) {
+    public void setManufactureDate(String ManufactureDate) {
         this.ManufactureDate = ManufactureDate;
     }
 
-    public void setExpirationDate(Date ExpirationDate) {
+    public void setExpirationDate(String ExpirationDate) {
         this.ExpirationDate = ExpirationDate;
     }
 

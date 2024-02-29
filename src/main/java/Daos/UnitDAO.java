@@ -53,10 +53,10 @@ public class UnitDAO {
         }
         return (count == 0) ? null : sp;
     }
-    public void delete(String UnitIdDelete){
+    public void delete(int UnitId){
         try {
             PreparedStatement ps = conn.prepareStatement("Delete from Units where UnitID = ?");
-            ps.setString(1, UnitIdDelete);
+            ps.setInt(1, UnitId);
             int count = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);

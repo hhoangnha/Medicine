@@ -61,6 +61,7 @@ public class UnitController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
+        HttpSession session = request.getSession();
         if (path.endsWith("/UnitController")) {
             request.getRequestDispatcher("unit-manage.jsp").forward(request, response);
         } else {
@@ -71,17 +72,31 @@ public class UnitController extends HttpServlet {
                 String UnitID = s[s.length - 1];
                 UnitDAO udao = new UnitDAO();
                 UnitModel unitOld = udao.getUnit(UnitID);
-                HttpSession session = (HttpSession) request.getSession();
                 session.setAttribute("unitOld", unitOld);
                 request.getRequestDispatcher("/updateUnit.jsp").forward(request, response);
-            } else if (path.startsWith("/UnitController/deleteUnit")) {
+            }
+//            else if (path.startsWith("/UnitController/deleteUnit")) {
+//                String[] s = path.split("/");
+//                String UnitID = s[s.length - 1];
+//                UnitDAO udao = new UnitDAO();
+//                UnitModel unitOld = udao.getUnit(UnitID);
+//                HttpSession session = (HttpSession) request.getSession();
+//                session.setAttribute("unitOld", unitOld);
+//                request.getRequestDispatcher("/deleteUnit.jsp").forward(request, response);
+//            }
+            if (path.startsWith("/UnitController/deleteUnit")) {
                 String[] s = path.split("/");
-                String UnitID = s[s.length - 1];
-                UnitDAO udao = new UnitDAO();
-                UnitModel unitOld = udao.getUnit(UnitID);
-                HttpSession session = (HttpSession) request.getSession();
-                session.setAttribute("unitOld", unitOld);
-                request.getRequestDispatcher("/deleteUnit.jsp").forward(request, response);
+                try {
+                    int UnitID = Integer.parseInt(s[s.length - 1]);
+                    UnitDAO udao = new UnitDAO();
+//                    ct.delete(cateid, 0);
+                    udao.delete(UnitID);
+                    session.setAttribute("msgSuccess", "Delete successfully!");
+                    response.sendRedirect("/UnitController");
+                } catch (Exception ex) {
+                    response.sendRedirect("/UnitController");
+                }
+
             }
         }
     }
@@ -99,11 +114,9 @@ public class UnitController extends HttpServlet {
             throws ServletException, IOException {
         UnitDAO udao = new UnitDAO();
         if (request.getParameter("btnAddUnit") != null) {
-            int UnitID = Integer.parseInt(request.getParameter("UnitID"));
             String UnitName = request.getParameter("UnitName");
-            UnitModel unit = new UnitModel(UnitID, UnitName);
+            UnitModel unit = new UnitModel(1, UnitName);
             UnitModel newUnit = udao.addnew(unit);
-
             if (newUnit != null) {
                 response.sendRedirect("/UnitController");
             } else {
@@ -123,8 +136,7 @@ public class UnitController extends HttpServlet {
             }
         }
         if (request.getParameter("btnDeleteUnit") != null) {
-            String UnitID = request.getParameter("UnitID");
-
+            int UnitID = Integer.parseInt(request.getParameter("UnitID"));
             try {
                 udao.delete(UnitID);
                 response.sendRedirect("/UnitController");
@@ -132,6 +144,7 @@ public class UnitController extends HttpServlet {
                 response.sendRedirect("/UnitController/deleteUnit/" + UnitID);
             }
         }
+
     }
 
     /**

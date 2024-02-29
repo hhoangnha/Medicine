@@ -63,6 +63,21 @@ public class ManufacturerDAO {
         }
         return list;
     }
+    public ResultSet getAllManufacturerRS() {
+        
+        try {
+            // Create a PreparedStatement with a parameterized query
+            String sql = "SELECT * FROM Manufacturer";
+            ps = conn.prepareStatement(sql);
+
+            // ps.setInt(1, st);  // 0 là tồn tại nên để lại 
+            // Execute the query and store the result in the ResultSet
+            rs = ps.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(userad_ad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
 
     public void deleteManufacturer(String ManuID) {
         String query = "delete from Manufacturer\n"
@@ -94,13 +109,12 @@ public class ManufacturerDAO {
     }
 
     public void editManufacturer(String ManuID, String ManuName, String MfgLicense, String ManuAddress, String Phone) {
-        String query = "UPDATE Manufacturer " +
+          String query = "UPDATE Manufacturer " +
                "SET ManuName = ?, " +
                "MfgLicense = ?, " +
                "ManuAddress = ?, " +
                "Phone = ? " +
                "WHERE ManuID = ?";
-
 
         try {
             conn = new DBConnection().connect();//mo ket noi voi sql
@@ -133,7 +147,11 @@ public class ManufacturerDAO {
     }
 
     public static void main(String[] args) {
-        ManufacturerDAO test = new ManufacturerDAO();
-//        test.editManufacturer(11, "u22sfsdfn", "usdfdf", "ussdfn", "unsfsdf");
+        ManufacturerDAO manuDAO = new ManufacturerDAO();
+        List<ManufacturerModel> rsManu = manuDAO.getAllManufacturer();
+        for (int i = 0; i < rsManu.size(); i++) {
+            System.out.println(rsManu.get(i).getManuID());
+            System.out.println(rsManu.get(i).getManuName());
+        }
     }
 }
