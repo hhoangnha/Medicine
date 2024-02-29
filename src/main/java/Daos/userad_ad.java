@@ -40,8 +40,8 @@ public class userad_ad {
         ResultSet rs = null;
         try {
             // Create a PreparedStatement with a parameterized query
-            String sql = "SELECT * FROM Accounts";
-            PreparedStatement ps = conn.prepareStatement(sql);
+//            String sql = "SELECT * FROM Accounts";
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Accounts");
             // ps.setString(1, usertype);
             // ps.setInt(2, st);  // 0 là tồn tại nên để lại 
             // Execute the query and store the result in the ResultSet

@@ -92,8 +92,8 @@ public class ManufacturerDAO {
     }
 
     public void addManufacturer(String ManuName, String MfgLicense, String ManuAddress, String Phone) {
-        String query = "INSERT [dbo].[Manufacturer] \n"
-                + "([ManuName], [MfgLicense], [ManuAddress], [Phone])\n"
+        String query = "INSERT Manufacturer \n"
+                + "(ManuName, MfgLicense, ManuAddress, Phone)\n"
                 + "VALUES(?,?,?,?)";
         try {
             conn = new DBConnection().connect();//mo ket noi voi sql
@@ -104,16 +104,17 @@ public class ManufacturerDAO {
             ps.setString(4, Phone);
             ps.executeUpdate();
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
     public void editManufacturer(String ManuID, String ManuName, String MfgLicense, String ManuAddress, String Phone) {
-        String query = "UPDATE Manufacturer "
-                + "SET [ManuName] = ?, "
-                + "[MfgLicense] = ?, "
-                + "ManuAddress = ?, "
-                + "Phone = ? "
-                + "WHERE ManuID = ?";
+          String query = "UPDATE Manufacturer " +
+               "SET ManuName = ?, " +
+               "MfgLicense = ?, " +
+               "ManuAddress = ?, " +
+               "Phone = ? " +
+               "WHERE ManuID = ?";
 
         try {
             conn = new DBConnection().connect();//mo ket noi voi sql
@@ -125,6 +126,7 @@ public class ManufacturerDAO {
             ps.setString(5, ManuID);
             ps.executeUpdate();
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
 

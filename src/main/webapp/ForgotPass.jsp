@@ -291,16 +291,18 @@
             <div class="form-toggle"></div>
             <div class="form-panel one">
                 <div class="form-header">
-                    <h1>Khôi phục mật khẩu</h1>
+                    <h1>Password recovery</h1>
                 </div>
                 <div class="form-content">
                     <form class="form-signin" action="/ForgotController" method="post" onsubmit="return check()">
                         <div class="form-group">
-                            <label for="forgotpass">Mật khẩu mới</label>
+                            <label for="forgotpass">Enter new password</label>
                             <input name="forgotpass" id="user-pass"  type="password" required="required"/>
+                            <p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>
+
                         </div>
                         <div class="form-group">
-                            <label for="cforgotpass">Nhập lại mật khẩu mới</label>
+                            <label for="cforgotpass">Confirm new password</label>
                             <input name="cforgotpass" id="user-repass" type="password" required="required"/>
                         </div>
                         <div class="error" id="txtRepass"></div

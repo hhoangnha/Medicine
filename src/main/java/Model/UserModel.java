@@ -43,6 +43,10 @@ public class UserModel {
         this.CreatedAt = CreatedAt;
     }
 
+    public UserModel(String username, String phone, String fullname, String email, String phone0, String gender, Date birthday, String address) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public int getUserID() {
         return UserID;
     }
