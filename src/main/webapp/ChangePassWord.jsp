@@ -356,7 +356,7 @@
                         <div class="error" id="txtRepass"></div>
                     </div>                   
                     <div class="form-group">
-                        <button type="submit" name="changepass">Lưu</button>
+                        <button type="submit" name="changepass">Save</button>
                     </div>
                 </form>
                 <h6 class="text-success" style="padding-top: 24px;text-align: center;">${mess}</h6>

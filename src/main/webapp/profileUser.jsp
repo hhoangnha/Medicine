@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <h4>Thông tin tài khoản</h4>
+                            <h4>Account Information</h4>
                             <hr>
                         </div>
                     </div>
@@ -69,8 +69,8 @@
                                     %>
 
                                     <label for="email" class="col-4 col-form-label">Gender</label> 
-                                    <input  type="radio" id="gender" name="gender" value="1" <%= ((int)session.getAttribute("gender") == 1) ? "checked" : ""%>  /> Male
-                                    <input  style="margin-left: 30px"type="radio" id="gender" name="gender" value="0" <%=((int)session.getAttribute("gender") == 0) ? "checked" : ""%>/> Female
+                                    <input  style="margin-left: 10px" type="radio" id="gender" name="gender" value="1" <%= ((int)session.getAttribute("gender") == 1) ? "checked" : ""%>  /> Male
+                                    <input  style="margin-left: 40px"type="radio" id="gender" name="gender" value="0" <%=((int)session.getAttribute("gender") == 0) ? "checked" : ""%>/> Female
                                     <br>
 
                                 </div>
