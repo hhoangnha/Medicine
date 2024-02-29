@@ -13,6 +13,7 @@ import java.sql.Date;
 public class ProductModel {
 
     private int ProID;
+    private String ProCode;
     private String ProName;
     private String ProDescription;
     private int CateID;
@@ -31,8 +32,9 @@ public class ProductModel {
     public ProductModel() {
     }
 
-    public ProductModel(int ProID, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+    public ProductModel(int ProID, String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
         this.ProID = ProID;
+        this.ProCode = ProCode;
         this.ProName = ProName;
         this.ProDescription = ProDescription;
         this.CateID = CateID;
@@ -52,7 +54,11 @@ public class ProductModel {
     public int getProID() {
         return ProID;
     }
-
+    
+    public String getProCode() {
+        return ProCode;
+    }
+    
     public String getProName() {
         return ProName;
     }
@@ -111,6 +117,10 @@ public class ProductModel {
 
     public void setProID(int ProID) {
         this.ProID = ProID;
+    }
+    
+    public void setProCode(String ProCode) {
+        this.ProCode = ProCode;
     }
 
     public void setProName(String ProName) {

@@ -100,6 +100,7 @@ public class ProductDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int ProID = rs.getInt("ProID");
+                String ProCode = rs.getString("ProCode");
                 String ProName = rs.getString("ProName");
                 String ProDescription = rs.getString("ProDescription");
                 int CateID = rs.getInt("CateID");
@@ -115,6 +116,7 @@ public class ProductDAO {
                 String MadeIn = rs.getString("MadeIn");
                 String ProImage = rs.getString("ProImage");
                 kh = new ProductModel(ProID,
+                        ProCode,
                         ProName,
                         ProDescription,
                         CateID,
@@ -152,30 +154,31 @@ public class ProductDAO {
         return kh;
     }
 
-    public int update(String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage, int ProID) {
+    public int update(String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage, int ProID) {
         int count = 0;
         try {
             PreparedStatement ps = conn.prepareStatement("update Products\n"
-                    + " set ProName = ?, ProDescription = ?, CateID = ?, BrandID = ?, ManuID = ?,\n"
+                    + " set ProCode = ?, ProName = ?, ProDescription = ?, CateID = ?, BrandID = ?, ManuID = ?,\n"
                     + "       ManufactureDate = ?, ExpirationDate = ?, Element = ?,\n"
                     + "       Quantity = ?, Indication = ?, Contraindication = ?, [Using] = ?,\n"
                     + "       MadeIn = ?, ProImage = ?\n"
                     + " where ProID = ?");
-            ps.setString(1, ProName);
-            ps.setString(2, ProDescription);
-            ps.setInt(3, CateID);
-            ps.setInt(4, BrandID);
-            ps.setInt(5, ManuID);
-            ps.setString(6, ManufactureDate);
-            ps.setString(7, ExpirationDate);
-            ps.setString(8, Element);
-            ps.setInt(9, Quantity);
-            ps.setString(10, Indication);
-            ps.setString(11, Contraindication);
-            ps.setString(12, Using);
-            ps.setString(13, MadeIn);
-            ps.setString(14, ProImage);
-            ps.setInt(15, ProID);
+            ps.setString(1, ProCode);
+            ps.setString(2, ProName);
+            ps.setString(3, ProDescription);
+            ps.setInt(4, CateID);
+            ps.setInt(5, BrandID);
+            ps.setInt(6, ManuID);
+            ps.setString(7, ManufactureDate);
+            ps.setString(8, ExpirationDate);
+            ps.setString(9, Element);
+            ps.setInt(10, Quantity);
+            ps.setString(11, Indication);
+            ps.setString(12, Contraindication);
+            ps.setString(13, Using);
+            ps.setString(14, MadeIn);
+            ps.setString(15, ProImage);
+            ps.setInt(16, ProID);
 
             count = ps.executeUpdate();
         } catch (SQLException ex) {
@@ -214,24 +217,25 @@ public class ProductDAO {
     }
 
 //    public ProductModel addNew(ProductModel sp) {
-    public int addNew(String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+    public int addNew(String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
         int count = 0;
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            ps.setString(1, ProName);
-            ps.setString(2, ProDescription);
-            ps.setInt(3, CateID);
-            ps.setInt(4, BrandID);
-            ps.setInt(5, ManuID);
-            ps.setString(6, ManufactureDate);
-            ps.setString(7, ExpirationDate);
-            ps.setString(8, Element);
-            ps.setInt(9, Quantity);
-            ps.setString(10, Indication);
-            ps.setString(11, Contraindication);
-            ps.setString(12, Using);
-            ps.setString(13, MadeIn);
-            ps.setString(14, ProImage);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            ps.setString(1, ProCode);
+            ps.setString(2, ProName);
+            ps.setString(3, ProDescription);
+            ps.setInt(4, CateID);
+            ps.setInt(5, BrandID);
+            ps.setInt(6, ManuID);
+            ps.setString(7, ManufactureDate);
+            ps.setString(8, ExpirationDate);
+            ps.setString(9, Element);
+            ps.setInt(10, Quantity);
+            ps.setString(11, Indication);
+            ps.setString(12, Contraindication);
+            ps.setString(13, Using);
+            ps.setString(14, MadeIn);
+            ps.setString(15, ProImage);
 
             count = ps.executeUpdate();
         } catch (SQLException ex) {
@@ -244,7 +248,7 @@ public class ProductDAO {
     public static void main(String[] args) {
         ProductDAO call = new ProductDAO();
 //        int rs = call.addNew("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "asd", "asd", "asd", "asd", "asd.png");
-        int rs = call.addNew("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "indication", "asd", "asd", "asd", "asd.png");
+        int rs = call.addNew("DCYT003","bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "indication", "asd", "asd", "asd", "asd.png");
         System.out.println(rs);
 
     }

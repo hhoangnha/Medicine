@@ -154,6 +154,7 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
 
         if (request.getParameter("btnAddNew") != null) {// Nguoi dung nhan nut submit de them du lieu moi
+            String ProCode = request.getParameter("code");
             String ProName = request.getParameter("name");
             String manufactureDateStr = request.getParameter("manufacturedate");
             String expirationDate = request.getParameter("expirationdate");
@@ -190,7 +191,7 @@ public class ProductController extends HttpServlet {
 //                ProductModel newSP = new ProductModel;
                 // Thêm sản phẩm mới vào cơ sở dữ liệu
                 ProductDAO cDAO = new ProductDAO();
-                int rs = cDAO.addNew(ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName);
+                int rs = cDAO.addNew(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName);
                 if (rs == 0) {
                     // Them that bai
                     response.sendRedirect("/ProductController/Create");
@@ -203,6 +204,7 @@ public class ProductController extends HttpServlet {
 
         if (request.getParameter("btnUpdate") != null) {
             int id = Integer.parseInt(request.getParameter("id"));
+            String ProCode = request.getParameter("code");
             String ProName = request.getParameter("name");
             String manufactureDateStr = request.getParameter("manufacturedate");
             String expirationDate = request.getParameter("expirationdate");
@@ -258,7 +260,7 @@ public class ProductController extends HttpServlet {
             } else {
                 ProductModel newSP = new ProductModel();
                 ProductDAO cDAO = new ProductDAO();
-                int rsUpdate = cDAO.update(ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
+                int rsUpdate = cDAO.update(ProCode,ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
                 if (rsUpdate == 0) {// cap nhat that bai
                     ProductModel thongtincu = cDAO.getProduct(id);
                     HttpSession session = request.getSession();

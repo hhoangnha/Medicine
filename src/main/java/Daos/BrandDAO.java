@@ -45,7 +45,7 @@ public class BrandDAO {
     public BrandModel addNew(BrandModel nh) {
         int count = 0;
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Brands VALUES(?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Brand VALUES(?,?)");
             ps.setString(1, nh.getBrandName());
             ps.setInt(2, nh.getBrandStatus());
             count = ps.executeUpdate();

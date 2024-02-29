@@ -1,3 +1,5 @@
+<%@page import="Model.UnitProductModel"%>
+<%@page import="Daos.UnitProductDAO"%>
 <%@page import="Model.ManufacturerModel"%>
 <%@page import="java.util.List"%>
 <%@page import="Daos.ManufacturerDAO"%>
@@ -56,14 +58,15 @@
                         <div class="w-50 p-3">
                             <div class="row">     
                                 <br>
+                                <div class="col-sm-4 col-xs-8"> <p>Product Code</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="text" id="code" name="code"  /></div>
+
+                            </div>
+                            <div class="row">     
+                                <br>
                                 <div class="col-sm-4 col-xs-8"> <p>Product Name</p></div>
                                 <div class="col-sm-8"><input class="form-control" type="text" id="name" name="name"  /></div>
 
-                            </div>
-                            <div class="row">
-                                <br>
-                                <div class="col-sm-4 col-xs-8"><p>Price</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="number" id="price" name="price"  /></div>                       
                             </div>
                             <div class="row">
                                 <br>

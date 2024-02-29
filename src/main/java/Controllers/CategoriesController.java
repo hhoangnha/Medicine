@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Dell
  */
-public class categories_ad extends HttpServlet {
+public class CategoriesController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

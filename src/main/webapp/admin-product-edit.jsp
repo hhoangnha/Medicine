@@ -63,6 +63,10 @@
                                 <div class="col-sm-8"><input class="form-control" type="number" id="id" name="id" value="<%= sp.getProID()%>" readonly="" /></div>
                             </div>
                             <div class="row">                       
+                                <div class="col-sm-4 "> <p>Product Code</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="text" id="code" name="code" value="<%= sp.getProCode()%>" /></div>
+                            </div>
+                            <div class="row">                       
                                 <div class="col-sm-4 "> <p>Product Name</p></div>
                                 <div class="col-sm-8"><input class="form-control" type="text" id="name" name="name" value="<%= sp.getProName()%>" /></div>
                             </div>

@@ -37,7 +37,6 @@ public class UnitProductDAO {
         }
     }
 
-
     public List<UnitProductModel> getProductUnits(int proId) {
         List<UnitProductModel> unitItems = new ArrayList<>();
         try {
@@ -64,8 +63,36 @@ public class UnitProductDAO {
         }
         return unitItems;
     }
-    
-    public UnitModel getUnitByID(int UID){
+
+    public ResultSet getProductUnitsRS() {
+        List<UnitProductModel> unitItems = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM UnitProduct");
+//            ps.setInt(1, proId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int unitProID = rs.getInt("UnitProductID");
+                int UnitID = rs.getInt("UnitID");
+                float Price = rs.getFloat("Price");
+                UnitProductModel item = new UnitProductModel();
+                item.setUnitProductID(unitProID);
+                item.setUnitID(UnitID);
+//                item.setProID(proId);
+                item.setPrice(Price);
+                unitItems.add(item);
+            }
+            System.out.println("arr");
+            System.out.println(unitItems);
+
+        } catch (SQLException ex) {
+            System.out.println("Failed to get cart items");
+            ex.printStackTrace();
+        }
+        return rs;
+    }
+
+    public UnitModel getUnitByID(int UID) {
         UnitModel um = null;
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Units WHERE UnitID = ?");
@@ -74,7 +101,7 @@ public class UnitProductDAO {
             while (rs.next()) {
                 int uID = rs.getInt("UnitID");
                 String unitName = rs.getString("UnitName");
-                um = new UnitModel(uID,unitName);
+                um = new UnitModel(uID, unitName);
             }
         } catch (SQLException ex) {
             System.out.println("Failed to get cart items");
@@ -82,16 +109,35 @@ public class UnitProductDAO {
         }
         return um;
     }
-    
-    public UnitProductModel getUnitProduct(int ProID,int UID){
+
+    public ResultSet getAllUnitNameBy() {
+        UnitModel um = null;
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Units ");
+//            ps.setInt(1, UID);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int uID = rs.getInt("UnitID");
+                String unitName = rs.getString("UnitName");
+                um = new UnitModel(uID, unitName);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed to get cart items");
+            ex.printStackTrace();
+        }
+        return rs;
+    }
+
+    public UnitProductModel getUnitProduct(int ProID, int UID) {
         UnitProductModel um = null;
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM UnitProduct WHERE UnitID = ? AND ProID = ?");
             ps.setInt(1, UID);
-             ps.setInt(2, ProID);
+            ps.setInt(2, ProID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                um = new UnitProductModel(rs.getInt("UnitProductID"),rs.getInt("UnitID"),rs.getInt("ProId"),rs.getInt("Price"));
+                um = new UnitProductModel(rs.getInt("UnitProductID"), rs.getInt("UnitID"), rs.getInt("ProId"), rs.getInt("Price"));
             }
             System.out.print(ProID);
             System.out.println(UID);
@@ -102,6 +148,9 @@ public class UnitProductDAO {
         }
         return um;
     }
-
-   
+    public static void main(String[] args) throws SQLException {
+        UnitProductDAO call = new UnitProductDAO();
+        ResultSet rs = call.getAllUnitNameBy();
+        System.out.println(rs);
+    }
 }
