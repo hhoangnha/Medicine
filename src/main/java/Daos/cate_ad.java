@@ -33,6 +33,7 @@ public class cate_ad {
         }
     }
 
+
     public ResultSet getAll() {
         ResultSet rs = null;
         try {
@@ -151,4 +152,16 @@ public class cate_ad {
          ResultSet rs = ct.getAll();
         System.out.println(rs);
     }
+        public int checkDuplicateName(String cateName) throws SQLException{
+            int isDuplicate = 0;
+                String sql = "select * from Categories where CateName = ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+//                ps.setInt(1, cateid);
+                ps.setString(1, cateName);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()){
+                    isDuplicate++;
+                }
+            return isDuplicate;
+        }
 }
