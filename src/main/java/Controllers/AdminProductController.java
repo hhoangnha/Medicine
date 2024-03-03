@@ -56,6 +56,7 @@ public class AdminProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String p = request.getRequestURI();
+        
         if (p.endsWith("/AdminProductController")) {
             request.getRequestDispatcher("/admin-product-list.jsp").forward(request, response);
         }

@@ -48,7 +48,19 @@ public class cate_ad {
         }
         return rs;
     }
-
+    public int checkDuplicate(int cateid, String cateName) throws SQLException{
+//        CategorieModel isDuplicate = new CategorieModel();
+        int isDuplicate = 0;
+            String sql = "select * from Categories where CateID = ? or CateName = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, cateid);
+            ps.setString(2, cateName);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                isDuplicate++;
+            }
+        return isDuplicate;
+    }
 //    public int updateCategory(int cateid, String cateName, String cateDescription, int cateStatus) {
     public int updateCategory(int cateid, String cateName, String cateDescription) {
         int h = 0;
@@ -146,9 +158,9 @@ public class cate_ad {
 
         return ct;
     }
-    public static void main(String[] args) {
-        cate_ad ct = new cate_ad();
-         ResultSet rs = ct.getAll();
-        System.out.println(rs);
+    public static void main(String[] args) throws SQLException {
+//        cate_ad ct = new cate_ad();
+         
+//        System.out.println(rs);
     }
 }
