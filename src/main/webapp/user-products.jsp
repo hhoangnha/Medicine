@@ -303,12 +303,12 @@
                                         <li><a onclick='addToCart(<%=rs.getInt("ProID")%>)'><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
-                                <img src='/resources/images/<%=rs.getString("Image")%>' alt="">
+                                <img src='/resources/images/<%=rs.getString("ProImage")%>' alt="">
                             </div>
                             <div class="down-content">
                                 <h4><%= rs.getString("ProName")%></h4>
                                 <div class="row d-flex justify-content-between">
-                                    <div class="col-md-6"><span class="text-danger"><%= rs.getInt("Price")%></span></div>
+                                    <div class="col-md-6"><span class="text-danger">123</span></div>
                                     <div class="col-md-6"><p > <%= rs.getString("BrandName")%></span></div>
                                 </div>
 

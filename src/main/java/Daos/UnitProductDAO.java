@@ -148,6 +148,21 @@ public class UnitProductDAO {
         }
         return um;
     }
+    public int addNew(int UnitID, int ProID, float Price) {
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO UnitProduct(UnitID, ProID, Price) VALUES (?,?,?) ");
+            ps.setInt(1, UnitID);
+            ps.setInt(2, ProID);
+            ps.setFloat(3, Price);
+            count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        return (count == 0) ? 0 : 1;
+    }
+    
     public static void main(String[] args) throws SQLException {
         UnitProductDAO call = new UnitProductDAO();
         ResultSet rs = call.getAllUnitNameBy();

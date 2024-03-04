@@ -5,12 +5,15 @@
 package Daos;
 
 import DB.DBConnection;
+import Model.ManufacturerModel;
 import Model.UnitModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +43,24 @@ public class UnitDAO {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    public List<UnitModel> getAllUnit() {
+        List<UnitModel> UnitItems = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Units");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                UnitModel UnitItem = new UnitModel();
+                UnitItem.setUnitID(rs.getInt("UnitID"));
+                UnitItem.setUnitName(rs.getString("UnitName"));
+                UnitItems.add(UnitItem);
+            }
+
+            System.out.println(UnitItems.size());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return UnitItems;
     }
     public UnitModel update(int UnitID, UnitModel sp) {
         int count = 0;

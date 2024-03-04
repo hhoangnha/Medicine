@@ -1,3 +1,5 @@
+<%@page import="Model.UnitModel"%>
+<%@page import="Daos.UnitDAO"%>
 <%@page import="Model.UnitProductModel"%>
 <%@page import="Daos.UnitProductDAO"%>
 <%@page import="Model.ManufacturerModel"%>
@@ -25,6 +27,8 @@
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 
         <!-- Vendor CSS Files -->
         <link href="/resources/AdminAssets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -138,6 +142,26 @@
                                 <div class="col-sm-4 col-xs-8"><p>Image</p></div>
                                 <div class="col-sm-8"><input class="form-control" type="file" id="image" name="image" size="50"  /></div>                        
                             </div>
+                            <div class="row">
+                                <br>
+
+                                <div class="col-sm-4 col-xs-8"><p>Units</p></div>
+                                <div class="col-sm-8">
+                                    <select name="unitid" id="unitid" multiple class="form-control">
+                                        <option>Select Unit</option>
+                                        <%
+                                            UnitDAO unitDAO = new UnitDAO();
+                                            List<UnitModel> rsUnit = unitDAO.getAllUnit();
+                                            for (UnitModel item : rsUnit) {
+                                        %>
+                                        <option value="<%= item.getUnitID()%>"><%= item.getUnitName()%></option>
+
+                                        <%}
+                                        %>
+                                    </select>
+                                </div>                       
+                            </div>
+                            <div id="unitDetails"></div>
                         </div>
                         <div class="w-50 p-3">
                             <div class="row">
@@ -193,8 +217,40 @@
         <script src="/resources/AdminAssets/vendor/simple-datatables/simple-datatables.js"></script>
         <script src="/resources/AdminAssets/vendor/tinymce/tinymce.min.js"></script>
         <script src="/resources/AdminAssets/vendor/php-email-form/validate.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script >
+
+                        $(document).ready(function () {
+                            $('#unitid').select2();
+                            $('#unitid').change(function () {
+                                $('#unitDetails').empty(); // Xóa bỏ các input hiện tại trước khi thêm mới
+
+                                $(this).find('option:selected').each(function () {
+                                    var selectedUnitID = $(this).val();
+                                    var selectedUnitName = $(this).text();
+                                    var unitInputHTML = '<div class="form-group">' +
+                                            '<label for="unitPrice">Price for ' + selectedUnitName + '</label>' +
+                                            '<input name="prices[]" type="number" class="form-control unitPrice" data-unitid="' + selectedUnitID + '" placeholder="Enter price">' +
+                                            '</div>';
+                                    $('#unitDetails').append(unitInputHTML);
+                                });
+                            });
+
+                            // Xóa input khi bỏ chọn một đơn vị
+                            $('#unitid').on('change', function () {
+                                $(this).find('option:not(:selected)').each(function () {
+                                    var unselectedUnitID = $(this).val();
+                                    $('.unitPrice[data-unitid="' + unselectedUnitID + '"]').parent().remove();
+                                });
+                            });
+                        });
                         function validateForm() {
+                            var selectedUnits = $('#unitid').val(); // Mảng các đơn vị đã chọn
+                            var prices = $('.unitPrice').map(function () {
+                                return {unitID: $(this).data('unitid'), price: $(this).val()};
+                            }).get(); // Mảng các đơn vị và giá tương ứng
+
 
                             var name = document.getElementById("name").value;
                             var des = document.getElementById("des").value;
@@ -221,12 +277,13 @@
                                 alert("Accept only positive number greater than 0!");
                                 return false;
                             }
-                            if (isNaN(price) || isNaN(quantity) {
-                                alert("Input must be number.");
-                                return false;
-                            }
+//                            if (isNaN(price) || isNaN(quantity) {
+//                                alert("Input must be number.");
+//                                return false;
+//                            }
                             return true;
                         }
+
 
         </script>
         <!-- Template Main JS File -->

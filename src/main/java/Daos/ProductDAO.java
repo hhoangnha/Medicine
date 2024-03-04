@@ -36,9 +36,9 @@ public class ProductDAO {
     public ResultSet getAllDeletedList() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select ProID, ProName, Description, Price, Quantity, Size, Image, Categories.CateName, Brands.BrandName, Color from Products\n"
+            ResultSet rs = st.executeQuery("select ProID, ProName, Description, Price, Quantity, Size, Image, Categories.CateName, Brand.BrandName, Color from Products\n"
                     + "left JOIN Categories on Products.CateID = Categories.CateID\n"
-                    + "left JOIN Brands on Products.BrandID = Brands.BrandID where ProStatus = 0");
+                    + "left JOIN Brand on Products.BrandID = Brand.BrandID where ProStatus = 0");
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,7 +79,7 @@ public class ProductDAO {
 
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products JOIN Brands ON Brands.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' ORDER BY Products.ProID");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products JOIN Brand ON Brand.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' ORDER BY Products.ProID");
 //            ps.setString(1, keyword);
 //            ps.setInt(2, start);
 //            ps.setInt(3, recordsPerPage);
@@ -217,10 +217,10 @@ public class ProductDAO {
     }
 
 //    public ProductModel addNew(ProductModel sp) {
-    public int addNew(String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
-        int count = 0;
+    public ProductModel addNew(String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+        ProductModel newProduct = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,`Using`,MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, ProCode);
             ps.setString(2, ProName);
             ps.setString(3, ProDescription);
@@ -237,19 +237,27 @@ public class ProductDAO {
             ps.setString(14, MadeIn);
             ps.setString(15, ProImage);
 
-            count = ps.executeUpdate();
+            int count = ps.executeUpdate();
+
+            if (count > 0) {
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    newProduct = new ProductModel(id, ProCode, ProName, ProDescription, CateID, BrandID, ManuID, ManufactureDate, ExpirationDate, Element, Quantity, Indication, Contraindication, Using, MadeIn, ProImage);
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
         }
-        return (count == 0) ? 0 : 1;
+        return newProduct;
     }
 
     public static void main(String[] args) {
         ProductDAO call = new ProductDAO();
 //        int rs = call.addNew("bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "asd", "asd", "asd", "asd", "asd.png");
-        int rs = call.addNew("DCYT003","bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "indication", "asd", "asd", "asd", "asd.png");
-        System.out.println(rs);
+//        int rs = call.addNew("DCYT003","bvd", "bfd", 1, 1, 1, "2024-01-01", "2026-01-01", "asd", 50, "indication", "asd", "asd", "asd", "asd.png");
+//        System.out.println(rs);
 
     }
 }

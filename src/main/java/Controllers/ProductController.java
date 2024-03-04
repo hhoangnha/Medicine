@@ -6,6 +6,7 @@ package Controllers;
 
 import static Controllers.loginController.checkAdmin;
 import Daos.ProductDAO;
+import Daos.UnitProductDAO;
 import Model.ProductModel;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class ProductController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -162,6 +163,20 @@ public class ProductController extends HttpServlet {
             int brandid = Integer.parseInt(request.getParameter("brandid"));
             int manuid = Integer.parseInt(request.getParameter("manuid"));
             Part filePart = request.getPart("image");
+            String[] selectedUnits = request.getParameterValues("unitid"); // Mảng các đơn vị đã chọn
+            String[] prices = request.getParameterValues("prices[]");
+
+            if (selectedUnits != null) {
+                for (String unit : selectedUnits) {
+                    System.out.println("Selected Unit: " + unit);
+                }
+            }
+
+            if (prices != null) {
+                for (String price : prices) {
+                    System.out.println("Price: " + price);
+                }
+            }
 
             String des = request.getParameter("des");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -191,18 +206,27 @@ public class ProductController extends HttpServlet {
 //                ProductModel newSP = new ProductModel;
                 // Thêm sản phẩm mới vào cơ sở dữ liệu
                 ProductDAO cDAO = new ProductDAO();
-                int rs = cDAO.addNew(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName);
-                if (rs == 0) {
+                ProductModel rs = cDAO.addNew(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName);
+                if (rs == null) {
                     // Them that bai
                     response.sendRedirect("/ProductController/Create");
                 } else {
-                    response.sendRedirect("/ProductController");
+                    UnitProductDAO upd = new UnitProductDAO();
+                    for (int i = 0; i < selectedUnits.length; i++) {
+                        int unitId = Integer.parseInt(selectedUnits[i]);
+                        int price = Integer.parseInt(prices[i]);
+
+                        upd.addNew(unitId, rs.getProID(), price);
+                    }
+
                 }
+                response.sendRedirect("/ProductController");
             }
 
         }
 
-        if (request.getParameter("btnUpdate") != null) {
+        if (request.getParameter(
+                "btnUpdate") != null) {
             int id = Integer.parseInt(request.getParameter("id"));
             String ProCode = request.getParameter("code");
             String ProName = request.getParameter("name");
@@ -260,7 +284,7 @@ public class ProductController extends HttpServlet {
             } else {
                 ProductModel newSP = new ProductModel();
                 ProductDAO cDAO = new ProductDAO();
-                int rsUpdate = cDAO.update(ProCode,ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
+                int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
                 if (rsUpdate == 0) {// cap nhat that bai
                     ProductModel thongtincu = cDAO.getProduct(id);
                     HttpSession session = request.getSession();
