@@ -1,50 +1,46 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
+
 package Daos;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * @author Thai Vinh
+ * @author qn699
  */
 public class cate_adTest {
-
-    cate_ad testCate;
-
+    cate_ad callFunc;
     public cate_adTest() {
-        testCate = new cate_ad();
+        callFunc = new cate_ad();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
+    public void testGetAll() {
+        int rs = callFunc.addNewCategory("", "cac thiet bi y te");
+        int expected = 0;
+        assertEquals(expected, rs);
+    }
+
+    @Test
+    public void testUpdateCategory() {
+        
+    }
+
+    @Test
     public void testAddNewCategory() {
-        int rs = testCate.addNewCategory("Vật dụng y tế", "Chỉ nha khoa, băng keo cá nhân...");
-        int expectedResult = 1;
-        assertEquals(expectedResult, rs);
     }
 
-    @org.junit.jupiter.api.Test
-    public void test2() {
-        int rs = testCate.addNewCategory("Vitamin", null);
-        int expectedResult = 1;
-        assertEquals(expectedResult, rs);
+    @Test
+    public void testDelete() {
     }
 
-    @org.junit.jupiter.api.Test
-    public void test3() {
-        int rs = testCate.addNewCategory("Thực phẩm chức năng", "5000");
-        int expectedResult = 1;
-        assertEquals(expectedResult, rs);
+    @Test
+    public void testGetCate() {
     }
 
-    @org.junit.jupiter.api.Test
-    public void test4() {
-        int rs = testCate.addNewCategory("Thuốc điều trị", "sản phẩm được cấp phép bỏi bộ y tế");
-        int expectedResult = 1;
-        assertEquals(expectedResult, rs);
+    @Test
+    public void testMain() {
     }
-
+    
+>>>>>>> Quang
 }
