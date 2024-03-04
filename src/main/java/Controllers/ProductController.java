@@ -202,7 +202,7 @@ public class ProductController extends HttpServlet {
             if (!fileName.contains(".jpg") && !fileName.contains(".jpeg") && !fileName.contains(".png") && !fileName.contains(".webp") && !fileName.contains(".gif")) {
                 response.sendRedirect("/ProductController/ErrorPicture");
             } else {
-//                ProductModel newSP = new ProductModel(0, ProName, des, price, quantity, size, color, fileName, catid, brandid, 1);
+//                ProductModel newSP = new ProductModel(0, ProName, des, price, quantity, size, color, newFileName, catid, brandid, 1);
 //                ProductModel newSP = new ProductModel;
                 // Thêm sản phẩm mới vào cơ sở dữ liệu
                 ProductDAO cDAO = new ProductDAO();
@@ -235,7 +235,7 @@ public class ProductController extends HttpServlet {
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
             int manuid = Integer.parseInt(request.getParameter("manuid"));
-            Part filePart = request.getPart("newImage");
+            Part newFilePart = request.getPart("newImage");
 
             String des = request.getParameter("des");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -244,48 +244,48 @@ public class ProductController extends HttpServlet {
             String using = request.getParameter("using");
             String element = request.getParameter("element");
             String madein = request.getParameter("madein");
-            String fileName = extractFileName(filePart);
-            if (filePart != null) {
+            String newFileName = extractFileName(newFilePart);
+            if (newFilePart != null) {
                 String allowedExtensions = ".jpg,.jpeg,.png,.gif";
-                String[] fileParts = fileName.split("\\.");
+                String[] fileParts = newFileName.split("\\.");
                 String fileExtension = fileParts[fileParts.length - 1].toLowerCase();
 
-                if (filePart != null && allowedExtensions.contains(fileExtension)) {
+                if (newFilePart != null && allowedExtensions.contains(fileExtension)) {
                     // Đường dẫn đến thư mục lưu trữ ảnh trên máy chủ
                     String realPart = getServletContext().getRealPath("/resources/images");
-                    fileName = extractFileName(filePart);
+                    newFileName = extractFileName(newFilePart);
                     File imgDir = new File(realPart);
                     // is can't see then Create new Founder img in path f
                     if (!imgDir.exists()) {
                         imgDir.mkdir();
                     }
                     // tiếp tục code ghi file
-                    filePart.write(realPart + "/" + fileName);
+                    newFilePart.write(realPart + "/" + newFileName);
                 } else {
                     // Tệp không hợp lệ, xử lý lỗi ở đây
                     response.sendRedirect("/errorPage.jsp"); // Chuyển hướng đến trang lỗi
                 }
 //                String realPart = getServletContext().getRealPath("/resources/images");
-//                fileName = extractFileName(filePart);
+//                newFileName = extractFileName(newFilePart);
 //                File imgDir = new File(realPart);
 //                // is can't see then Create new Founder img in path f
 //                if (!imgDir.exists()) {
 //                    imgDir.mkdir();
 //                }
-//                if (fileName.equals("")) {
-//                    fileName = request.getParameter("oldImage");
+//                if (newFileName.equals("")) {
+//                    newFileName = request.getParameter("oldImage");
 //                }
 //                // tiếp tục code ghi file
-//                filePart.write(realPart + "/" + fileName);
+//                newFilePart.write(realPart + "/" + newFileName);
 
             }
-            if (!fileName.contains(".jpg") && !fileName.contains(".jpeg") && !fileName.contains(".png") && !fileName.contains(".webp") && !fileName.contains(".gif")) {
+            if (!newFileName.contains(".jpg") && !newFileName.contains(".jpeg") && !newFileName.contains(".png") && !newFileName.contains(".webp") && !newFileName.contains(".gif")) {
                 response.sendRedirect("/ProductController/ErrorPicture");
             } else {
                 ProductModel newSP = new ProductModel();
                 ProductDAO cDAO = new ProductDAO();
-                int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
-                if (rsUpdate == 0) {// cap nhat that bai
+                 int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
+                 if (rsUpdate == 0) {// cap nhat that bai
                     ProductModel thongtincu = cDAO.getProduct(id);
                     HttpSession session = request.getSession();
                     session.setAttribute("thongtinsanpham", thongtincu);
@@ -298,8 +298,8 @@ public class ProductController extends HttpServlet {
         }
     }
 
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
+    private String extractFileName(Part filePart) {
+        String contentDisp = filePart.getHeader("content-disposition");
         String[] items = contentDisp.split(";");
         for (String s : items) {
             if (s.trim().startsWith("filename")) {

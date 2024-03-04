@@ -195,10 +195,12 @@
                                 <div class="col-sm-4 col-xs-8"><p>Made in</p></div>
                                 <div class="col-sm-8"><input class="form-control" id="madein" type="text" name="madein"/></div>                        
                             </div>
-                            <div class="col-sm-4 col-xs-8"></div>
-                            <div class="col-sm-4 w-100 d-flex flex-row justify-content-end" id="lbtn">
-                                <a href='/ProductController' class="btn btn-secondary mx-3" id="btl">Back to List</a>  
-                                <input class="btn btn-primary me-3" id="submit" type="submit" name="btnAddNew" value="Add New"/>
+                            <div class="row">
+                                <div class="col-sm-4 col-xs-8"></div>
+                                <div class="col-sm-8 d-flex flex-row justify-content-center" id="lbtn">
+                                    <a href='/ProductController' class="btn btn-secondary mx-3" id="btl">Back to List</a>  
+                                    <input class="btn btn-primary me-3" id="submit" type="submit" name="btnAddNew" value="Add New"/>
+                                </div>
                             </div>
                         </div>
                     </form>

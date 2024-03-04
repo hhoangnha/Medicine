@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,6 +63,7 @@ public class AdminCateController extends HttpServlet {
             throws ServletException, IOException {
         String p = request.getRequestURI();
         HttpSession session = request.getSession();
+
         if (checkAdmin(session)) {
             if (p.endsWith("/AdminCateController")) {
                 request.getRequestDispatcher("/admin-categories-list.jsp").forward(request, response);
@@ -143,14 +147,29 @@ public class AdminCateController extends HttpServlet {
             //   CategorieModel cm = new CategorieModel(cateID, catename, des);
             cate_ad ct = new cate_ad();
 //            h = ct.updateCategory(cateID, catename, des, st);
-            h = ct.updateCategory(cateID, catename, des);
-            if (h == 0) {
-                response.sendRedirect("/AdminCateController/Create");
-            } else {
-                session.setAttribute("msgSuccess", "Thành công");
-                response.sendRedirect("/AdminCateController");
-            }
+            int isDuplicate;
+            try {
+                isDuplicate = ct.checkDuplicate(cateID,catename);
 
+                if (isDuplicate==1) {//if isDuplicate == 1 is mean cateID and cateName is match in 1 row in DB then allow change des
+                    h = ct.updateCategory(cateID, catename, des);
+                    if (h == 0) {
+                        response.sendRedirect("/AdminCateController/Create");
+                    } else {
+                        session.setAttribute("msgSuccess", "Thành công");
+                        response.sendRedirect("/AdminCateController");
+                    }
+                }else if (isDuplicate==2){// if isDuplicate == 2 is mean that cateID and cateName is not match in 1 row, then don't allow change cateName
+                    request.setAttribute("message", "Category Name was existed");
+                    request.getRequestDispatcher("admin-categories-edit.jsp").forward(request, response);
+                }
+//                else {
+//                    request.setAttribute("message", "Category Name was existed");
+//                    request.getRequestDispatcher("admin-categories-edit.jsp").forward(request, response);
+//                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminCateController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (request.getParameter("add") != null) {
             // int cateID = Integer.parseInt(request.getParameter("oid"));
@@ -159,13 +178,26 @@ public class AdminCateController extends HttpServlet {
             //  int st = Integer.parseInt(request.getParameter("st"));
             //   CategorieModel cm = new CategorieModel(cateID, catename, des);
             cate_ad ct = new cate_ad();
-            h = ct.addNewCategory(catename, des);
-            if (h == 0) {
-                response.sendRedirect("/AdminCateController/Create");
-            } else {
-                session.setAttribute("msgSuccess", "Thành công");
-                response.sendRedirect("/AdminCateController");
+            try {
+//                request.getSession().setAttribute("email", "exist");
+                int isDuplicate = ct.checkDuplicate(0, catename);
+                if (isDuplicate==0) {
+                    h = ct.addNewCategory(catename, des);
+                    if (h == 0) {
+                        response.sendRedirect("/AdminCateController/Create");
+                    } else {
+                        session.setAttribute("msgSuccess", "Thành công");
+                        response.sendRedirect("/AdminCateController");
+                    }
+                } else {
+                    request.setAttribute("message", "Category Name was existed");
+                    request.getRequestDispatcher("admin-categories-create.jsp").forward(request, response);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminCateController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
     }
 

@@ -43,32 +43,82 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add new Category</h5>
+                    <h5 class="card-title">Add new Staff</h5>
 
                     <!-- Horizontal Form -->
-                    <form  name="productForm" method="post" action='/AdminCateController' onsubmit="return validateFormOrder()">
+                    <form  name="productForm" method="post" action='/ManageStaffController' onsubmit="return validateFormOrder()">
                         <div class="row mb-3">
-                            <h5 style="color: red">${message}</h5>
-                           
-                        </div>
-                        <div class="row mb-3">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Cate name</label>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
                             <div class="col-sm-10">
-                                <input type="text" name='name' class="form-control" id="inputText">
+                                <input type="text" name='username' class="form-control" id="inputText">
                             </div>
-                            
+
                         </div>
                         <div class="row mb-3">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Cate Description</label>
+                            <label for="Password" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-10">
-                                <input type="text" name='des' class="form-control" id="inputEmail">
+                                <input type="text" name='password' class="form-control" id="Password">
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <label for="Fullname" class="col-sm-2 col-form-label">Fullname</label>
+                            <div class="col-sm-10">
+                                <input type="text" name='fullname' class="form-control" id="Fullname">
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <label for="Email" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="text" name='email' class="form-control" id="Email">
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <label for="Phone" class="col-sm-2 col-form-label">Phone</label>
+                            <div class="col-sm-10">
+                                <input type="text" name='phone' class="form-control" id="Phone">
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <label for="Address" class="col-sm-2 col-form-label">Address</label>
+                            <div class="col-sm-10">
+                                <input type="text" name='address' class="form-control" id="Address">
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <label for="Birthday" class="col-sm-2 col-form-label">Birthday</label>
+                            <div class="col-sm-10">
+                                <input type="date" name='birthday' class="form-control" id="Birthday">
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <label for="sex" class="col-sm-2 col-form-label">Gender</label>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sex" id="male" value="1">
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sex" id="female" value="0">
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="text-left">
-                            <input class="btn btn-primary" type="submit" value="Create" name ="add" />
-                            <a  href='/AdminCateController' class="btn btn-secondary">Back to list</a>
-                        </div>
+                        <div class="row mb-3">
+
+
+
+
+                            <div class="text-left">
+                                <input class="btn btn-primary" type="submit" value="Create" name ="add" />
+                                <a href='/AdminCateController' class="btn btn-secondary">Back to list</a>
+                            </div>
                     </form><!-- End Horizontal Form -->
 
                 </div>

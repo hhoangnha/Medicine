@@ -80,10 +80,10 @@
                                 <div class="col-sm-4 col-xs-8"><p>Expiration Date</p></div>
                                 <div class="col-sm-8"><input class="form-control" type="date" id="expirationdate" name="expirationdate" value="<%= sp.getExpirationDate()%>"/></div>                       
                             </div>
-                            <div class="row"><br/>
+                            <div class="row">
                                 <div class="col-sm-4 "><p>Categories ID</p></div>
                                 <div class="col-sm-8">
-                                    <select name="catid" id="catid">
+                                    <select class="w-100" name="catid" id="catid">
                                         <%
                                             cate_ad cDAO = new cate_ad();
                                             ResultSet rs = cDAO.getAll();
@@ -103,10 +103,10 @@
 
                                 </div>
                             </div>    
-                            <div class="row"><br/>
+                            <div class="row">
                                 <div class="col-sm-4 "><p>Brand ID</p></div>
                                 <div class="col-sm-8">
-                                    <select name="brandid" id="brandid" value="<%= sp.getBrandID()%>">
+                                    <select class="w-100" name="brandid" id="brandid" value="<%= sp.getBrandID()%>">
                                         <%
                                             BrandDAO cDAO2 = new BrandDAO();
                                             ResultSet r = cDAO2.getAll();
@@ -126,10 +126,10 @@
                                     </select>                    
                                 </div>
                             </div>
-                            <div class="row"><br/>
+                            <div class="row">
                                 <div class="col-sm-4 "><p>Manu ID</p></div>
                                 <div class="col-sm-8">
-                                    <select name="manuid" id="manuid" value="<%= sp.getManuID()%>">
+                                    <select class="w-100" name="manuid" id="manuid" value="<%= sp.getManuID()%>">
                                         <%
                                             ManufacturerDAO manuDAO = new ManufacturerDAO();
                                             List<ManufacturerModel> rsManu = manuDAO.getAllManufacturer();
@@ -140,7 +140,7 @@
                                                 // Kiểm tra xem BrandID có phải là giá trị cũ không
                                                 //                                    boolean isSelected = (selectedBrandID == brandID);
                                         %>
-                                        <option value="<%= rsManu.get(i).getManuID()%>"<%= ManuID.equals(selectedID) ? "selected" : ""%>><%= rsManu.get(i).getManuName()%></option>
+                                        <option  value="<%= rsManu.get(i).getManuID()%>"<%= ManuID.equals(selectedID) ? "selected" : ""%>><%= rsManu.get(i).getManuName()%></option>
                                         <%
                                             }
                                         %>
@@ -152,7 +152,7 @@
                                     <div class="col-sm-12 "><p>Old Image:</p></div>
                                     <div class="col-sm-12">
                                         <img src="/resources/images/<%= sp.getProImage()%>" alt="Product Image" width="100px" height="100px">
-                                        <input id="oldImage" name="oldImage" value="<%= sp.getProImage()%>" hidden="">
+                                       
                                     </div>
                                 </div>
                                     <div class="w-50">
@@ -200,10 +200,12 @@
                                 <div class="col-sm-4 col-xs-8"><p>Made in</p></div>
                                 <div class="col-sm-8"><input class="form-control" id="madein" type="text" name="madein"value="<%= sp.getMadeIn()%>"/></div>                        
                             </div>
-                            <div class="col-sm-4 col-xs-8"></div>
-                            <div class="col-sm-4 w-100 p-4 d-flex flex-row justify-content-center" id="lbtn">
-                                <a href='/ProductController' style="margin: 0 0 0 30%" class="btn btn-secondary ms-5" id="btl">Back to List</a>  
-                                <input class="btn btn-primary ms-3" id="submit" type="submit" name="btnAddNew" value="Add New"/>
+                            <div class="row">
+                                <div class="col-sm-4 col-xs-8"></div>
+                                <div class="col-sm-8 d-flex flex-row justify-content-center" id="lbtn">
+                                    <a href='/ProductController' class="btn btn-secondary mx-3" id="btl">Back to List</a>  
+                                    <input class="btn btn-primary me-3" id="submit" type="submit" name="btnUpdate" value="Add New"/>
+                                </div>
                             </div>
                         </div>
 
