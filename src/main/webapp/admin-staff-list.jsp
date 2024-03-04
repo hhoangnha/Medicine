@@ -113,8 +113,8 @@
                                             <td><%= o.getAddress()%></td>
                                             <td><%= o.getBirthday()%></td>
                                             <td>
-                                                <a style="color:white" class="btn bg-primary btn-sm" href="/ManufacturerController?edit=<%= o.getUserID()%>">Edit</a>
-                                                <a style="color:white" onclick="return confirm('Are you sure? Manufacturer can not restore');" class="btn bg-danger btn-sm" href="/ManageStaffController?delete=<%= o.getStaffModelID()%>">Delete</a>
+                                                <a style="color:white" class="btn bg-primary btn-sm" href="/ManageStaffController?edit=<%= o.getUserID()%>">Edit</a>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Staff can not restore');" class="btn bg-danger btn-sm" href="/ManageStaffController?delete=<%= o.getStaffModelID()%>">Delete</a>
                                             </td>
                                         </tr>
                                         <%

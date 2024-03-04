@@ -9,6 +9,7 @@ import java.util.List;
 
 import DB.DBConnection;
 import Model.StaffModel;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -79,7 +80,7 @@ public class StaffDAO {
                 + "VALUES(?,?,?,?)";
 
         // Lấy ra UserID lớn nhất có IsAdmin là 2
-        int userID = getMaxAdminUserID() + 1;
+        int userID = getMaxAdminUserID();
 
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
@@ -168,63 +169,141 @@ public class StaffDAO {
 
         return maxUserID;
     }
-    
-public void deleteStaff(String userID) {
-    String deleteStaffQuery = "DELETE FROM Staff WHERE UserID = ?";
-    String deleteAccountsQuery = "DELETE FROM Accounts WHERE UserID = ?";
-    
-    try {
-        // Mở kết nối với cơ sở dữ liệu
-        conn = new DBConnection().connect();
-        
-        // Xóa bản ghi từ bảng Staff
-        ps = conn.prepareStatement(deleteStaffQuery);
-        ps.setString(1, userID);
-        ps.executeUpdate();
-        
-        // Xóa bản ghi từ bảng Accounts
-        ps = conn.prepareStatement(deleteAccountsQuery);
-        ps.setString(1, userID);
-        ps.executeUpdate();
-        
-        System.out.println("Manufacturer deleted successfully.");
-    } catch (Exception e) {
-        System.out.println("Error deleting manufacturer: " + e);
-    } finally {
-        // Đảm bảo đóng kết nối và tài nguyên PreparedStatement sau khi hoàn thành
+
+    public void deleteStaff(String userID) {
+        String deleteStaffQuery = "DELETE FROM Staff WHERE UserID = ?";
+
         try {
-            if (ps != null) {
-                ps.close();
+            // Mở kết nối với cơ sở dữ liệu
+            conn = new DBConnection().connect();
+
+            // Xóa bản ghi từ bảng Staff
+            ps = conn.prepareStatement(deleteStaffQuery);
+            ps.setString(1, userID);
+            ps.executeUpdate();
+
+            System.out.println("Staff deleted successfully.");
+        } catch (Exception e) {
+            System.out.println("Error deleting staff: " + e);
+        } finally {
+            // Đảm bảo đóng kết nối và tài nguyên PreparedStatement sau khi hoàn thành
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing resources: " + ex);
             }
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error closing resources: " + ex);
         }
     }
-}
 
+    public void deleteAccounts(String userID) {
+        String deleteAccountsQuery = "DELETE FROM Accounts WHERE UserID = ?";
+
+        try {
+            // Mở kết nối với cơ sở dữ liệu
+            conn = new DBConnection().connect();
+
+            // Xóa bản ghi từ bảng Accounts
+            ps = conn.prepareStatement(deleteAccountsQuery);
+            ps.setString(1, userID);
+            ps.executeUpdate();
+
+            System.out.println("Accounts deleted successfully.");
+        } catch (Exception e) {
+            System.out.println("Error deleting accounts: " + e);
+        } finally {
+            // Đảm bảo đóng kết nối và tài nguyên PreparedStatement sau khi hoàn thành
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing resources: " + ex);
+            }
+        }
+    }
+
+    public StaffModel getStaffById(String id) {
+        String query = "SELECT a.UserID, a.Username, a.Password, a.Fullname, a.Email, a.Phone, a.ResetToken, "
+                + "a.Address, a.Birthday, a.Gender,a.IsAdmin,a.CreatedAt, s.StaffID, s.IDNumber, s.IssuedBy, s.LicenseDate "
+                + "FROM Accounts a JOIN Staff s ON a.UserID = s.UserID "
+                + "WHERE s.StaffID = ?";
+        try {
+            conn = new DBConnection().connect();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                // Lấy thông tin từ ResultSet và trả về đối tượng StaffModel
+                return new StaffModel(rs.getInt("StaffID"), rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"),
+                        rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"),
+                        rs.getString("Address"), rs.getDate("Birthday"), rs.getString("Gender"),
+                        rs.getBoolean("IsAdmin"), rs.getDate("CreatedAt"), rs.getString("IDNumber"),
+                        rs.getString("IssuedBy"), rs.getDate("LicenseDate"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void editStaffAndAccount(String staffId, String username, String password, String fullname, String email, String phone, String address, String birthday, String gender, String idNumber, String issuedBy, String licenseDate) {
+        String queryStaff = "UPDATE Staff "
+                + "SET IDNumber = ?, "
+                + "IssuedBy = ?, "
+                + "LicenseDate = ? "
+                + "WHERE UserID = ?";
+
+        String queryAccounts = "UPDATE Accounts "
+                + "SET Fullname = ?, "
+                + "Email = ?, "
+                + "Phone = ?, "
+                + "Address = ?, "
+                + "Birthday = ?, "
+                + "Gender = ? "
+                + "WHERE UserID = ?";
+
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với SQL
+
+            // Cập nhật thông tin trong bảng Staff
+            ps = conn.prepareStatement(queryStaff);
+            ps.setString(1, idNumber);
+            ps.setString(2, issuedBy);
+            ps.setString(3, licenseDate);
+            ps.setString(4, staffId);
+            ps.executeUpdate();
+
+            // Cập nhật thông tin trong bảng Accounts
+            ps = conn.prepareStatement(queryAccounts);
+            ps.setString(1, fullname);
+            ps.setString(2, email);
+            ps.setString(3, phone);
+            ps.setString(4, address);
+            ps.setString(5, birthday);
+            ps.setString(6, gender);
+            ps.setString(7, staffId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     public static void main(String[] args) {
         // Tạo một đối tượng của lớp StaffManager để sử dụng hàm addStaff()
         StaffDAO staffManager = new StaffDAO();
 
-//        // Thêm một nhân viên mới
-//        staffManager.addStaff("john_doe", "123456", "John Doe", "john@example.com", "123456789", "123 Main St", "1990-01-01", "1");
-//
-//        // Hiển thị danh sách nhân viên sau khi thêm
-//        try {
-//            List<StaffModel> staffList = staffManager.getStaffList();
-//            // In thông tin của các nhân viên trong danh sách
-//            for (StaffModel staff : staffList) {
-//                System.out.println(staff.toString());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         StaffDAO test = new StaffDAO();
-        System.out.println(test.getMaxAdminUserID());
+//        System.out.println(test.getStaffById("1030"));
+        test.editStaffAndAccount("1037", "VinhYéuieu", "123", "Ha Thai Vinh", "mail@GAMI.COM", "0982989262", "ADDRESS", "2003-03-03", "1", "123456789", "viet nam", "2003-03-03");
+
     }
 
 }

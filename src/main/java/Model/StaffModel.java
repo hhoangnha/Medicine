@@ -33,25 +33,43 @@ public class StaffModel {
     public StaffModel() {
     }
 
-    public StaffModel(int staffModelID, int userID, String username, String password, String fullname, String email, String phone, String resetToken, String address, Date birthday, String gender, boolean isAdmin, Date createdAt, String idNumber, String issuedBy, Date licenseDate) {
-        this.staffModelID = staffModelID;
-        this.userID = userID;
-        this.username = username;
-        this.password = password;
-        this.fullname = fullname;
-        this.email = email;
-        this.phone = phone;
-        this.resetToken = resetToken;
-        this.address = address;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.isAdmin = isAdmin;
-        this.createdAt = createdAt;
-        this.idNumber = idNumber;
-        this.issuedBy = issuedBy;
-        this.licenseDate = licenseDate;
-        
-    }
+public StaffModel(int staffID, int userID, String username, String password, String fullname, String email, String phone, String resetToken, String address, Date birthday, String gender, boolean isAdmin, Date createdAt, String idNumber, String issuedBy, Date licenseDate) {
+    this.staffModelID = staffID;
+    this.userID = userID;
+    this.username = username;
+    this.password = password;
+    this.fullname = fullname;
+    this.email = email;
+    this.phone = phone;
+    this.resetToken = resetToken;
+    this.address = address;
+    this.birthday = birthday;
+    this.gender = gender;
+    this.isAdmin = isAdmin;
+    this.createdAt = createdAt;
+    this.idNumber = idNumber;
+    this.issuedBy = issuedBy;
+    this.licenseDate = licenseDate;
+}
+
+    public StaffModel(int userID, String username, String password, String fullname, String email, String phone, String resetToken, String address, Date birthday, String gender, boolean isAdmin, Date createdAt, String idNumber, String issuedBy, Date licenseDate) {
+    this.userID = userID;
+    this.username = username;
+    this.password = password;
+    this.fullname = fullname;
+    this.email = email;
+    this.phone = phone;
+    this.resetToken = resetToken;
+    this.address = address;
+    this.birthday = birthday;
+    this.gender = gender;
+    this.isAdmin = isAdmin;
+    this.createdAt = createdAt;
+    this.idNumber = idNumber;
+    this.issuedBy = issuedBy;
+    this.licenseDate = licenseDate;
+}
+
 
     public int getStaffModelID() {
         return staffModelID;
@@ -186,5 +204,4 @@ public class StaffModel {
         return "StaffModel{" + "staffModelID=" + staffModelID + ", userID=" + userID + ", username=" + username + ", password=" + password + ", fullname=" + fullname + ", email=" + email + ", phone=" + phone + ", resetToken=" + resetToken + ", address=" + address + ", birthday=" + birthday + ", gender=" + gender + ", isAdmin=" + isAdmin + ", createdAt=" + createdAt + ", idNumber=" + idNumber + ", issuedBy=" + issuedBy + ", licenseDate=" + licenseDate + '}';
     }
 
-    
 }

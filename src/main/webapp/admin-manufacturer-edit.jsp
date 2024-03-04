@@ -52,7 +52,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add new Manufacturer</h5>
+                    <h5 class="card-title">Update Manufacturer</h5>
 
                     <!-- Horizontal Form -->
                     <form  name="productForm" method="post" action='/ManufacturerController?edit=<%= manu.getManuID()%>' onsubmit="return validateForm()">
