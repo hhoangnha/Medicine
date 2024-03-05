@@ -96,7 +96,7 @@ public class OrderController extends HttpServlet {
                 udao.delete(OrderID);
                 response.sendRedirect("/OrderController");
             } catch (Exception e) {
-                response.sendRedirect("/UnitController/deleteOrder/" + OrderID);
+                response.sendRedirect("/OrderController/deleteOrder/" + OrderID);
             }
         }
     }
