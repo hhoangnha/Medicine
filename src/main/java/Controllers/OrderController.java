@@ -5,6 +5,7 @@
 package Controllers;
 
 import Daos.OrderDAO;
+import Model.OrderModel;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+
 /**
  *
  * @author User
@@ -36,7 +38,7 @@ public class OrderController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderController</title>");            
+            out.println("<title>Servlet OrderController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet OrderController at " + request.getContextPath() + "</h1>");
@@ -61,21 +63,33 @@ public class OrderController extends HttpServlet {
         HttpSession session = (HttpSession) request.getSession();
         if (path.endsWith("/OrderController")) {
             request.getRequestDispatcher("admin-order-list.jsp").forward(request, response);
-        }
-        if (path.startsWith("/OrderController/deleteUnit")) {
+        } else {
+            if (path.startsWith("/OrderController/confirmOrder/")) {
                 String[] s = path.split("/");
                 try {
                     int OrderID = Integer.parseInt(s[s.length - 1]);
                     OrderDAO o = new OrderDAO();
-//                    ct.delete(cateid, 0);
-                    o.delete(OrderID);
+                    o.updateStatus(OrderID,2);
                     session.setAttribute("msgSuccess", "Delete successfully!");
                     response.sendRedirect("/OrderController");
                 } catch (Exception ex) {
                     response.sendRedirect("/OrderController");
                 }
-
             }
+            if (path.startsWith("/OrderController/deleteOrder/")) {
+                String[] s = path.split("/");
+                try {
+                    int OrderID = Integer.parseInt(s[s.length - 1]);
+                    OrderDAO o = new OrderDAO();
+                    o.updateStatus(OrderID, 4);
+                    session.setAttribute("msgSuccess", "Delete successfully!");
+                    response.sendRedirect("/OrderController");
+                } catch (Exception ex) {
+                    response.sendRedirect("/OrderController");
+                }
+            }
+        }
+
     }
 
     /**
@@ -89,16 +103,32 @@ public class OrderController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        OrderDAO udao = new OrderDAO();
+        OrderDAO o = new OrderDAO();
         if (request.getParameter("btnDeleteOrder") != null) {
             int OrderID = Integer.parseInt(request.getParameter("OrderID"));
             try {
-                udao.delete(OrderID);
+                o.delete(OrderID);
                 response.sendRedirect("/OrderController");
             } catch (Exception e) {
                 response.sendRedirect("/OrderController/deleteOrder/" + OrderID);
             }
         }
+//        if (request.getParameter("btnUpdateStatusOrder") != null) {
+//            int OrderID = Integer.parseInt(request.getParameter("OrderID"));
+//            int StaffID = Integer.parseInt(request.getParameter("StaffID"));
+//            int CustomerID = Integer.parseInt(request.getParameter("CustomerID"));
+//            String OrderDate = request.getParameter("OrderDate");
+//            int OrderStatus = Integer.parseInt(request.getParameter("OrderStatus"));
+//            int Total = Integer.parseInt(request.getParameter("Total"));
+//            OrderModel order = new OrderModel(OrderID, OrderDate, OrderDate, OrderStatus, OrderStatus, OrderDate, OrderDate, OrderDate);
+//            OrderModel updateStatusOrder = o.update(UnitID, unit);
+//
+//            if (updateUnit != null) {
+//                response.sendRedirect("/UnitController");
+//            } else {
+//                response.sendRedirect("/UnitController/updateUnit/" + UnitID);
+//            }
+//        }
     }
 
     /**
