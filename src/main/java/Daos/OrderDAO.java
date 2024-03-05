@@ -112,16 +112,26 @@ public class OrderDAO {
         }
         return check;
     }  
-    public ResultSet getAll(String username) {
+    public ResultSet getAll() {
         ResultSet rs = null;
         try {
             Statement st = conn.createStatement(); // tạo đối tượng thực thi câu lệnh
-            rs = st.executeQuery("SELECT * FROM Orders where username='" + username + "'");
+            PreparedStatement ps = conn.prepareStatement("select * from Orders");
+            rs = ps.executeQuery();
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return rs;
+    }
+    public void delete(int OrderID){
+        try {
+            PreparedStatement ps = conn.prepareStatement("Delete from Orders where OrderID = ?");
+            ps.setInt(1, OrderID);
+            int count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
