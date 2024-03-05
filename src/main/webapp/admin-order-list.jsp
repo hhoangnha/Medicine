@@ -146,8 +146,6 @@
 
                         <li class="breadcrumb-item active">Order</li>
 
-                        <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Data</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -177,13 +175,25 @@
                                     <tbody>
                                         <% OrderDAO o = new OrderDAO();
                                             ResultSet rs = o.getAll();
+                                            
                                             while (rs.next()) {
+                                            String t = "";
+                                            if (rs.getInt("OrderStatus") == 1){
+                                                t = "Ðã đặt";
+                                            } else if (rs.getInt("OrderStatus") == 2){
+                                                t = "Xác nhận";
+                                            } else if (rs.getInt("OrderStatus") == 3){
+                                                t = "Thành công";
+                                            } else if (rs.getInt("OrderStatus") == 4){
+                                                t = "Ðã huỷ";
+                                            }
                                         %>
                                         <tr>
                                             <td><%= rs.getInt("OrderID")%></td>
                                             <td><%= rs.getInt("StaffID")%></td>
                                             <td><%= rs.getInt("CustomerID")%></td>
                                             <td><%= rs.getDate("OrderDate")%></td>
+                                            <td><%= t %></td>
                                             <td><%= rs.getInt("Total")%></td>
                                             <td style="text-align: center">
                                                 <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/confirmOrder/<%= rs.getInt("OrderID")%>" >Confirm</a>
