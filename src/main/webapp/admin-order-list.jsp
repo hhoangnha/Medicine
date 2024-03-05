@@ -1,11 +1,7 @@
-<%@page import="Daos.OrderID_DAOad"%>
+<%@page import="Daos.OrderDAO"%>
 <!DOCTYPE html>
 <html lang="en">
-
-
-    <%@page import="Daos.userad_ad"%>
     <%@page import="java.sql.ResultSet"%>
-    <%@page import="Model.UserModel"%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <head>
         <meta charset="utf-8">
@@ -67,10 +63,79 @@
                 session.removeAttribute("message");
             }
         %>
+
+
         <jsp:include page="admin-header.jsp" />
-
         <jsp:include page="admin-aside.jsp" />
-
+        <!--                <main id="main" class="main">
+                
+                            <div class="pagetitle">
+                                <h1></h1>
+                                <nav>
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                        <li class="breadcrumb-item">Tables</li>
+                                        <li class="breadcrumb-item active">Data</li>
+                                    </ol>
+                                </nav>
+                            </div> End Page Title 
+                
+                            <section class="section">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Orders</h5>
+                
+                                                 Table with stripped rows 
+                                                <table class="table datatable">
+                                                    <thead>
+                                                        <tr>
+                                        <th>OrderID</th>
+                                        <th>Username</th>
+                                        <th>OrderTotal</th>
+                                        <th>OrderStatus</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                
+                
+        
+        
+                
+                //String t = "";
+                    //if (rs.getInt("OrderStatus") == 0) {
+        //                t += "Đã hủy";
+        //            } else if (rs.getInt("OrderStatus") == 1) {
+        //                t += "Đã đặt hàng";
+        //            } else if (rs.getInt("OrderStatus") == 2) {
+        //                t += "Đã đóng gói";
+        //            } else if (rs.getInt("OrderStatus") == 3) {
+        //                t += "Đang vân chuyển";
+        //            } else if (rs.getInt("OrderStatus") == 4) {
+        //                t += "Đã giao";
+        //            }
+        
+                
+        
+        
+        
+         
+        
+            </tbody>
+        </table>
+         End Table with stripped rows 
+        
+        </div>
+        </div>
+        
+        </div>
+        </div>
+        </section>
+        
+        </main> End #main -->
         <main id="main" class="main">
 
             <div class="pagetitle">
@@ -78,6 +143,9 @@
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+
+                        <li class="breadcrumb-item active">Order</li>
+
                         <li class="breadcrumb-item">Tables</li>
                         <li class="breadcrumb-item active">Data</li>
                     </ol>
@@ -90,60 +158,43 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Orders</h5>
 
-                                <!-- Table with stripped rows -->
+                                <h5 class="card-title">Order</h5>
+                                <br/>
+
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                        <th>OrderID</th>
-                        <th>Username</th>
-                        <th>OrderTotal</th>
-                        <th>OrderStatus</th>
-                        <th>Actions</th>
-                    </tr>
+                                            <th>OrderID</th>
+                                            <th>StaffID</th>
+                                            <th>CustomerID</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                            <th></th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-
-                                        <% OrderID_DAOad d = new OrderID_DAOad();
-                                            ResultSet rs = d.getAll();
+                                        <% OrderDAO o = new OrderDAO();
+                                            ResultSet rs = o.getAll();
                                             while (rs.next()) {
                                         %>
-
-
                                         <tr>
                                             <td><%= rs.getInt("OrderID")%></td>
-                                            <td><%= rs.getString("Fullname")%></td>
-                                            <td><%= rs.getInt("OrderTotal")%></td>
-                                            <% String t = "";
-                                                if (rs.getInt("OrderStatus") == 0) {
-                                                    t += "Đã hủy";
-                                                } else if (rs.getInt("OrderStatus") == 1) {
-                                                    t += "Đã đặt hàng";
-                                                } else if (rs.getInt("OrderStatus") == 2) {
-                                                    t += "Đã đóng gói";
-                                                } else if (rs.getInt("OrderStatus") == 3) {
-                                                    t += "Đang vân chuyển";
-                                                } else if (rs.getInt("OrderStatus") == 4) {
-                                                    t += "Đã giao";
-                                                }
-
-                                            %>
-                                            <td><%= t%></td>
-                                            <td>
-                                                <a class="btn btn-sm btn-info" href="/OrderID_ad/view/<%= rs.getInt("OrderID")%>">Chi tiết</a>
-                                              
-                              
+                                            <td><%= rs.getInt("StaffID")%></td>
+                                            <td><%= rs.getInt("CustomerID")%></td>
+                                            <td><%= rs.getDate("OrderDate")%></td>
+                                            <td><%= rs.getInt("Total")%></td>
+                                            <td style="text-align: center">
+                                                <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/confirmOrder/<%= rs.getInt("OrderID")%>" >Confirm</a>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Order can not restore');" class="btn btn-danger btn-sm" href="/OrderController/deleteOrder/<%= rs.getString("OrderID")%>" >Cancel</a>  
                                             </td>
                                         </tr>
-
-
                                         <% }%>
 
                                     </tbody>
                                 </table>
                                 <!-- End Table with stripped rows -->
-
                             </div>
                         </div>
 
