@@ -47,7 +47,7 @@ public class StaffDAO {
                 staff.setAddress(rs.getString("Address"));
                 staff.setBirthday(rs.getDate("Birthday"));
                 staff.setGender(rs.getString("Gender"));
-                staff.setIsAdmin(rs.getBoolean("IsAdmin"));
+                staff.setIsAdmin(rs.getString("IsAdmin"));
                 staff.setCreatedAt(rs.getDate("CreatedAt"));
                 staff.setIdNumber(rs.getString("IDNumber"));
                 staff.setIssuedBy(rs.getString("IssuedBy"));
@@ -70,18 +70,13 @@ public class StaffDAO {
     }
 
     // Method to add a new staff member
-    public void addStaff(String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
+    public void addAccount(String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
         String query = "INSERT INTO Accounts "
                 + "(Username, Password, Fullname, Email, Phone, Address, Birthday, Gender, isAdmin, CreatedAt)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?)";
 
-        String queryStaff = "INSERT INTO Staff "
-                + "(UserID, IDNumber, IssuedBy, LicenseDate)"
-                + "VALUES(?,?,?,?)";
-
-        // Lấy ra UserID lớn nhất có IsAdmin là 2
-        int userID = getMaxAdminUserID();
-
+//      
+//        
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);
@@ -97,16 +92,62 @@ public class StaffDAO {
             ps.setString(10, getCurrentDate()); // Sử dụng phương thức để lấy ngày hiện tại
             ps.executeUpdate();
 
-            // Thêm bản ghi mới vào bảng Staff
+//            // Thêm bản ghi mới vào bảng Staff
+//            ps = conn.prepareStatement(queryStaff);
+//            ps.setInt(1, userID);
+//            // Các giá trị còn lại có thể được set từ tham số hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
+//            // Ví dụ:
+//            ps.setString(2, "xxxx");
+//            ps.setString(3, "VietNam");
+//            ps.setString(4, "2024-11-11");
+//            ps.executeUpdate();
+            // Commit transaction sau khi thêm mới thành công vào cả hai bảng
+            conn.commit();
+            System.out.println("Account added successfully.");
+
+        } catch (Exception e) {
+            System.out.println("Error adding staff: " + e);
+        } finally {
+            // Đảm bảo đóng kết nối và tài nguyên PreparedStatement sau khi hoàn thành
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing resources: " + ex);
+            }
+        }
+    }
+
+    public void addStaff(String idNumber, String issuedBy, String licenseDate) {
+
+        // Lấy ra UserID lớn nhất có IsAdmin là 2
+        int userID = getMaxAdminUserID();
+        String queryStaff = "INSERT INTO Staff "
+                + "(UserID, IDNumber, IssuedBy, LicenseDate)"
+                + "VALUES(?,?,?,?)";
+
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(queryStaff);
             ps.setInt(1, userID);
-            // Các giá trị còn lại có thể được set từ tham số hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
-            // Ví dụ:
-            ps.setString(2, "xxxx-xxxx");
-            ps.setString(3, "VietNam");
-            ps.setString(4, "2024-11-11");
+            ps.setString(2, idNumber);
+            ps.setString(3, issuedBy);
+            ps.setString(4, licenseDate);
             ps.executeUpdate();
 
+//            // Thêm bản ghi mới vào bảng Staff
+//            ps = conn.prepareStatement(queryStaff);
+//            ps.setInt(1, userID);
+//            // Các giá trị còn lại có thể được set từ tham số hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
+//            // Ví dụ:
+//            ps.setString(2, "xxxx");
+//            ps.setString(3, "VietNam");
+//            ps.setString(4, "2024-11-11");
+//            ps.executeUpdate();
             // Commit transaction sau khi thêm mới thành công vào cả hai bảng
             conn.commit();
             System.out.println("Staff added successfully.");
@@ -126,6 +167,7 @@ public class StaffDAO {
                 System.out.println("Error closing resources: " + ex);
             }
         }
+
     }
 
     // Hàm lấy ra UserID lớn nhất có IsAdmin là 2
@@ -232,9 +274,9 @@ public class StaffDAO {
 
     public StaffModel getStaffById(String id) {
         String query = "SELECT a.UserID, a.Username, a.Password, a.Fullname, a.Email, a.Phone, a.ResetToken, "
-                + "a.Address, a.Birthday, a.Gender,a.IsAdmin,a.CreatedAt, s.StaffID, s.IDNumber, s.IssuedBy, s.LicenseDate "
+                + "a.Address, a.Birthday, a.Gender,a.IsAdmin,a.CreatedAt, s.IDNumber, s.IssuedBy, s.LicenseDate "
                 + "FROM Accounts a JOIN Staff s ON a.UserID = s.UserID "
-                + "WHERE s.StaffID = ?";
+                + "WHERE a.UserID = ?";
         try {
             conn = new DBConnection().connect();
             ps = conn.prepareStatement(query);
@@ -242,10 +284,10 @@ public class StaffDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 // Lấy thông tin từ ResultSet và trả về đối tượng StaffModel
-                return new StaffModel(rs.getInt("StaffID"), rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"),
+                return new StaffModel(rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"),
                         rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"),
                         rs.getString("Address"), rs.getDate("Birthday"), rs.getString("Gender"),
-                        rs.getBoolean("IsAdmin"), rs.getDate("CreatedAt"), rs.getString("IDNumber"),
+                        rs.getString("IsAdmin"), rs.getDate("CreatedAt"), rs.getString("IDNumber"),
                         rs.getString("IssuedBy"), rs.getDate("LicenseDate"));
             }
         } catch (Exception e) {
@@ -254,20 +296,11 @@ public class StaffDAO {
         return null;
     }
 
-    public void editStaffAndAccount(String staffId, String username, String password, String fullname, String email, String phone, String address, String birthday, String gender, String idNumber, String issuedBy, String licenseDate) {
+    public void editStaff(String staffId, String idNumber, String issuedBy, String licenseDate) {
         String queryStaff = "UPDATE Staff "
                 + "SET IDNumber = ?, "
                 + "IssuedBy = ?, "
                 + "LicenseDate = ? "
-                + "WHERE UserID = ?";
-
-        String queryAccounts = "UPDATE Accounts "
-                + "SET Fullname = ?, "
-                + "Email = ?, "
-                + "Phone = ?, "
-                + "Address = ?, "
-                + "Birthday = ?, "
-                + "Gender = ? "
                 + "WHERE UserID = ?";
 
         try {
@@ -280,30 +313,67 @@ public class StaffDAO {
             ps.setString(3, licenseDate);
             ps.setString(4, staffId);
             ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void editAccount(String staffId, String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
+        String queryAccounts = "UPDATE Accounts "
+                + " SET username = ?,"
+                + " Fullname = ?, "
+                + " Password = ?, "
+                + "Email = ?, "
+                + "Phone = ?, "
+                + "Address = ?, "
+                + "Birthday = ?, "
+                + "Gender = ? "
+                + "WHERE UserID = ?";
+
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với SQL
 
             // Cập nhật thông tin trong bảng Accounts
             ps = conn.prepareStatement(queryAccounts);
-            ps.setString(1, fullname);
-            ps.setString(2, email);
-            ps.setString(3, phone);
-            ps.setString(4, address);
-            ps.setString(5, birthday);
-            ps.setString(6, gender);
-            ps.setString(7, staffId);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setString(3, fullname);
+            ps.setString(4, email);
+            ps.setString(5, phone);
+            ps.setString(6, address);
+            ps.setString(7, birthday);
+            ps.setString(8, gender);
+            ps.setString(9, staffId);
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
+    public boolean isUsernameExists(String username) {
+        String query = "SELECT COUNT(*) FROM Accounts WHERE Username = ?";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với SQL
+            ps = conn.prepareStatement(query);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0; // Trả về true nếu username tồn tại, ngược lại trả về false
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    
+
     public static void main(String[] args) {
         // Tạo một đối tượng của lớp StaffManager để sử dụng hàm addStaff()
         StaffDAO staffManager = new StaffDAO();
 
         StaffDAO test = new StaffDAO();
-//        System.out.println(test.getStaffById("1030"));
-        test.editStaffAndAccount("1037", "VinhYéuieu", "123", "Ha Thai Vinh", "mail@GAMI.COM", "0982989262", "ADDRESS", "2003-03-03", "1", "123456789", "viet nam", "2003-03-03");
-
+        System.out.println(test.isUsernameExists("vinh2k34"));
     }
-
 }

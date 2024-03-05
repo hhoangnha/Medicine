@@ -39,68 +39,59 @@
     </head>
 
     <body>
-        <div class="col-lg-12  container mt-5">
-
+        <%
+            String exist = (String) session.getAttribute("exist");
+        %>
+        <div class="col-lg-12 container mt-5">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Add new Staff</h5>
 
                     <!-- Horizontal Form -->
-                    <form  name="productForm" method="post" action='/ManageStaffController' onsubmit="return validateFormOrder()">
+                    <h5 style="color: red"> <%= exist != null ? exist : "" %></h5>
+                    <form name="productForm" method="post" action='/ManageStaffController' onsubmit="return validateFormOrder()">
                         <div class="row mb-3">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6"> <!-- Chia th?nh 2 c?t (50%) -->
+
+                                <label for="inputEmail3" class="col-form-label">Username</label>
                                 <input type="text" name='username' class="form-control" id="inputText">
                             </div>
-
-                        </div>
-                        <div class="row mb-3">
-                            <label for="Password" class="col-sm-2 col-form-label">Password</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6"> <!-- Chia th?nh 2 c?t (50%) -->
+                                <label for="Password" class="col-form-label">Password</label>
                                 <input type="text" name='password' class="form-control" id="Password">
                             </div>
-
                         </div>
+                        <!-- Th?m ph?n c?n l?i c?a form t??ng t? -->
                         <div class="row mb-3">
-                            <label for="Fullname" class="col-sm-2 col-form-label">Fullname</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
+                                <label for="Fullname" class="col-form-label">Fullname</label>
                                 <input type="text" name='fullname' class="form-control" id="Fullname">
                             </div>
-
-                        </div>
-                        <div class="row mb-3">
-                            <label for="Email" class="col-sm-2 col-form-label">Email</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
+                                <label for="Email" class="col-form-label">Email</label>
                                 <input type="text" name='email' class="form-control" id="Email">
                             </div>
-
                         </div>
+                        <!-- C?c d?ng kh?c c? th? th?m t??ng t? -->
                         <div class="row mb-3">
-                            <label for="Phone" class="col-sm-2 col-form-label">Phone</label>
-                            <div class="col-sm-10">
-                                <input type="text" name='phone' class="form-control" id="Phone">
-                            </div>
-
-                        </div>
-                        <div class="row mb-3">
-                            <label for="Address" class="col-sm-2 col-form-label">Address</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
+                                <label for="Address" class="col-form-label">Address</label>
                                 <input type="text" name='address' class="form-control" id="Address">
                             </div>
-
-                        </div>
-                        <div class="row mb-3">
-                            <label for="Birthday" class="col-sm-2 col-form-label">Birthday</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
+                                <label for="Birthday" class="col-form-label">Birthday</label>
                                 <input type="date" name='birthday' class="form-control" id="Birthday">
                             </div>
-
                         </div>
                         <div class="row mb-3">
-                            <label for="sex" class="col-sm-2 col-form-label">Gender</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
+                                <label for="Phone" class="col-form-label">Phone</label>
+                                <input type="text" name='phone' class="form-control" id="Phone">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sex" class="col-form-label">Gender</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="sex" id="male" value="1">
+                                    <input class="form-check-input" type="radio" name="sex" id="male" checked="" value="1">
                                     <label class="form-check-label" for="male">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -109,20 +100,34 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row mb-3">
-
-
-
-
-                            <div class="text-left">
-                                <input class="btn btn-primary" type="submit" value="Create" name ="add" />
+                            <div class="col-sm-6">
+                                <label for="idNumber" class="col-form-label">ID number</label>
+                                <input type="text" name='idNumber' class="form-control" id="idNumber">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="issuedBy" class="col-form-label">Issued BY</label>
+                                <input type="text" name='issuedBy' class="form-control" id="issuedBy">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <label for="LicenseDate" class="col-form-label">License Date</label>
+                                <input type="date" name='licenseDate' class="form-control" id="LicenseDate">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12 text-left"> <!-- S? d?ng 12 c?t cho n?t v? ??t n? ? b?n tr?i -->
+                                <input class="btn btn-primary" type="submit" value="Create" name="add" />
                                 <a href='/AdminCateController' class="btn btn-secondary">Back to list</a>
                             </div>
-                    </form><!-- End Horizontal Form -->
-
+                        </div>
+                    </form><!-- K?t th?c Form Ngang -->
                 </div>
-            </div></div>
+            </div>
+        </div>
+
+
 
 
 

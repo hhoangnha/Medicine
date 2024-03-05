@@ -96,7 +96,7 @@
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                                            <<th>ID</th>
+                                            <th>ID</th>
                                             <th >Name</th>  
                                             <th>Quantity</th>
                                             <th>Picture</th>

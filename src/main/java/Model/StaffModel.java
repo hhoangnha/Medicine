@@ -23,7 +23,7 @@ public class StaffModel {
     private String address;
     private Date birthday;
     private String gender;
-    private boolean isAdmin;
+    private String isAdmin;
     private Date createdAt;
     private String idNumber;
     private String issuedBy;
@@ -33,7 +33,7 @@ public class StaffModel {
     public StaffModel() {
     }
 
-public StaffModel(int staffID, int userID, String username, String password, String fullname, String email, String phone, String resetToken, String address, Date birthday, String gender, boolean isAdmin, Date createdAt, String idNumber, String issuedBy, Date licenseDate) {
+public StaffModel(int staffID, int userID, String username, String password, String fullname, String email, String phone, String resetToken, String address, Date birthday, String gender, String isAdmin, Date createdAt, String idNumber, String issuedBy, Date licenseDate) {
     this.staffModelID = staffID;
     this.userID = userID;
     this.username = username;
@@ -52,7 +52,7 @@ public StaffModel(int staffID, int userID, String username, String password, Str
     this.licenseDate = licenseDate;
 }
 
-    public StaffModel(int userID, String username, String password, String fullname, String email, String phone, String resetToken, String address, Date birthday, String gender, boolean isAdmin, Date createdAt, String idNumber, String issuedBy, Date licenseDate) {
+    public StaffModel(int userID, String username, String password, String fullname, String email, String phone, String resetToken, String address, Date birthday, String gender, String isAdmin, Date createdAt, String idNumber, String issuedBy, Date licenseDate) {
     this.userID = userID;
     this.username = username;
     this.password = password;
@@ -159,11 +159,11 @@ public StaffModel(int staffID, int userID, String username, String password, Str
         this.gender = gender;
     }
 
-    public boolean isIsAdmin() {
+    public String isIsAdmin() {
         return isAdmin;
     }
 
-    public void setIsAdmin(boolean isAdmin) {
+    public void setIsAdmin(String isAdmin) {
         this.isAdmin = isAdmin;
     }
 

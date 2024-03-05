@@ -55,10 +55,11 @@ public class UserDAO {
         try {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(password).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (Username = ? Or Email = ?) AND Password = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (Username = ? Or Email = ? or Phone = ?) AND Password = ?");
             ps.setString(1, username);
             ps.setString(2, username);
-            ps.setString(3, hasPassword);
+            ps.setString(3, username);
+            ps.setString(4, hasPassword);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 ac = new UserModel(rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"), rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"), rs.getString("Address"), rs.getDate("Birthday"), rs.getInt("Gender"), rs.getInt("IsAdmin"), rs.getDate("CreatedAt"));
@@ -69,6 +70,7 @@ public class UserDAO {
         }
         return ac;
     }
+
     public static String getMd5(String input) {
         try {
 
@@ -110,12 +112,13 @@ public class UserDAO {
         }
         return ac;
     }
-     public UserModel checkAccountEmail(String Email) {
+
+    public UserModel checkAccountEmail(String Email) {
         UserModel ac = null;
         try {
             Statement st = conn.createStatement();
 //            String hasPassword = getMd5(password).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE Email = ?");       
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE Email = ?");
             ps.setString(1, Email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -126,12 +129,13 @@ public class UserDAO {
         }
         return ac;
     }
-     public UserModel checkAccountPhone(String Phone) {
+
+    public UserModel checkAccountPhone(String Phone) {
         UserModel ac = null;
         try {
             Statement st = conn.createStatement();
 //            String hasPassword = getMd5(password).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE Phone = ?");       
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE Phone = ?");
             ps.setString(1, Phone);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -143,19 +147,40 @@ public class UserDAO {
         return ac;
     }
 
-    public void sigup(String user, String pass, String fullname, String email, String phone, String address, Date birthday) {
+    public int checkAccountPhoneUpdate(String Username, String Phone) {
+        UserModel ac = null;
+        int count = 0;
+        try {
+            Statement st = conn.createStatement();
+//            String hasPassword = getMd5(password).toUpperCase();
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE UserName= ? or Phone = ?");
+            ps.setString(1, Username);
+            ps.setString(2, Phone);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+//                ac = new UserModel(rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"), rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"), rs.getString("Address"), rs.getDate("Birthday"), rs.getInt("Gender"), rs.getInt("IsAdmin"), rs.getDate("CreatedAt"));
+                count++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    public void sigup(String user, String pass, String fullname, String email, String phone, Date createdat) {
         try {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(pass).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("insert into Accounts values( ?, ?, ?, ?, ?, '', ?, ?, '', '', ?)");
+            PreparedStatement ps = conn.prepareStatement("insert into Accounts(Username, Password, Fullname,Email,Phone,ResetToken, Address, Birthday, Gender, IsAdmin,CreatedAt) values( ?, ?, ?, ?, ?, '', ?, ?, 0, 0, ?)");
             ps.setString(1, user);
             ps.setString(2, hasPassword);
             ps.setString(3, fullname);
             ps.setString(4, email);
             ps.setString(5, phone);
-            ps.setString(6, address);
-            ps.setDate(7, birthday);
-            ps.setDate(8, birthday);
+//            ps.setString(6, address);
+//            ps.setDate(7, birthday);
+            ps.setDate(6, createdat);
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -179,7 +204,7 @@ public class UserDAO {
         return ac;
     }
 
-     public UserModel getProfileByToken(String token) {
+    public UserModel getProfileByToken(String token) {
         UserModel kh = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Accounts where ResetToken=?");
@@ -211,8 +236,8 @@ public class UserDAO {
     public UserModel updateProfile(String Username, UserModel newinfo) {
         int count = 0;
         try {
-            PreparedStatement ps = conn.prepareStatement("update Accounts set Fullname=?, Email=?, Phone=?, Gender=?, Birthday=?, Address=? where Username=?");
-           
+             PreparedStatement ps = conn.prepareStatement("update Users set Fullname=?, Email=?, Phone=?, UserType=?, Gender=?, Birthday=?, Address=? where Username=?");
+
             ps.setString(1, newinfo.getFullname());
             ps.setString(2, newinfo.getEmail());
             ps.setString(3, newinfo.getPhone());
@@ -228,7 +253,7 @@ public class UserDAO {
         }
         return (count == 0) ? null : newinfo;
     }
-    
+
     public int updatePass(String Username, String Password) {
         int count = 0;
         try {

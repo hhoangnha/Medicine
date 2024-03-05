@@ -284,6 +284,7 @@ public class ProductController extends HttpServlet {
             } else {
                 ProductModel newSP = new ProductModel();
                 ProductDAO cDAO = new ProductDAO();
+                String fileName = "";
                  int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
                  if (rsUpdate == 0) {// cap nhat that bai
                     ProductModel thongtincu = cDAO.getProduct(id);

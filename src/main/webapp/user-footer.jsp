@@ -17,9 +17,9 @@
                     <div class="col-lg-3">
                         <h4>Mua sắm &amp; Thể loại</h4>
                         <ul>
-                            <li><a href="#">Mua sắm cho nam giới</a></li>
-                            <li><a href="#">Mua sắm dành cho phụ nữ</a></li>
-                            <li><a href="#">Mua sắm cho trẻ em</a></li>
+                            <li><a href="#">Thuốc điều trị</a></li>
+                            <li><a href="#">Thực phẩm chức năng</a></li>
+                            <li><a href="#">Vitamin</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
@@ -40,7 +40,7 @@
                             <li><a href="#">ID theo dõi</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-12">
+<!--                    <div class="col-lg-12">
                         <div class="under-footer">
                             <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
 
@@ -54,7 +54,7 @@
                                 <li><a href="#"><i class="fa fa-behance"></i></a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </footer>

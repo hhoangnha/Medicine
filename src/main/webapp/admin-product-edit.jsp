@@ -13,7 +13,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Dashboard - NiceAdmin Bootstrap Template</title>
+        <title>Product</title>
         <meta content="" name="description">
         <meta content="" name="keywords"> 
 
@@ -213,12 +213,7 @@
 
 
 
-                        <!--                        <div class="col-sm-4 "></div>
-                                                <div class="col-sm-8" id="lbtn">
-                                                    <input class="btn btn-primary" id="submit" type="submit" name="btnUpdate" value="Update"/>
-                                                    <a href='/ProductController' class="btn btn-secondary" id="btl">Back to List</a>  
-                                                </div>-->
-
+                      
                     </form>
 
                 </div>

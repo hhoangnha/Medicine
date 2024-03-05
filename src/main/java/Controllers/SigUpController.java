@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+//import static Controllers.UserHomeController.getCurrentDate;
 import Daos.UserDAO;
 import Model.UserModel;
 import java.io.IOException;
@@ -13,8 +14,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -68,13 +72,14 @@ public class SigUpController extends HttpServlet {
         String path = request.getRequestURI();
         if (request.getParameter("register") != null) {
             String fullname = request.getParameter("fullname");
-            Date birthday = Date.valueOf(request.getParameter("birthday"));
+//            Date birthday = Date.valueOf(request.getParameter("birthday"));
             String email = request.getParameter("email");
             String user = request.getParameter("user");
             String address = request.getParameter("address");
             String pass = request.getParameter("pass");
             String repass = request.getParameter("repass");
             String phone = request.getParameter("phone");
+             Date CreatedAt = getCurrentDate();
 //            LocalDate dateOfBirth = LocalDate.of(request.getParameter("birthday"));
             if (pass.equals(repass)) {
                 UserDAO CDAO = new UserDAO();
@@ -94,14 +99,10 @@ public class SigUpController extends HttpServlet {
                     System.out.println("that bai");
                     request.setAttribute("trung", "Phone is duplicated.");
                     request.getRequestDispatcher("/sigup.jsp").forward(request, response);
-                } else if (isEighteenOrOlder(birthday) == false) {
-                    System.out.println("that bai");
-                    request.setAttribute("trung", "You must be 18 years old.");
-                    request.getRequestDispatcher("/sigup.jsp").forward(request, response);
                 } else {
                     System.out.println("thanh cong");
                     try {
-                        CDAO.sigup(user, pass, fullname, email, phone, address, birthday);
+                        CDAO.sigup(user, pass, fullname, email, phone, CreatedAt);
                     } catch (Exception e) {
                         System.out.println(e);
                     }
@@ -119,6 +120,28 @@ public class SigUpController extends HttpServlet {
         return ageDifference.getYears() >= 18;
     }
 
+   public static Date getCurrentDate() {
+        // Lấy ngày và tháng hiện tại
+        LocalDate today = LocalDate.now();
+
+        // Định dạng ngày và tháng
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Chuyển đổi LocalDate thành String với định dạng đã cho
+        String formattedDate = today.format(formatter);
+
+        try {
+            // Chuyển đổi String thành java.util.Date
+            java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(formattedDate);
+
+            // Chuyển đổi java.util.Date thành java.sql.Date
+            return new java.sql.Date(utilDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     /**
      * Returns a short description of the servlet.
      *

@@ -195,7 +195,7 @@
                                                 <li><a onclick='addToCart(<%=rs.getInt("ProID")%>)'><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
                                         </div>
-                                        <img src="/resources/UserAssets/images/baner-right-image-04.jpg" alt="">
+                                        <img src="/resources/images/<%= rs.getString("ProImage") %>" alt="">
                                     </div>
                                     <div class="down-content">
                                         <h4><%= rs.getString("ProName")%></h4>
@@ -225,7 +225,7 @@
 
 
         <!-- ***** Explore Area Starts ***** -->
-        <section class="section" id="explore">
+<!--        <section class="section" id="explore">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
@@ -272,11 +272,11 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section>-->
         <!-- ***** Explore Area Ends ***** -->
 
         <!-- ***** Social Area Starts ***** -->
-        <section class="section" id="social">
+<!--        <section class="section" id="social">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -357,7 +357,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section>-->
         <!-- ***** Social Area Ends ***** -->
 
         <!-- ***** Subscribe Area Starts ***** -->

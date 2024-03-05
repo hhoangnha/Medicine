@@ -105,7 +105,7 @@
                                                 for (StaffModel o : listS) {
                                         %>
                                         <tr>
-                                            <td><%= o.getStaffModelID()%></td>
+                                            <td><%= o.getUserID()%></td>
                                             <td><%= o.getUsername()%></td>
                                             <td><%= o.getFullname()%></td>
                                             <td><%= o.getEmail() %></td>
@@ -114,7 +114,7 @@
                                             <td><%= o.getBirthday()%></td>
                                             <td>
                                                 <a style="color:white" class="btn bg-primary btn-sm" href="/ManageStaffController?edit=<%= o.getUserID()%>">Edit</a>
-                                                <a style="color:white" onclick="return confirm('Are you sure? Staff can not restore');" class="btn bg-danger btn-sm" href="/ManageStaffController?delete=<%= o.getStaffModelID()%>">Delete</a>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Staff can not restore');" class="btn bg-danger btn-sm" href="/ManageStaffController?delete=<%= o.getUserID()%>">Delete</a>
                                             </td>
                                         </tr>
                                         <%

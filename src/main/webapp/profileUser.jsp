@@ -55,6 +55,7 @@
                                     <label for="lastname" class="col-4 col-form-label">Phone</label> 
                                     <div class="col-8">
                                         <input value="${sessionScope.thongtinkhachhang.phone}" id="phone" name="phone" placeholder="Phone Number" class="form-control here" type="text">
+                                        <div class="text-danger">${trungphone}</div>
                                     </div>
                                 </div>
                                 <!--                                <div class="form-group row">
@@ -66,11 +67,11 @@
                                 <div class="form-group row">
                                     <%
                                         //String gender = (String) session.getAttribute("gender");
-                                    %>
+%>
 
                                     <label for="email" class="col-4 col-form-label">Gender</label> 
-                                    <input  style="margin-left: 10px" type="radio" id="gender" name="gender" value="1" <%= ((int)session.getAttribute("gender") == 1) ? "checked" : ""%>  /> Male
-                                    <input  style="margin-left: 40px"type="radio" id="gender" name="gender" value="0" <%=((int)session.getAttribute("gender") == 0) ? "checked" : ""%>/> Female
+                                    <input  style="margin-left: 10px" type="radio" id="gender" name="gender" value="1" <%= ((int) session.getAttribute("gender") == 1) ? "checked" : ""%>  /> Male
+                                    <input  style="margin-left: 40px"type="radio" id="gender" name="gender" value="0" <%=((int) session.getAttribute("gender") == 0) ? "checked" : ""%>/> Female
                                     <br>
 
                                 </div>
@@ -78,6 +79,7 @@
                                     <label for="website" class="col-4 col-form-label">Birthday</label> 
                                     <div class="col-8">
                                         <input value="${sessionScope.thongtinkhachhang.birthday}" id="birthday" name="birthday" placeholder="website" class="form-control here" type="date">
+                                        <div class="text-danger">${trung}</div>
                                     </div>
                                 </div>
                                 <div class="form-group row">

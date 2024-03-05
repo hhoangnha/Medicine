@@ -69,7 +69,7 @@
         %>
         <script>
             // Sử dụng SweetAlert để hiển thị thông báo
-            alertify.success("Thành công");
+//            alertify.success("Thành công");
         </script>
         <%
                 // Xóa thông báo sau khi hiển thị
@@ -100,7 +100,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Category</h5>
-                                <span>All data will show in User page</span>
+                                <!--<span>All data will show in User page</span>-->
                                 <br/>
                                 <a href="/AdminCateController/Create" class="btn btn-primary ">Add new</a>
                                 <!-- Table with stripped rows -->
@@ -135,7 +135,7 @@
 
                                             <td style="width: 20%; text-align: center">
                                                 <a style="color:white" class="btn bg-primary btn-sm " href="/AdminCateController/Edit/<%= rs.getInt("CateID")%>" >Edit</a>
-                                                <a style="color:white" onclick="return confirm('Are you sure? Category can not restore');" class="btn bg-warning btn-sm " href="/AdminCateController/Delete/<%= rs.getInt("CateID")%>" >Hiden</a> <br>  
+                                                <a style="color:white" onclick="return confirm('Are you sure? Category can not restore');" class="btn bg-danger btn-sm " href="/AdminCateController/Delete/<%= rs.getInt("CateID")%>" >Delete</a> <br>  
 
 
 

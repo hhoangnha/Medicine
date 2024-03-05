@@ -349,7 +349,7 @@
                         <label for="password">Password</label>
                         <input name="pass" type="password" id="user-pass"  required="required"/>
                         <p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>
-                        <!--<div class="error" id="txtPassMessage"></div>-->
+                        <div class="error" id="txtPassMessage"></div>
                     </div>
                     <div class="form-group">
                         <label for="cpassword">Confirm Password</label>
@@ -366,16 +366,16 @@
                         <input name="phone" type="text" id="txtphone"  required/>
                         <div class="error" id="txtPhoneMessage"></div>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label for="address">Address</label>
-                        <input name="address" type="text" id="txtphone"  required/>
-                        <!--<div class="error" id="txtPhoneMessage"></div>-->
+                        <input name="address" type="text" id="txtaddress"  required/>
+                        <div class="error" id="txtPhoneMessage"></div>
                     </div>
                     <div class="form-group">
                         <label for="birthday">Birthday</label>
-                        <input name="birthday" type="date" id="txtphone"  required/>
-                        <!--<div class="error" id="txtPhoneMessage"></div>-->
-                    </div>
+                        <input name="birthday" type="date" id="txtbirthday"  required/>
+                        <div class="error" id="txtPhoneMessage"></div>
+                    </div>-->
                     <div class="form-group">
                         <button type="submit" name="register">Register</button>
                     </div>

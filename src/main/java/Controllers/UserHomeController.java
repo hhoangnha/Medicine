@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import static Controllers.SigUpController.isEighteenOrOlder;
 import Daos.ProductDAO;
 import Daos.UserDAO;
 import static Daos.UserDAO.getMd5;
@@ -18,6 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -37,7 +40,7 @@ public class UserHomeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -149,21 +152,33 @@ public class UserHomeController extends HttpServlet {
 //            String usertype = request.getParameter("UserType");
             String gender = request.getParameter("gender");
             int genderInt = Integer.parseInt(gender);
-            
+
             Date birthday = Date.valueOf(request.getParameter("birthday"));
+
             String address = request.getParameter("address");
-
-            UserModel newinfo = new UserModel(0, username, phone, fullname, email, phone, username, address, birthday, genderInt, 0, birthday);
-            UserDAO cDAO;
-            cDAO = new UserDAO();
-            UserModel kh = cDAO.updateProfile(username, newinfo);
+            UserDAO CDAO = new UserDAO();
+            int c = CDAO.checkAccountPhoneUpdate( username ,phone);
+            System.out.println("loi " + c);
+            if (c != 1) {
+                System.out.println("that bai");
+                request.setAttribute("trungphone", "Phone is duplicated.");
+                request.getRequestDispatcher("/profileUser.jsp").forward(request, response);
+            } else if (isEighteenOrOlder(birthday) == false) {
+                System.out.println("that bai");
+                request.setAttribute("trung", "You must be 18 years old.");
+                request.getRequestDispatcher("/profileUser.jsp").forward(request, response);
+            } else {
+                UserModel newinfo = new UserModel(0, username, phone, fullname, email, phone, username, address, birthday, genderInt, 0, birthday);
+                UserDAO cDAO;
+                cDAO = new UserDAO();
+                UserModel kh = cDAO.updateProfile(username, newinfo);
 //            product kh = cDAO.update(Integer.parseInt(cus_id), newinfo);
-
-            response.sendRedirect("/UserHomeController");
+                response.sendRedirect("/UserHomeController");
+            }
         } else if (request.getParameter("changepass") != null) {
             HttpSession session = request.getSession();
             String user = (String) session.getAttribute("user");
-            System.out.println("in" +user);
+            System.out.println("in" + user);
             String newpass = request.getParameter("newpass");
             System.out.println(request.getParameter("oldpass"));
             System.out.println(getMd5(request.getParameter("oldpass")));
@@ -173,14 +188,14 @@ public class UserHomeController extends HttpServlet {
             if (checkPass(session, request)) {
                 UserDAO cDao = new UserDAO();
                 int rs = cDao.updatePass(user, newpass);
-                System.out.println("in" +rs);
+                System.out.println("in" + rs);
                 if (rs == 1) {
                     response.sendRedirect("/UserHomeController");
-                } 
-            } else{
-                   request.setAttribute("err", "Wrong old password.");
-                   System.out.println("saiiii");
-                               request.getRequestDispatcher("/ChangePassWord.jsp").forward(request, response);
+                }
+            } else {
+                request.setAttribute("err", "Wrong old password.");
+                System.out.println("saiiii");
+                request.getRequestDispatcher("/ChangePassWord.jsp").forward(request, response);
 
             }
         }

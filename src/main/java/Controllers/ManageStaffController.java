@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -46,11 +47,12 @@ public class ManageStaffController extends HttpServlet {
         String editId = request.getParameter("edit");
         StaffDAO dao = new StaffDAO();
         if (deleteID != null) {
-            dao.deleteStaff(deleteID);
+            System.out.println(deleteID);
             dao.deleteAccounts(deleteID);
+            dao.deleteStaff(deleteID);
             response.sendRedirect("/ManageStaffController");
         } else if (editId != null) {
-            String id = request.getParameter(editId);
+
             StaffModel detail = dao.getStaffById(editId);
             System.out.println(detail);
             request.setAttribute("detail", detail);
@@ -94,7 +96,9 @@ public class ManageStaffController extends HttpServlet {
             System.out.println("ID Number: " + editIdNumber);
             System.out.println("Issued By: " + editIssuedBy);
             System.out.println("License Date: " + editLicenseDate);
-            dao.editStaffAndAccount(editId, editUsername, editPassword, editFullname, editEmail, editPhone, editAddress, editBirthday, editGender, editIdNumber, editIssuedBy, editLicenseDate);
+
+            dao.editStaff(editId, editIdNumber, editIssuedBy, editLicenseDate);
+            dao.editAccount(editId, editUsername, editPassword, editFullname, editEmail, editPhone, editAddress, editBirthday, editGender);
 
         } else {
             String username = request.getParameter("username");
@@ -104,8 +108,20 @@ public class ManageStaffController extends HttpServlet {
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
             String birthday = request.getParameter("birthday");
-            String sex = request.getParameter("sex");
-            dao.addStaff(username, password, fullname, email, phone, address, birthday, sex);
+            String gender = request.getParameter("sex");
+            String idNumber = request.getParameter("idNumber");
+            String issuedBy = request.getParameter("issuedBy");
+            String licenseDate = request.getParameter("licenseDate");
+            if (dao.isUsernameExists(username)) {
+                HttpSession session = request.getSession();
+                String exist = "This username have existed aldready!!!";
+                session.setAttribute("exist", exist);
+                request.getRequestDispatcher("admin-add-staff.jsp").forward(request, response);
+            } else {
+                dao.addAccount(username, password, fullname, email, phone, address, birthday, gender);
+                dao.addStaff(idNumber, issuedBy, licenseDate);
+            }
+
         }
         response.sendRedirect("/ManageStaffController");
     }

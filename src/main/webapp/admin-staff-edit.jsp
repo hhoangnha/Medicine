@@ -37,16 +37,18 @@
     <body>
         <%
             StaffModel staff = (StaffModel) request.getAttribute("detail");
+            String exist = (String) session.getAttribute("exist");
         %>
         <div class="col-lg-12 container mt-5">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Update Staff Information</h5>
                     <!-- Horizontal Form -->
-                    <form name="productForm" method="post" action='/ManageStaffController?edit=<%= staff.getStaffModelID()%>' onsubmit="return validateForm()">
+                    <h5 style="color: red"> <%= exist != null ? exist : ""%></h5>
+                    <form name="productForm" method="post" action='/ManageStaffController?edit=<%= staff.getUserID()%>' onsubmit="return validateForm()">
                         <div class="row mb-3">
                             <div class="col-sm-2"><p>Staff ID</p></div>
-                            <div class="col-sm-8"><input class="form-control" readonly="" type="number" name="staffID" id="staffID" value="<%= staff.getStaffModelID()%>"  /></div>
+                            <div class="col-sm-8"><input class="form-control" disabled  readonly="" type="number" name="staffID" id="staffID" value="<%= staff.getUserID()%>"  /></div>
                         </div>
 
                         <div class="row mb-3">
@@ -95,15 +97,17 @@
                             <label for="gender" class="col-sm-2 col-form-label">Gender</label>
                             <div class="col-sm-10">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="gender" id="male" value="1"
-                                           <label class="form-check-label" for="male">Male</label>
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="1" <%= "1".equals(staff.getGender()) ? "checked" : ""%>>
+                                    <label class="form-check-label" for="male">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="gender" id="female" value="0">
+                                    <input class="form-check-input" type="radio" name="gender" id="female" value="0" <%= "0".equals(staff.getGender()) ? "checked" : ""%>>
                                     <label class="form-check-label" for="female">Female</label>
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="row mb-3">
                             <label for="idNumber" class="col-sm-2 col-form-label">ID Number</label>
                             <div class="col-sm-10">
