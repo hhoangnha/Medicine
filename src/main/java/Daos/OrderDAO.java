@@ -133,5 +133,17 @@ public class OrderDAO {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    public int updateStatus(int OrderID, int orderStatus) {
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("update Orders set orderStatus=? where OrderID=?");
+//            ps.setString(1, newinfo.getUsername());
+            ps.setInt(1, orderStatus);
+            ps.setInt(2, OrderID);
+            count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (count == 0) ? 0 : 1;
+    }
 }
