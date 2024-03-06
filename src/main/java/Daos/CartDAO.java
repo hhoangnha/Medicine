@@ -50,13 +50,15 @@ public class CartDAO {
     public List<CartItem> getCartItems(int customerId) {
         List<CartItem> cartItems = new ArrayList<>();
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT Carts.ProID, Carts.Quantity, Units.* FROM Carts JOIN Units ON Units.UnitID = Carts.UnitID WHERE CustomerID = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT Carts.CartID,Carts.ProID, Carts.Quantity, Units.* FROM Carts JOIN Units ON Units.UnitID = Carts.UnitID WHERE CustomerID = ?");
             ps.setInt(1, customerId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int productId = rs.getInt("ProID");
                 int quantity = rs.getInt("Quantity");
+                int cartID = rs.getInt("CartID");
                 CartItem cartItem = new CartItem();
+                cartItem.setCartID(cartID);
                 cartItem.setCustomerID(customerId);
                 cartItem.setProId(productId);
                 cartItem.setQuantity(quantity);

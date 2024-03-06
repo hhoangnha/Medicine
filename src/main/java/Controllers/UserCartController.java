@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -79,7 +80,7 @@ public class UserCartController extends HttpServlet {
         UserModel uM = (UserModel) session.getAttribute("acc");
         CartDAO cd = new CartDAO();
         if (path.startsWith("/UserCartController/AddToCart")) {
-            
+
             int quan = Integer.parseInt(request.getParameter("quan"));
             int unit = Integer.parseInt(request.getParameter("unit"));
             String[] s = path.split("/");
@@ -87,7 +88,7 @@ public class UserCartController extends HttpServlet {
             int pro_id = Integer.parseInt(s[s.length - 1]);
 
             cd.addOrUpdateCartItem(uM.getUserID(), pro_id, quan, unit);
-            
+
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("{ \"success\": true }");
@@ -99,7 +100,7 @@ public class UserCartController extends HttpServlet {
             int unit = Integer.parseInt(request.getParameter("unit"));
 
             cd.removeCartItem(uM.getUserID(), pro_id, unit);
-            
+
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("{ \"success\": true }");
@@ -123,7 +124,7 @@ public class UserCartController extends HttpServlet {
             int unit = Integer.parseInt(request.getParameter("unit"));
 
             cd.increaseOrDecreaseCartItemQuantity(uM.getUserID(), pro_id, quan, unit);
-            
+
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("{ \"success IncreaseQuantity\": true }");
@@ -172,55 +173,43 @@ public class UserCartController extends HttpServlet {
             try {
 
                 String username = (String) session.getAttribute("user");
+                UserModel uM = (UserModel) session.getAttribute("acc");
                 String name = request.getParameter("name");
                 String phone = request.getParameter("phone");
                 String address = request.getParameter("address");
                 String note = request.getParameter("note");
+
                 Date currentDate = new Date();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 String formattedDate = formatter.format(currentDate);
 
-                boolean checkSubmitOrder = false;
+                boolean checkSubmitOrder = true;
                 OrderDAO oC = new OrderDAO();
-                ProductDAO pd = new ProductDAO();
-                List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+//                ProductDAO pd = new ProductDAO();
+                String[] selectedProductIDs = request.getParameterValues("selectedProducts");
+
+                System.out.println("Request Parameters:");
+                Enumeration<String> parameterNames = request.getParameterNames();
+                while (parameterNames.hasMoreElements()) {
+                    String paramName = parameterNames.nextElement();
+                    System.out.println(paramName + ": " + request.getParameter(paramName));
+                }
 
                 int total = 0;
 
-                if (cart != null) {
-                    for (CartItem item : cart) {
-//                        ProductModel pmd = pd.getProduct(item.getProductId());
-//                        boolean checkItem = oC.checkQuanProduct(item.getProductId(), item.getQuantity());
-//                        if (checkItem) {
-//                            session.setAttribute("errorCartMsg", null);
-//                            checkSubmitOrder = true;
-//                            total += item.getQuantity() * pmd.getPrice();
-//                            continue;
-//                        } else {
-//                            ProductModel pdm = pd.getProduct(item.getProductId());
-//                            session.setAttribute("errorCartMsg", "Sản phẩm " + pdm.getProName() + " hiện không đủ! số lượng còn lại là " + pdm.getQuantity());
-//                            checkSubmitOrder = false;
-//                            total = 0;
-//                            break;
-//                        }
-                    }
-                }
-
                 if (checkSubmitOrder) {
                     System.out.println("Đơn hàng đang được soạn");
-                    int od = oC.createNewOrder(0, formattedDate, username, total, 1, address, phone, note, cart);
+                    int od = oC.addNewOrder(uM.getUserID(), 0, formattedDate, 1, total, selectedProductIDs);
 
-                    session.setAttribute("cart", null);
                     if (od != 0) {
                         System.out.println("Tạo đơn thành công");
                         response.sendRedirect("/UserHomeController/Order");
                     }
-//                     response.sendRedirect("/UserCartController");
+                    response.sendRedirect("/UserCartController");
                 } else {
                     System.out.println("Số lượng đã vượt quá");
                     response.sendRedirect("/UserCartController");
                 }
-
 //
 //                if (od != 0) {
 //                    System.out.println("đã tạo đơn thành công " + od);

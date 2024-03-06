@@ -161,7 +161,7 @@
             if (uM != null) {
                 cartItems = cd.getCartItems(uM.getUserID());
             }
-            
+
             UnitProductDAO udD = new UnitProductDAO();
 
         %>
@@ -198,31 +198,34 @@
 
 
 
+                            <form method="post"  onsubmit="return validateForm()"  name="form" action='/UserCartController/CreateOrder'>
+                                <div class="row border-top border-bottom">
+                                    <div class="row main align-items-center">
+                                        <div>
+                                            <input type="checkbox" name="selectedProducts" value="<%= item.getCartID()%>">
+                                        </div>
+                                        <div class="col">
+                                            <div class="row text-muted"><%=pdm.getProName()%> - <%= item.getCartID()%></div>
+                                            <div class="row"><%= cd.getUnitName(item.getUnitID()).getUnitName()%></div>
+                                            <small>Price: <%=um.getPrice()%></small><br/>
+                                            <small>chỉ còn: <%=pdm.getQuantity()%> sản phẩm</small>
+                                        </div>
+                                        <div class="col">
 
-                            <div class="row border-top border-bottom">
-                                <div class="row main align-items-center">
-                                    <div class="col">
-                                        <div class="row text-muted"><%=pdm.getProName()%></div>
-                                        <div class="row"><%= cd.getUnitName(item.getUnitID()).getUnitName()  %></div>
-                                        <small>Price: <%=um.getPrice() %></small><br/>
-                                        <small>chỉ còn: <%=pdm.getQuantity()%> sản phẩm</small>
+                                            <a  onclick='decreaseQuantity(<%=pdm.getProID()%>,<%=item.getUnitID()%>)'>-</a><a href="#" id="val<%=pdm.getProID()%>" class="border"><%=item.getQuantity()%></a>
+                                            <%
+                                                if (pdm.getQuantity() > item.getQuantity()) {
+                                            %>
+                                            <a onclick='increaseQuantity(<%=pdm.getProID()%>,<%=item.getUnitID()%>)'>+</a>
+                                            <%
+                                                }
+                                            %>
+                                        </div>
+                                        <div class="col"> <%=um.getPrice() * item.getQuantity()%> <span class="close" onclick="confirmRemove(<%=pdm.getProID()%>,<%=item.getUnitID()%>)">&#10005;</span></div>
                                     </div>
-                                    <div class="col">
-                                        <a  onclick='decreaseQuantity(<%=pdm.getProID()%>,<%=item.getUnitID()%>)'>-</a><a href="#" id="val<%=pdm.getProID()%>" class="border"><%=item.getQuantity()%></a>
-                                        <%
-                                            if (pdm.getQuantity() > item.getQuantity()) {
-                                        %>
-                                        <a onclick='increaseQuantity(<%=pdm.getProID()%>,<%=item.getUnitID()%>)'>+</a>
-                                        <%
-                                            }
-                                        %>
-
-                                    </div>
-                                        <div class="col"> <%=um.getPrice() * item.getQuantity() %> <span class="close" onclick="confirmRemove(<%=pdm.getProID()%>,<%=item.getUnitID()%>)">&#10005;</span></div>
                                 </div>
-                            </div>
-                            <% }
-                                }%>
+                                <% }
+                                    }%>
 
                         </div>
 
@@ -236,23 +239,24 @@
                             <div class="row">
                                 <div class="col" style="padding-left:0;"></div>
                             </div>
-                            <form method="post"  onsubmit="return validateForm()"  name="form" action='/UserCartController/CreateOrder'>
-                                <p>Fullname</p>
-                                <input type="text" name="name" value="${sessionScope.fullname}" placeholder="">
-                                <p>Phone number</p>
-                                <input type="text" value="<%=udd.getPhone()%>" name="phone" >
-                                <p>Address</p>
-                                <textarea name='address'><%=udd.getAddress()%></textarea>
-                                <p>Note</p>
-                                <textarea name='note'></textarea>
 
-                                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                                    <div class="col">Total order</div>
-                                </div>
-                                <button class="btn" type="submit">Confirm order</button>
-                            </form>
+                            <p>Fullname</p>
+                            <input type="text" name="name" value="${sessionScope.fullname}" placeholder="">
+                            <p>Phone number</p>
+                            <input type="text" value="<%=udd.getPhone()%>" name="phone" >
+                            <p>Address</p>
+                            <textarea name='address'><%=udd.getAddress()%></textarea>
+                            <p>Note</p>
+                            <textarea name='note'></textarea>
 
-                        </div> <%
+                            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                <div class="col">Total order</div>
+                            </div>
+                            <button class="btn" type="submit">Confirm order</button>
+
+
+                        </div
+                        <%
                         } else { %>
 
                         <div class="mt-3">
@@ -262,7 +266,7 @@
 
                         %>
 
-
+                        </form>
 
 
                     </div>
@@ -300,65 +304,109 @@
         <!-- Global Init -->
         <script src="/resources/UserAssets/js/custom.js"></script>
         <script>
-                                function validateForm() {
-                                    var name = document.forms["form"]["name"].value;
-                                    if (name == "") {
-                                        alert("Name not empty.");
-                                        return false;
-                                    }
-                                    var phone = document.forms["form"]["phone"].value;
-                                    if (phone == "" || isNaN(phone) || phone.length() != 10) {
-                                        alert("Phone is invalid. Phone must be 10 number.");
-                                        return false;
-                                    }
-                                    var address = document.forms["form"]["address"].value;
-                                    if (address == "") {
-                                        alert("Please enter address.");
-                                        return false;
-                                    }
-
-
-
-
-                                }
-
-                                function confirmRemove(productId, unitId) {
-                                    Swal.fire({
-                                        title: 'Xác nhận xoá khỏi giỏ hàng!',
-                                        icon: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonText: 'Đồng ý',
-                                        cancelButtonText: "Đóng",
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            $.ajax({
-                                                type: "GET",
-                                                url: "UserCartController/RemoveFromCart/" + productId+'?unit='+unitId,
-                                                success: function (response) {
-                                                    location.reload();
-                                                },
-                                                error: function () {
-                                                    console.error('Lỗi khi gửi yêu cầu AJAX');
+                                            function validateForm() {
+                                                var name = document.forms["form"]["name"].value;
+                                                if (name == "") {
+                                                    alert("Name not empty.");
+                                                    return false;
                                                 }
-                                            });
-                                        }
-                                    });
-                                }
-                                function decreaseQuantity(productId, unitId) {
+                                                var phone = document.forms["form"]["phone"].value;
+                                                if (phone == "" || isNaN(phone) || phone.length() != 10) {
+                                                    alert("Phone is invalid. Phone must be 10 number.");
+                                                    return false;
+                                                }
+                                                var address = document.forms["form"]["address"].value;
+                                                if (address == "") {
+                                                    alert("Please enter address.");
+                                                    return false;
+                                                }
+
+                                                var selectedProducts = document.getElementsByName("selectedProducts");
+                                                var selected = false;
+
+                                                for (var i = 0; i < selectedProducts.length; i++) {
+                                                    if (selectedProducts[i].checked) {
+                                                        selected = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (!selected) {
+                                                    alert("Please select at least one product.");
+                                                    return false;
+                                                }
 
 
-                                    if ($('#val' + productId).text() == 1) {
-                                        Swal.fire({
-                                            title: 'Nếu bạn chọn đồng ý, sản phẩm sẽ bị xoá khỏi giỏ hàng!',
-                                            icon: 'warning',
-                                            showCancelButton: true,
-                                            confirmButtonText: 'Đồng ý',
-                                            cancelButtonText: "Đóng",
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
+                                            }
+
+                                            function confirmRemove(productId, unitId) {
+                                                Swal.fire({
+                                                    title: 'Xác nhận xoá khỏi giỏ hàng!',
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Đồng ý',
+                                                    cancelButtonText: "Đóng",
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            url: "UserCartController/RemoveFromCart/" + productId + '?unit=' + unitId,
+                                                            success: function (response) {
+                                                                location.reload();
+                                                            },
+                                                            error: function () {
+                                                                console.error('Lỗi khi gửi yêu cầu AJAX');
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            function decreaseQuantity(productId, unitId) {
+
+
+                                                if ($('#val' + productId).text() == 1) {
+                                                    Swal.fire({
+                                                        title: 'Nếu bạn chọn đồng ý, sản phẩm sẽ bị xoá khỏi giỏ hàng!',
+                                                        icon: 'warning',
+                                                        showCancelButton: true,
+                                                        confirmButtonText: 'Đồng ý',
+                                                        cancelButtonText: "Đóng",
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            $.ajax({
+                                                                type: "GET",
+                                                                url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit=" + unitId,
+                                                                success: function (response) {
+                                                                    location.reload();
+                                                                },
+                                                                error: function () {
+                                                                    console.error('Lỗi khi gửi yêu cầu AJAX');
+                                                                }
+                                                            });
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    });
+
+                                                } else {
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit=" + unitId,
+                                                        success: function (response) {
+                                                            location.reload();
+                                                        },
+                                                        error: function () {
+                                                            console.error('Lỗi khi gửi yêu cầu AJAX');
+                                                        }
+                                                    });
+                                                }
+
+
+                                            }
+                                            function increaseQuantity(productId, unitId) {
                                                 $.ajax({
                                                     type: "GET",
-                                                    url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit="+unitId,
+                                                    url: "UserCartController/IncreaseQuantity/" + productId + "?quan=1&unit=" + unitId,
                                                     success: function (response) {
                                                         location.reload();
                                                     },
@@ -366,38 +414,7 @@
                                                         console.error('Lỗi khi gửi yêu cầu AJAX');
                                                     }
                                                 });
-                                            } else {
-                                                return false;
                                             }
-                                        });
-
-                                    } else {
-                                        $.ajax({
-                                            type: "GET",
-                                            url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit="+unitId,
-                                            success: function (response) {
-                                                location.reload();
-                                            },
-                                            error: function () {
-                                                console.error('Lỗi khi gửi yêu cầu AJAX');
-                                            }
-                                        });
-                                    }
-
-
-                                }
-                                function increaseQuantity(productId, unitId) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "UserCartController/IncreaseQuantity/" + productId + "?quan=1&unit="+unitId,
-                                        success: function (response) {
-                                            location.reload();
-                                        },
-                                        error: function () {
-                                            console.error('Lỗi khi gửi yêu cầu AJAX');
-                                        }
-                                    });
-                                }
         </script>
 
     </body>

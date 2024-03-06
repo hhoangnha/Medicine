@@ -55,43 +55,62 @@ public class OrderDAO {
         return null;
     }
 
-    public int createNewOrder(int id, String date, String username, int total, int status, String address, String phone, String note, List carts) {
-        int idNew = 0;
+    public int addNewOrder(int customerID, int staffID, String orderDate, int orderStatus, int total, String[] selectCarts) {
+        int result = 0;
         try {
-            Statement st = conn.createStatement();
-            PreparedStatement ps = conn.prepareStatement("insert into Orders OUTPUT inserted.OrderID values(?,?,?,?,?,?,?) ");
-            ps.setString(1, date);
-            ps.setString(2, username);
-            ps.setInt(3, total);
-            ps.setInt(4, status);
-            ps.setString(5, address);
-            ps.setString(6, phone);
-            ps.setString(7, note);
-            ResultSet rs = ps.executeQuery();
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Orders(CustomerID, StaffID, OrderDate, OrderStatus, Total) VALUES(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, customerID);
+            ps.setInt(2, staffID);
+            ps.setString(3, orderDate);
+            ps.setInt(4, orderStatus);
+            ps.setDouble(5, total);
 
-            if (rs.next()) {
-                idNew = rs.getInt("OrderID"); // Lấy ID vừa được chèn
+            int count = ps.executeUpdate();
 
-                for (CartItem item : (List<CartItem>) carts) {
-//                    PreparedStatement psDt = conn.prepareStatement("insert into OrderDetails values(?,?,?) ");
-//                    psDt.setInt(1, idNew);
-//                    psDt.setInt(2, item.getProductId());
-//                    psDt.setInt(3, item.getQuantity());
-//                    psDt.executeUpdate();
-//
-//                    PreparedStatement upProduct = conn.prepareStatement("UPDATE Products SET Quantity = Quantity - ? WHERE ProID = ?");
-//                    upProduct.setInt(1, item.getQuantity());
-//                    upProduct.setInt(2, item.getProductId());
-//                    upProduct.executeUpdate();
+            if (count > 0) {
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int orderID = generatedKeys.getInt(1);
+                    System.out.println("ID của order mới là ");
+                    System.out.println(orderID);
 
+                    for (String selectCart : selectCarts) {
+                        int cartID = Integer.parseInt(selectCart);
+                        // get product by cartiD
+                        PreparedStatement psCart = conn.prepareStatement("SELECT ProID, UnitID, Quantity FROM Carts WHERE CartID = ?");
+                        psCart.setInt(1, cartID);
+                        ResultSet rsCart = psCart.executeQuery();
+
+                        if (rsCart.next()) {
+                            int proID = rsCart.getInt("ProID");
+                            int unitID = rsCart.getInt("UnitID");
+                            int quantity = rsCart.getInt("Quantity");
+                            // add detail to OrderDetail
+                            PreparedStatement psOrderDetail = conn.prepareStatement("INSERT INTO OrderDetails(OrderID, ProID, UnitID, Quantity) VALUES(?, ?, ?, ?)");
+                            psOrderDetail.setInt(1, orderID);
+                            psOrderDetail.setInt(2, proID);
+                            psOrderDetail.setInt(3, unitID);
+                            psOrderDetail.setInt(4, quantity);
+                            // Thực hiện chèn dữ liệu
+                            psOrderDetail.executeUpdate();
+                            
+                            // delete cart when create success
+                            PreparedStatement psDeleteCart = conn.prepareStatement("DELETE FROM Carts WHERE CartID = ?");
+                            psDeleteCart.setInt(1, cartID);
+                            psDeleteCart.executeUpdate();
+                        }
+                    }
+
+//                    newOrder = new OrderModel(orderID, customerID, staffID, orderDate, orderStatus, total);
                 }
-                return idNew;
             }
-//           data = new OrderModel(idNew, date, username, total, status, address, phone, note);
+            result = 1;
         } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+            result = 0;
         }
-        return idNew;
+        return result;
     }
 
     public boolean checkQuanProduct(int proid, int quan) {
@@ -111,7 +130,8 @@ public class OrderDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return check;
-    }  
+    }
+
     public ResultSet getAll() {
         ResultSet rs = null;
         try {
@@ -124,7 +144,8 @@ public class OrderDAO {
         }
         return rs;
     }
-    public void delete(int OrderID){
+
+    public void delete(int OrderID) {
         try {
             PreparedStatement ps = conn.prepareStatement("Delete from Orders where OrderID = ?");
             ps.setInt(1, OrderID);
@@ -133,6 +154,7 @@ public class OrderDAO {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public int updateStatus(int OrderID, int orderStatus) {
         int count = 0;
         try {

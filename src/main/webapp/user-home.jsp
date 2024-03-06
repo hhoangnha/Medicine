@@ -187,7 +187,7 @@
                                     while (rs.next()) {
                                 %>
 
-                                <div class="item">
+                                <div class="item" onclick="redirectToDetail(<%=rs.getInt("ProID")%>)">
                                     <div class="thumb">
                                         <div class="hover-content">
                                             <ul>
@@ -440,6 +440,9 @@
         <script src="/resources/UserAssets/js/custom.js"></script>
 
         <script>
+            function redirectToDetail(proID) {
+    window.location.href = '/UserHomeController/Detail/' + proID;
+}
                                                     function addToCart(id) {
                                                         let quan = 1;
                                                         $.ajax({
