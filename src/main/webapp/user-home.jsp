@@ -195,12 +195,12 @@
                                                 <li><a onclick='addToCart(<%=rs.getInt("ProID")%>)'><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
                                         </div>
-                                        <img src="/resources/images/<%= rs.getString("ProImage") %>" alt="">
+                                        <img style="max-height:300px" src="/resources/images/<%= rs.getString("ProImage") %>" alt="">
                                     </div>
                                     <div class="down-content">
                                         <h4><%= rs.getString("ProName")%></h4>
                                         <div class="row d-flex justify-content-between">
-                                            <div class="col-md-6"><span class="text-danger"><%= rs.getString("ProName")%></span></div>
+                                            <div class="col-md-6"><span class="text-danger"><%= rs.getString("Origin")%></span></div>
                                             <div class="col-md-6"><p > <%= rs.getString("BrandName")%></span></div>
                                         </div>
 

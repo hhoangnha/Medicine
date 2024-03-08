@@ -172,7 +172,7 @@ public class UserDAO {
         try {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(pass).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("insert into Accounts(Username, Password, Fullname,Email,Phone,ResetToken, Address, Birthday, Gender, IsAdmin,CreatedAt) values( ?, ?, ?, ?, ?, '', ?, ?, 0, 0, ?)");
+            PreparedStatement ps = conn.prepareStatement("insert into Accounts values( ?, ?, ?, ?, ?, '', '', '', '', '', ?)");
             ps.setString(1, user);
             ps.setString(2, hasPassword);
             ps.setString(3, fullname);
@@ -236,7 +236,7 @@ public class UserDAO {
     public UserModel updateProfile(String Username, UserModel newinfo) {
         int count = 0;
         try {
-             PreparedStatement ps = conn.prepareStatement("update Users set Fullname=?, Email=?, Phone=?, UserType=?, Gender=?, Birthday=?, Address=? where Username=?");
+            PreparedStatement ps = conn.prepareStatement("update Accounts set Fullname=?, Email=?, Phone=?, Gender=?, Birthday=?, Address=? where Username=?");
 
             ps.setString(1, newinfo.getFullname());
             ps.setString(2, newinfo.getEmail());

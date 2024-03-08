@@ -203,9 +203,9 @@ public class UserCartController extends HttpServlet {
 
                     if (od != 0) {
                         System.out.println("Tạo đơn thành công");
-                        response.sendRedirect("/UserHomeController/Order");
+                        response.sendRedirect("/UserHomeController");
                     }
-                    response.sendRedirect("/UserCartController");
+//                    response.sendRedirect("/UserCartController");
                 } else {
                     System.out.println("Số lượng đã vượt quá");
                     response.sendRedirect("/UserCartController");
@@ -224,6 +224,7 @@ public class UserCartController extends HttpServlet {
 //                    System.out.println("insert failed");
 //                }
             } catch (Exception e) {
+                System.out.println(e);
                 response.sendRedirect("/UserCartController");
             }
 

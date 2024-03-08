@@ -269,7 +269,7 @@
                     <div class="row container">
                         <div >
                             <div class="form-group">
-                                <label for="username">Từ khoá</label>
+                                <label for="username">Key to search</label>
                                 <input name="q" type="text" value="${param.q}" />
                             </div>
 
@@ -294,7 +294,7 @@
 
                         while (rs.next()) {
                     %>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="item">
                             <div class="thumb">
                                 <div class="hover-content">
@@ -303,7 +303,7 @@
                                         <li><a onclick='addToCart(<%=rs.getInt("ProID")%>)'><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
-                                <img src='/resources/images/<%=rs.getString("ProImage")%>' alt="">
+                                <img style="max-height:300px" src='/resources/images/<%=rs.getString("ProImage")%>' alt="">
                             </div>
                             <div class="down-content">
                                 <h4><%= rs.getString("ProName")%></h4>

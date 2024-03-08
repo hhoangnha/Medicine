@@ -217,40 +217,49 @@ public class ProductDAO {
     }
 
 //    public ProductModel addNew(ProductModel sp) {
-    public ProductModel addNew(String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
-        ProductModel newProduct = null;
+    public int addNew(String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+        int idNewProduct = 0; // mặc định
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,`Using`,MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, ProCode);
-            ps.setString(2, ProName);
-            ps.setString(3, ProDescription);
-            ps.setInt(4, CateID);
-            ps.setInt(5, BrandID);
-            ps.setInt(6, ManuID);
-            ps.setString(7, ManufactureDate);
-            ps.setString(8, ExpirationDate);
-            ps.setString(9, Element);
-            ps.setInt(10, Quantity);
-            ps.setString(11, Indication);
-            ps.setString(12, Contraindication);
-            ps.setString(13, Using);
-            ps.setString(14, MadeIn);
-            ps.setString(15, ProImage);
+            PreparedStatement psCheck = conn.prepareStatement("SELECT * FROM Products WHERE ProCode = ?");
+            psCheck.setString(1, ProCode);
+            ResultSet rs = psCheck.executeQuery();
+            // nếu tồn tại trả về -1
+            if (rs.next()) {
+                return -1;
+            } else {
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,`Using`,MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, ProCode);
+                ps.setString(2, ProName);
+                ps.setString(3, ProDescription);
+                ps.setInt(4, CateID);
+                ps.setInt(5, BrandID);
+                ps.setInt(6, ManuID);
+                ps.setString(7, ManufactureDate);
+                ps.setString(8, ExpirationDate);
+                ps.setString(9, Element);
+                ps.setInt(10, Quantity);
+                ps.setString(11, Indication);
+                ps.setString(12, Contraindication);
+                ps.setString(13, Using);
+                ps.setString(14, MadeIn);
+                ps.setString(15, ProImage);
 
-            int count = ps.executeUpdate();
+                int count = ps.executeUpdate();
 
-            if (count > 0) {
-                ResultSet generatedKeys = ps.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int id = generatedKeys.getInt(1);
-                    newProduct = new ProductModel(id, ProCode, ProName, ProDescription, CateID, BrandID, ManuID, ManufactureDate, ExpirationDate, Element, Quantity, Indication, Contraindication, Using, MadeIn, ProImage);
+                if (count > 0) {
+                    ResultSet generatedKeys = ps.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                         idNewProduct = generatedKeys.getInt(1);
+                    }
                 }
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
+            
         }
-        return newProduct;
+        return idNewProduct;
     }
 
     public static void main(String[] args) {

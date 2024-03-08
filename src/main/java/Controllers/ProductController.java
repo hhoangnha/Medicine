@@ -206,21 +206,46 @@ public class ProductController extends HttpServlet {
 //                ProductModel newSP = new ProductModel;
                 // Thêm sản phẩm mới vào cơ sở dữ liệu
                 ProductDAO cDAO = new ProductDAO();
-                ProductModel rs = cDAO.addNew(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName);
-                if (rs == null) {
-                    // Them that bai
-                    response.sendRedirect("/ProductController/Create");
+                int rs = cDAO.addNew(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName);
+                if (rs == -1) {
+                    System.out.println("Mã Sản phẩm đã tồn tại");
+                    response.setContentType("text/html");
+                    response.setCharacterEncoding("UTF-8");
+                    PrintWriter out = response.getWriter();
+
+                    String message = "Product Code exst. Please go back and change Product code.";
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Add new failed</title>");
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1>Error</h1>");
+                    out.println("<p>" + message + "</p>");
+                    out.println("<button onclick=\"goBack()\">Back to add</button>");
+                    out.println("<script>");
+                    out.println("function goBack() {");
+                    out.println("  window.history.back();");
+                    out.println("}");
+                    out.println("</script>");
+                    out.println("</body>");
+                    out.println("</html>");
+
+//                    // Them that bai
+//                    response.sendRedirect("/ProductController/Create");
+                } else if (rs == 0) {
+                    System.out.println("thêm thất bại");
                 } else {
                     UnitProductDAO upd = new UnitProductDAO();
                     for (int i = 0; i < selectedUnits.length; i++) {
                         int unitId = Integer.parseInt(selectedUnits[i]);
                         int price = Integer.parseInt(prices[i]);
 
-                        upd.addNew(unitId, rs.getProID(), price);
+                        upd.addNew(unitId, rs, price);
                     }
-
+                    response.sendRedirect("/ProductController");
                 }
-                response.sendRedirect("/ProductController");
+
             }
 
         }
@@ -285,8 +310,8 @@ public class ProductController extends HttpServlet {
                 ProductModel newSP = new ProductModel();
                 ProductDAO cDAO = new ProductDAO();
                 String fileName = "";
-                 int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
-                 if (rsUpdate == 0) {// cap nhat that bai
+                int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
+                if (rsUpdate == 0) {// cap nhat that bai
                     ProductModel thongtincu = cDAO.getProduct(id);
                     HttpSession session = request.getSession();
                     session.setAttribute("thongtinsanpham", thongtincu);

@@ -16,7 +16,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Dashboard - NiceAdmin Bootstrap Template</title>
+        <title>Add new Product</title>
         <meta content="" name="description">
         <meta content="" name="keywords"> 
 
@@ -71,6 +71,11 @@
                                 <div class="col-sm-4 col-xs-8"> <p>Product Name</p></div>
                                 <div class="col-sm-8"><input class="form-control" type="text" id="name" name="name"  /></div>
 
+                            </div>
+                            <div class="row">
+                                <br>
+                                <div class="col-sm-4 col-xs-8"><p>Quantity</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="number" id="quantity" name="quantity" /></div>                       
                             </div>
                             <div class="row">
                                 <br>
@@ -164,28 +169,30 @@
                             <div id="unitDetails"></div>
                         </div>
                         <div class="w-50 p-3">
-                            <div class="row">
-                                <br>
+                           
+                            <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Description</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="text" id="des" name="des"/></div>
-
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" type="text" id="des" name="des"></textarea>
+                                 </div>                        
                             </div>
-                            <div class="row">
-                                <br>
-                                <div class="col-sm-4 col-xs-8"><p>Quantity</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="number" id="quantity" name="quantity" /></div>                       
-                            </div>
+                            
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Indication</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="indicaction" type="text" name="indication"/></div>                        
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="indicaction" type="text" name="indication"></textarea>
+                                 </div>                        
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Contraindication</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="contraindication" type="text" name="contraindication"/></div>                        
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="contraindication" type="text" name="contraindication"></textarea>
+                                   </div>                        
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Using</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="using" type="text" name="using"/></div>                        
+                                <div class="col-sm-8">
+                                    <textarea  class="form-control" id="using" type="text" name="using"></textarea></div>                        
                             </div> 
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Element</p></div>
@@ -256,17 +263,16 @@
 
                             var name = document.getElementById("name").value;
                             var des = document.getElementById("des").value;
-                            var price = document.getElementById("price").value;
                             var quantity = document.getElementById("quantity").value;
                             var manuid = document.getElementById("manuid").value;
                             var image = document.getElementById("image").value;
                             var catid = document.getElementById("catid").value;
                             var brandid = document.getElementById("brandid").value;
-                            var color = document.getElementById("color").value;
-                            if (name === "" || des === "" || price === "" || quantity === "" || manuid === "" || catid === "" || brandid === "" || color === "") {
+                            if (name == "" || des == "" ||  quantity == "" || manuid == "" || catid == "" || brandid == ""  ) {
                                 alert("Please enter full data!");
                                 return false;
                             }
+                       
 
                             if (!image) {
                                 alert("Please, choose a picture!");
@@ -274,16 +280,16 @@
                             }
 
                             // Code ki?m tra gi� tr? c?a c�c tr??ng s?
-                            if (price <= 0 || quantity <= 0) {
-
-                                alert("Accept only positive number greater than 0!");
-                                return false;
-                            }
+//                            if (price <= 0 || quantity <= 0) {
+//
+//                                alert("Accept only positive number greater than 0!");
+//                                return false;
+//                            }
 //                            if (isNaN(price) || isNaN(quantity) {
 //                                alert("Input must be number.");
 //                                return false;
 //                            }
-                            return true;
+                            
                         }
 
 

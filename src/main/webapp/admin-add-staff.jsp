@@ -5,13 +5,13 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Dashboard - NiceAdmin Bootstrap Template</title>
+        <title>Add staff</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
         <!-- Favicons -->
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
+<!--        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
+        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">-->
 
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -51,17 +51,17 @@
                     <h5 style="color: red"> <%= exist != null ? exist : "" %></h5>
                     <form name="productForm" method="post" action='/ManageStaffController' onsubmit="return validateFormOrder()">
                         <div class="row mb-3">
-                            <div class="col-sm-6"> <!-- Chia th?nh 2 c?t (50%) -->
+                            <div class="col-sm-6">
 
                                 <label for="inputEmail3" class="col-form-label">Username</label>
                                 <input type="text" name='username' class="form-control" id="inputText">
                             </div>
-                            <div class="col-sm-6"> <!-- Chia th?nh 2 c?t (50%) -->
+                            <div class="col-sm-6"> 
                                 <label for="Password" class="col-form-label">Password</label>
-                                <input type="text" name='password' class="form-control" id="Password">
+                                <input type="password" name='password' class="form-control" id="Password">
                             </div>
                         </div>
-                        <!-- Th?m ph?n c?n l?i c?a form t??ng t? -->
+                       
                         <div class="row mb-3">
                             <div class="col-sm-6">
                                 <label for="Fullname" class="col-form-label">Fullname</label>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label for="Email" class="col-form-label">Email</label>
-                                <input type="text" name='email' class="form-control" id="Email">
+                                <input type="email" name='email' class="form-control" id="Email">
                             </div>
                         </div>
                         <!-- C?c d?ng kh?c c? th? th?m t??ng t? -->
