@@ -1,3 +1,5 @@
+<%@page import="Model.OrderModel"%>
+<%@page import="java.util.List"%>
 <%@page import="Daos.OrderID_DAOad"%>
 <%@page import="Daos.OrderDAO"%>
 <!DOCTYPE html>
@@ -75,74 +77,77 @@
                                     <tbody>
 
                                         <% //CusDAO cd = new CusDAO();
-                                            String username = (String) session.getAttribute("user");
+                                            UserModel user = (UserModel) session.getAttribute("acc");
                                             OrderDAO d = new OrderDAO();
-                                            ResultSet rs = d.getAll(username);
-                                            // list<user> lu = d.getAdminUser("user");
+                                            ResultSet rs = d.getAllOrderByUserID(user.getUserID());
                                             while (rs.next()) {
                                         %>
 
                                         <tr>
-                                            <td><%=  rs.getString("OrderDate")%></td>
-                                            <td><%= rs.getString("OrderTotal")%> </td>
+                                            <td><%= rs.getString("OrderDate")%></td>
+                                            <td><%= rs.getString("Total")%> </td>
                                             <td>
-                                                <%if (rs.getString("OrderStatus").equals("1")) {%><p>New</p><%}%>
-                                                <%if (rs.getString("OrderStatus").equals("2")) {%><p>Waiting</p><%}%>
-                                                <%if (rs.getString("OrderStatus").equals("3")) {%><p>Shipping</p><%}%>
-                                                <%if (rs.getString("OrderStatus").equals("4")) {%><p>Done</p><%}%>
-                                                <%if (rs.getString("OrderStatus").equals("0")) {%><p class='text-danger'>Cancel</p><%}%>
-
+                                                <%--
+                                                <%if (userListOrders.get(i).getOrderStatus()==1")) {%><p>New</p><%}%>
+                                                <%if (userListOrders.get(i).getOrderStatus()==2")) {%><p>Waiting</p><%}%>
+                                                <%if (userListOrders.get(i).getOrderStatus()==3")) {%><p>Shipping</p><%}%>
+                                                <%if (userListOrders.get(i).getOrderStatus()==4")) {%><p>Done</p><%}%>
+                                                <%if (userListOrders.get(i).getOrderStatus()==0")) {%><p class='text-danger'>Cancel</p><%}%>
+                                                --%>
+                                                <%if (rs.getInt("OrderStatus") == 1) {%><p>Waiting to Accept Order</p><%}%>
+                                                <%if (rs.getInt("OrderStatus") == 2) {%><p>Order Accepted</p><%}%>
+                                                <%if (rs.getInt("OrderStatus") == 3) {%><p>Delivered</p><%}%>
+                                                <%if (rs.getInt("OrderStatus") == 4) {%><p class='text-danger'>Cancel</p><%}%>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal<%=rs.getInt("OrderID")%>">
                                                     View detail
                                                 </button>
-
                                             </td>
 
                                         </tr>
+                                        <%--Code work well here--%>
+                                    <%--display detail order by orderID--%>
                                     <div class="modal fade" id="basicModal<%=rs.getInt("OrderID")%>" tabindex="-1">
                                         <div class="modal-dialog modal-xl">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title"><%=  rs.getString("OrderDate")%>p</h5>
+                                                    <h5 class="modal-title"><%=  rs.getString("OrderDate")%></h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
                                                 </div>
                                                 <div class="modal-body">
-
                                                     <%
                                                         OrderID_DAOad dod = new OrderID_DAOad();
                                                         ResultSet rsc = dod.getProductOrder(rs.getInt("OrderID"));
                                                         while (rsc.next()) {%>
                                                     <div class="row">
-                                                        <div class="col-md-2">ID: <%=rsc.getInt("OrderDetailID")%></div> 
+                                                        <div class="col-md-2">ID: <%=rsc.getInt("OdID")%></div> 
                                                         <div class="col-md-4">Name <%=rsc.getString("ProName")%></div>
-                                                        <div class="col-md-2">Prive <%=rsc.getString("Price")%></div>
-                                                        <div class="col-md-2">Quantity: <%=rsc.getString("OrderDetailQuan")%></div>
-<!--                                                        <div class="col-md-2">Cỡ: <%=rsc.getString("Size")%></div>-->
+                                                        <div class="col-md-2">Price <%=rsc.getString("total_price")%></div>
+                                                        <div class="col-md-2">Quantity: <%=rsc.getString("Quantity")%></div>
                                                     </div>
-
-                                                    <% }
+                                                    <%
+                                                        }
                                                     %>
-
                                                 </div>
                                                 <div class="modal-footer">
                                                     <%
-                                                       if(rs.getInt("OrderStatus") == 1){ %>
-                                                              <a onclick="confirmCancelOrder(<%=rs.getInt("OrderID")%>)" class="btn btn-danger">Cancel order</a>
-                                                     <%  }
-                                                    
+                                                        if (rs.getInt("OrderStatus") == 1) {%>
+                                                    <a onclick="confirmCancelOrder(<%=user.getUserID()%>)" class="btn btn-danger">Cancel order</a>
+                                                    <%
+                                                        }
                                                     %>
-                                                 
                                                 </div>
+
                                             </div>
                                         </div>
-                                    </div><!-- End Basic Modal-->
+                                    </div>
                                     <%}%>
 
 
+
                                     </tbody>
-                                </table>
+                                </table><!--
                                 <!-- End Table with stripped rows -->
 
                             </div>
@@ -166,7 +171,7 @@
 
         <!-- Template Main JS File -->
         <script src="/resources/AdminAssets/js/main.js"></script>
-        
+
         <script src="/resources/UserAssets/js/jquery-2.1.0.min.js"></script>
         <script>
                                                         function confirmCancelOrder(productId) {

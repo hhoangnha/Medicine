@@ -49,39 +49,32 @@
         <div class="col-lg-12  container mt-5">
             <%
                 //  int oid = (int) session.getAttribute("orderid");
-                String orderIdString = (String) session.getAttribute("orderid");
-                int oid = 0;
-                if (orderIdString != null) {
+                int orderIdString = (int) session.getAttribute("OrderID");
+                int oid = 1;
+                if (orderIdString != 0) {
                     try {
-                        oid = Integer.parseInt(orderIdString);
+                        oid = orderIdString;
                     } catch (NumberFormatException e) {
 
                     }
                 }
                 OrderID_DAOad od = new OrderID_DAOad();
-                OrderModel rs = od.getOrder(oid);
-                int gg = rs.getOrderID();
-                String ad = rs.getOrderAddress();
-                String bd = rs.getOrderDate();
-                String note = rs.getOrderNote();
-                String name = rs.getUsername();
-                String phone = rs.getOrderPhone();
-                int total = rs.getOrderTotal();
-                int st = rs.getOrderStatus();
-                String t = "";
-                if (st == 0) {
-                    t += "Đã hủy";
-                } else if (st == 1) {
-                    t += "Đã đặt hàng";
-                } else if (st == 2) {
-                    t += "Đã đóng gói";
-                } else if (st == 3) {
-                    t += "Đang vân chuyển";
-                } else if (st == 4) {
-                    t += "Đã giao";
-                }
-
+                ResultSet userOrderInfor = od.getUserOrderInfor(oid);
+                int orderStatus = 1;
+                if (userOrderInfor.next()) {
+                    orderStatus = userOrderInfor.getInt("OrderStatus");
+                    String t = "";
+                    if (orderStatus == 1) {
+                        t += "Waiting";
+                    } else if (orderStatus == 2) {
+                        t += "Accepted";
+                    } else if (orderStatus == 3) {
+                        t += "Delivered";
+                    } else if (orderStatus == 4) {
+                        t += "Cancel";
+                    }
             %>
+
             <div class="">
                 <div class="card-body m-5">
 
@@ -89,63 +82,69 @@
                         <input name='oid' value='<%=oid%>' hidden />
                         <div class='row '>
                             <div class='col-md-4 card'>
-                                <h5 class="card-title">Thông tin đơn hàng</h5>
-                                <div class='card-body'>Mã đơn hàng: <b><%= gg%></b>
+                                <h5 class="card-title">Order Detail</h5>
+                                <div class='card-body'>Order ID: <%=orderIdString%><b></b>
                                     <br>
-                                    Ngày đặt: <%= bd%>
-
-                                    <br>
-                                   Tài khoản: <%= name%>
+                                    Date: <%=userOrderInfor.getString("OrderDate")%>
 
                                     <br>
-                                    Tổng tiền: <b class="text-danger"><%=  total%></b>
-
-                                
-                                    <br>
-                                    Địa chỉ nhận hàng: <i><%= ad%></i>
+                                    Account: <%=userOrderInfor.getString("Username")%>
 
                                     <br>
-                                    Điện thoại: <%= phone%>
+                                    Total: <b class="text-danger"><%=userOrderInfor.getString("Username")%></b>
+
 
                                     <br>
-                                    Ghi chú: <%= note%>
+                                    Address: <i><%=userOrderInfor.getString("Address")%></i>
 
-                                    <br></div>
-                                    <select id="mySelect" class='form-select mb-2' name="a" <% if (st == 0) {%> disabled="" <%  }%>>
-                <option <% if (st == 0) {%>selected="" <%} %> value="0">Đã hủy</option>
-                <option  <% if (st == 1) {%>selected="" <%} %> value="1">Đã đặt hàng</option><!-- comment -->
-                <option  <% if (st == 2) {%>selected="" <%} %> value="2">Đã đóng gói</option><!-- comment -->
-                <option  <% if (st == 3) {%>selected="" <%} %> value="3">Đang vân chuyển</option><!-- comment -->
-                <option  <% if (st == 4) {%>selected="" <%}%> value="4">Đã giao</option><!-- comment -->
+                                    <br>
+                                    Phone: <%=userOrderInfor.getString("Phone")%>
 
-            </select>
+                                    <br>
+                                    <!--Note: <%--<%=userOrderInfor.getString("Username")%>--%>
+
+                                    <br>-->
+                                    <%
+                                        }
+                                    %>
+                                </div>
+
+                                <select id="mySelect" class='form-select mb-2' name="a" <% if (orderStatus == 4) {%> disabled="" <%}%>>
+
+                                    <option  <% if (orderStatus == 1) {%>selected="" <%} %> value="1">Waiting</option><!-- comment -->
+                                    <option  <% if (orderStatus == 2) {%>selected="" <%} %> value="2">Accepted</option><!-- comment -->
+                                    <option  <% if (orderStatus == 3) {%>selected="" <%} %> value="3">Delivered</option><!-- comment -->
+                                    <option  <% if (orderStatus == 4) {%>selected="" <%}%> value="4">Cancel</option><!-- comment -->
+
+                                </select>
                             </div>
                             <div class='col-md-8'>
 
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Sản phẩm</h5>
+                                        <h5 class="card-title">List Product </h5>
 
                                         <table class="table ">
                                             <thead>
                                                 <tr>
-                                                    <th>Sản phẩm</th>
-                                                    <th>Số lượng</th>
-                                                    <th>Kích cỡ</th>
-                                                    <th>Giá tiền</th>
-                                                    <th></th>
+                                                    <th>Product Name</th>
+                                                    <th>Unit</th>
+                                                    <th>Quantity</th>
+                                                    <th>Total</th>
+
+
 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <%     OrderID_DAOad ord = new OrderID_DAOad();
-                                            ResultSet rsDt = ord.getProductOrder(oid);
-                                            while (rsDt.next()) { %>
+                                                    ResultSet rsDt = ord.getListOrderProduct(oid);
+                                                    while (rsDt.next()) {%>
                                                 <tr>
                                                     <td><%=rsDt.getString("ProName")%></td>
-                                                    <td><%=rsDt.getInt("OrderDetailQuan")%></td>
-                                                     <td><%=rsDt.getString("Size")%></td>
-                                                      <td><%=rsDt.getString("Price")%></td>
+                                                    <td><%=rsDt.getString("UnitName")%></td>
+                                                    <td><%=rsDt.getInt("Quantity")%></td>
+                                                    <td><%=rsDt.getInt("Total")%></td>
                                                 </tr>
                                                 <%  }
                                                 %>
@@ -173,7 +172,7 @@
             </div></div>
 
 
-<script src="/resources/UserAssets/js/jquery-2.1.0.min.js"></script>
+        <script src="/resources/UserAssets/js/jquery-2.1.0.min.js"></script>
         <!-- Vendor JS Files -->
         <script src="/resources/AdminAssets/vendor/apexcharts/apexcharts.min.js"></script>
         <script src="/resources/AdminAssets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -195,14 +194,14 @@
         </script>
         <!-- Template Main JS File -->
         <script src="/resources/AdminAssets/js/main.js"></script>
-<script>
-$(document).ready(function() {
-    $('#mySelect').change(function() {
-//        alert("Giá trị đã thay đổi thành: " + $(this).val());
-        $("#btn-up").show();
-    });
-});
-</script>
+        <script>
+                        $(document).ready(function () {
+                            $('#mySelect').change(function () {
+                                //        alert("Giá trị đã thay đổi thành: " + $(this).val());
+                                $("#btn-up").show();
+                            });
+                        });
+        </script>
     </body>
 
 </html>

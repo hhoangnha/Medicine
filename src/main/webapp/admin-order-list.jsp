@@ -179,13 +179,13 @@
                                             while (rs.next()) {
                                             String t = "";
                                             if (rs.getInt("OrderStatus") == 1){
-                                                t = "Ðã đặt";
+                                                t = "Waiting for confirm";
                                             } else if (rs.getInt("OrderStatus") == 2){
-                                                t = "Xác nhận";
+                                                t = "Order Accepted";
                                             } else if (rs.getInt("OrderStatus") == 3){
-                                                t = "Thành công";
+                                                t = "Delivered";
                                             } else if (rs.getInt("OrderStatus") == 4){
-                                                t = "Ðã huỷ";
+                                                t = "Cancle Order";
                                             }
                                         %>
                                         <tr>
@@ -198,6 +198,7 @@
                                             <td style="text-align: center">
                                                 <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/confirmOrder/<%= rs.getInt("OrderID")%>" >Confirm</a>
                                                 <a style="color:white" onclick="return confirm('Are you sure? Order can not restore');" class="btn btn-danger btn-sm" href="/OrderController/deleteOrder/<%= rs.getString("OrderID")%>" >Cancel</a>  
+                                                <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/editOrderStatus/<%= rs.getString("OrderID")%>" >Edit Status</a>
                                             </td>
                                         </tr>
                                         <% }%>

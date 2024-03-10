@@ -69,7 +69,7 @@ public class OrderController extends HttpServlet {
                 try {
                     int OrderID = Integer.parseInt(s[s.length - 1]);
                     OrderDAO o = new OrderDAO();
-                    o.updateStatus(OrderID,2);
+                    o.updateStatus(OrderID, 2);
                     session.setAttribute("msgSuccess", "Delete successfully!");
                     response.sendRedirect("/OrderController");
                 } catch (Exception ex) {
@@ -84,6 +84,17 @@ public class OrderController extends HttpServlet {
                     o.updateStatus(OrderID, 4);
                     session.setAttribute("msgSuccess", "Delete successfully!");
                     response.sendRedirect("/OrderController");
+                } catch (Exception ex) {
+                    response.sendRedirect("/OrderController");
+                }
+            }
+            if (path.startsWith("/OrderController/editOrderStatus/")) {
+                String[] s = path.split("/");
+                try {
+                    int OrderID = Integer.parseInt(s[s.length - 1]);
+                    session = request.getSession();
+                    session.setAttribute("OrderID", OrderID);
+                    request.getRequestDispatcher("/admin-order-edit.jsp").forward(request, response);
                 } catch (Exception ex) {
                     response.sendRedirect("/OrderController");
                 }
