@@ -36,14 +36,15 @@ public class userad_ad {
     }
     
 
-    public ResultSet getAll(String usertype, int st) {
+    public ResultSet getAll(int IsAdmin, int UserStatus) {
         ResultSet rs = null;
         try {
             // Create a PreparedStatement with a parameterized query
 //            String sql = "SELECT * FROM Accounts";
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Accounts");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Accounts where IsAdmin = ? and UserStatus = ?");
             // ps.setString(1, usertype);
-            // ps.setInt(2, st);  // 0 là tồn tại nên để lại 
+             ps.setInt(1, IsAdmin);  // 0 là tồn tại nên để lại 
+             ps.setInt(2, UserStatus);
             // Execute the query and store the result in the ResultSet
             rs = ps.executeQuery();
         } catch (SQLException ex) {
@@ -59,12 +60,12 @@ public class userad_ad {
         boolean h = false;  // Khởi tạo mặc định là false
 
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND pass = ? and UserType= ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Accoumts WHERE username = ? AND pass = ? and UserType= ?");
             //PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND pass = CONVERT(varchar(32),HASHBYTES('MD5', ?), 2) and usertype= ?");
             ps.setString(1, username);
             ps.setString(2, v.getMd5(pass));
             // ps.setString(2, (pass));
-            ps.setString(3, "admin");
+            ps.setInt(3, 0);
 
             ResultSet rs = ps.executeQuery();
 
@@ -94,7 +95,7 @@ public class userad_ad {
 
         try {
 
-            PreparedStatement ps = conn.prepareStatement("UPDATE Users SET UserStatus = ? WHERE Username = ?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE Accounts SET UserStatus = ? WHERE Username = ?");
             ps.setInt(1, st); // Đặt giá trị UserStatus mà bạn muốn cập nhật (0 hoặc 1) ở đây 1 đang là xóa
             ps.setString(2, username); // Đặt tên người dùng (username) mà bạn muốn cập nhật
             ps.executeUpdate();

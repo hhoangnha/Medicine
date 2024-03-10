@@ -1,3 +1,4 @@
+<%@page import="Model.BrandModel"%>
 <%@page import="Model.UnitModel"%>
 <%@page import="Daos.UnitDAO"%>
 <%@page import="Model.UnitProductModel"%>
@@ -42,13 +43,6 @@
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
 
-        <!-- =======================================================
-        * Template Name: NiceAdmin
-        * Updated: Sep 18 2023 with Bootstrap v5.3.2
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
     </head>
 
     <body>
@@ -111,15 +105,22 @@
                                 <div class="col-sm-8">
                                     <select name="brandid" id="brandid" class="form-control">
                                         <option>Select Brand</option>
+
                                         <%
                                             BrandDAO cDAO2 = new BrandDAO();
-                                            ResultSet r = cDAO2.getAll();
-                                            while (r.next()) {
-                                        %>
-                                        <option value="<%= r.getInt("BrandID")%>"><%= r.getString("BrandName")%></option>
+                                            List<BrandModel> r = cDAO2.getAll();
+                                            for (BrandModel item : r) {%>
+                                        <option value="<%= item.getBrandID()%>"><%= item.getBrandName()%></option>
+
                                         <%
                                             }
                                         %>
+
+
+
+
+
+
                                     </select>
                                 </div>
                             </div>
@@ -169,25 +170,25 @@
                             <div id="unitDetails"></div>
                         </div>
                         <div class="w-50 p-3">
-                           
+
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Description</p></div>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" type="text" id="des" name="des"></textarea>
-                                 </div>                        
+                                </div>                        
                             </div>
-                            
+
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Indication</p></div>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" id="indicaction" type="text" name="indication"></textarea>
-                                 </div>                        
+                                </div>                        
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Contraindication</p></div>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" id="contraindication" type="text" name="contraindication"></textarea>
-                                   </div>                        
+                                </div>                        
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Using</p></div>
@@ -268,11 +269,11 @@
                             var image = document.getElementById("image").value;
                             var catid = document.getElementById("catid").value;
                             var brandid = document.getElementById("brandid").value;
-                            if (name == "" || des == "" ||  quantity == "" || manuid == "" || catid == "" || brandid == ""  ) {
+                            if (name == "" || des == "" || quantity == "" || manuid == "" || catid == "" || brandid == "") {
                                 alert("Please enter full data!");
                                 return false;
                             }
-                       
+
 
                             if (!image) {
                                 alert("Please, choose a picture!");
@@ -289,7 +290,7 @@
 //                                alert("Input must be number.");
 //                                return false;
 //                            }
-                            
+
                         }
 
 

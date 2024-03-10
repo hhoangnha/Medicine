@@ -282,9 +282,39 @@
         <script type="text/javascript">
 
         </script>
+          <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <!-- Semantic UI theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!--        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css"
+            />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js"></script>-->
 
     </head>
     <body>
+        <%
+            // Lấy dữ liệu từ session
+            String msgSuccess = (String) session.getAttribute("Success");
+            if (msgSuccess != null) {
+        %>
+
+        <script>
+            // Sử dụng SweetAlert để hiển thị thông báo
+            alertify.success("Sigup Successfully");
+        </script>
+        <%
+                // Xóa thông báo sau khi hiển thị
+                session.removeAttribute("Success");
+
+            }
+        %>
+
         <!-- partial:index.partial.html -->
         <!-- Form-->
         <div class="form">
@@ -296,7 +326,7 @@
                 <div class="form-content">
                     <form class="form-signin" action="" method="post">
                         <div class="form-group">
-                            <label for="username">Enter Username or Email</label>
+                            <label for="username">Enter Username or Email or Phone</label>
                             <input name="user"  type="text" required="required"/>
                         </div>
                         <div class="form-group">
@@ -308,15 +338,15 @@
                             <a class="form-recovery" href="/EmailForgot.jsp">Forgot password?</a>
                             </label><a class="form-recovery" href="/SigUpController">Sign up?</a>
                         </div>
-                      <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block mb-4"/></div>
-                    </form>
-                  
-                </div>
+                    <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block mb-4"/></div>
+                </form>
+
             </div>
-            
         </div>
+
     </div>
-    <div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back to home</a>
+</div>
+<div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back to home</a>
     <!-- partial -->
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

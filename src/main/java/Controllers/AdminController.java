@@ -34,7 +34,7 @@ public class AdminController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -64,13 +64,15 @@ public class AdminController extends HttpServlet {
         String path = request.getRequestURI();
         HttpSession session = request.getSession();
 
-         if (checkAdmin(session)) {
+        if (checkAdmin(session)) {
             if (path.startsWith("/AdminController/Users/Delete")) {
                 String[] s = path.split("/");
                 try {
                     String proid = (s[s.length - 1]);
+                    System.out.println("tesst" + proid);
                     userad_ad pr = new userad_ad();
-                    pr.delete(proid, 0);
+                    pr.delete(proid, 1);
+                    session.setAttribute("DeleteSuccess", "Account deleted successfully");
                     response.sendRedirect("/AdminController/Users");
                 } catch (Exception ex) {
 
@@ -81,8 +83,10 @@ public class AdminController extends HttpServlet {
                 try {
                     String proid = (s[s.length - 1]);
                     userad_ad pr = new userad_ad();
-                    pr.delete(proid, 1);
-                    response.sendRedirect("/AdminController/Users");
+                    pr.delete(proid, 0);
+                    session.setAttribute("RestoreSuccess", "Account restore successful");
+                    System.out.println(session.getAttribute("RestoreSuccess"));
+                   response.sendRedirect("/AdminController/RestoreUsers");
                 } catch (Exception ex) {
 
                 }
@@ -111,9 +115,9 @@ public class AdminController extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/admin-index.jsp").forward(request, response);
             }
-         } else {
-             response.sendRedirect("/UserHomeController");
-         }
+        } else {
+            response.sendRedirect("/UserHomeController");
+        }
 
     }
 

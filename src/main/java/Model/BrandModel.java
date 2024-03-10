@@ -9,33 +9,21 @@ package Model;
  * @author Nguyen Hoang Nha - CE170092
  */
 public class BrandModel {
+
     private int BrandID;
     private String BrandName;
-    private int BrandStatus;
-
-    public BrandModel(int BrandID, String BrandName, int BrandStatus) {
-        this.BrandID = BrandID;
-        this.BrandName = BrandName;
-        this.BrandStatus = BrandStatus;
-    }
-
-    
-    public int getBrandStatus() {
-        return BrandStatus;
-    }
-
-    public void setBrandStatus(int BrandStatus) {
-        this.BrandStatus = BrandStatus;
-    }
+    private String origin;
 
     public BrandModel() {
     }
 
-    public BrandModel(int BrandID, String BrandName) {
+    public BrandModel(int BrandID, String BrandName, String origin) {
         this.BrandID = BrandID;
         this.BrandName = BrandName;
+        this.origin = origin;
     }
 
+    
     public int getBrandID() {
         return BrandID;
     }
@@ -51,6 +39,19 @@ public class BrandModel {
     public void setBrandName(String BrandName) {
         this.BrandName = BrandName;
     }
-    
-    
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    @Override
+    public String toString() {
+        return "BrandModel{" + "BrandID=" + BrandID + ", BrandName=" + BrandName + ", origin=" + origin + '}';
+    }
+
+  
 }

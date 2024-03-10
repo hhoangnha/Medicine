@@ -7,13 +7,9 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Dashboard - NiceAdmin Bootstrap Template</title>
+        <title>Edit Brand</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
-
-        <!-- Favicons -->
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -30,38 +26,39 @@
 
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
-       
 
-        <!-- =======================================================
-        * Template Name: NiceAdmin
-        * Updated: Sep 18 2023 with Bootstrap v5.3.2
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
+
+
     </head>
 
     <body>
-        
+
         <div class="col-lg-12  container mt-5">
             <%
-                BrandModel nh = (BrandModel) session.getAttribute("thongtinhanhieu");
+                BrandModel nh = (BrandModel) request.getAttribute("detail");
             %>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add new Brand</h5>
+                    <h5 class="card-title">Edit Brand</h5>
 
                     <!-- Horizontal Form -->
                     <form  name="productForm" method="post" action='/BrandController' onsubmit="return validateForm()">
 
                         <div class="row">
                             <div class="col-sm-2"><p>Brand ID</p></div>
-                            <div class="col-sm-8"><input class="form-control" readonly="" type="number" name="brandID" value="<%= nh.getBrandID()%>"  /></div>
+                            <div class="col-sm-8"><input  class="form-control" readonly="" type="number" name="brandID" value="<%= nh.getBrandID()%>"  /></div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputEmail3"  class="col-sm-2 col-form-label">Brand name</label>
                             <div class="col-sm-10">
                                 <input type="text" id="brandName" name="brandName" value="<%= nh.getBrandName()%>" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="origin"  class="col-sm-2 col-form-label">Origin</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="origin" name="origin" value="<%= nh.getOrigin() %>" class="form-control">
                             </div>
                         </div>
 
