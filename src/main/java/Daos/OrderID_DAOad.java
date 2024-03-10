@@ -50,45 +50,63 @@ public class OrderID_DAOad {
         try {
 
             Statement st = conn.createStatement();
-            rs = st.executeQuery("select *,OrderDetails.Quantity as OrderDetailQuan  from OrderDetails JOIN Orders ON Orders.OrderID = OrderDetails.OrderID \n"
-                    + "JOIN Users ON Users.Username = Orders.Username\n"
-                    + "JOIN Products ON Products.ProID = OrderDetails.ProID Where OrderDetails.OrderID =" + orid);
+            rs = st.executeQuery("SELECT od.OdID, p.ProName, od.Quantity, u.UnitID, up.Price*od.Quantity as total_price FROM OrderDetails od\n"
+                    + "JOIN Products p on p.ProID = od.ProID\n"
+                    + "JOIN Units u on u.UnitID = od.UnitID\n"
+                    + "JOIN UnitProduct up on up.ProID = od.ProID and up.UnitID = od.UnitID\n"
+                    + "WHERE OrderID = " + orid);
         } catch (SQLException ex) {
             Logger.getLogger(OrderID_DAOad.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }
-    
-    public int addQuanToProduct(int proQuan, int proID){
+
+    public int addQuanToProduct(int proQuan, int proID) {
         int res = 0;
         try {
-             PreparedStatement upProduct = conn.prepareStatement("UPDATE Products SET Quantity = Quantity + ? WHERE ProID = ?");
-                    upProduct.setInt(1, proQuan);
-                    upProduct.setInt(2, proID);
-                    upProduct.executeUpdate();
-                    res=1;
+            PreparedStatement upProduct = conn.prepareStatement("UPDATE Products SET Quantity = Quantity + ? WHERE ProID = ?");
+            upProduct.setInt(1, proQuan);
+            upProduct.setInt(2, proID);
+            upProduct.executeUpdate();
+            res = 1;
         } catch (Exception e) {
-             Logger.getLogger(OrderID_DAOad.class.getName()).log(Level.SEVERE, null, e);
-            res=0;
+            Logger.getLogger(OrderID_DAOad.class.getName()).log(Level.SEVERE, null, e);
+            res = 0;
         }
         return res;
     }
 
-    public OrderModel getOrder(int pro_id) {
-        OrderModel pr = null;
+    public ResultSet getUserOrderInfor(int orderID) {
+        ResultSet rs;
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from Orders where OrderID =?");
-            ps.setInt(1, pro_id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                pr = new OrderModel(rs.getInt("OrderID"), rs.getString("OrderDate"), rs.getString("Username"), rs.getInt("OrderTotal"), rs.getInt("OrderStatus"), rs.getString("OrderAddress"), rs.getString("OrderPhone"), rs.getString("OrderNote"));
-
-                //public OrderModel(int OrderID, String OrderDate, String Username, int OrderTotal, int OrderStatus, String OrderAddress, String OrderPhone, String OrderNote)
-            }
+            PreparedStatement ps = conn.prepareStatement("SELECT acc.Address, o.OrderDate, acc.Username, acc.Phone, o.OrderStatus FROM Orders o\n"
+                    + "JOIN Accounts acc ON acc.UserID = o.CustomerID\n"
+                    + "WHERE o.OrderID = ?");
+            ps.setInt(1, orderID);
+            rs = ps.executeQuery();
+            return rs;
         } catch (SQLException ex) {
             Logger.getLogger(OrderID_DAOad.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return pr;
+        return null;
+    }
+
+    public ResultSet getListOrderProduct(int orderID) {
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT up.Price * od.Quantity AS Total,\n"
+                    + "p.ProName, od.Quantity, u.UnitName FROM Orders o \n"
+                    + "JOIN OrderDetails od ON od.OrderID = o.OrderID\n"
+                    + "JOIN Products p ON p.ProID = od.ProID\n"
+                    + "JOIN Units u ON u.UnitID = od.UnitID\n"
+                    + "JOIN UnitProduct up ON up.ProID = od.ProID AND up.UnitID = od.UnitID\n"
+                    + "WHERE o.OrderID = ?");
+            ps.setInt(1, orderID);
+            rs = ps.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderID_DAOad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
     }
 
     public int update(int oid, int st) {
@@ -110,11 +128,11 @@ public class OrderID_DAOad {
 //                // Không thể chuyển từ ngoài 1 về 0 vì khi mà đã đóng gói r thì ko shop nào cho hủy cả t mua t biết
 //                count = 0;
 //            } else {
-                // Cập nhật OrderStatus
-                PreparedStatement updatePs = conn.prepareStatement("UPDATE Orders SET OrderStatus = ? WHERE OrderID = ?");
-                updatePs.setInt(1, st);
-                updatePs.setInt(2, oid);
-                count = updatePs.executeUpdate();
+            // Cập nhật OrderStatus
+            PreparedStatement updatePs = conn.prepareStatement("UPDATE Orders SET OrderStatus = ? WHERE OrderID = ?");
+            updatePs.setInt(1, st);
+            updatePs.setInt(2, oid);
+            count = updatePs.executeUpdate();
 //            }
         } catch (SQLException ex) {
             Logger.getLogger(OrderID_DAOad.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,4 +156,13 @@ public class OrderID_DAOad {
 //        }
 //        return ord;
 //    }
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        OrderID_DAOad od = new OrderID_DAOad();
+        ResultSet userOrderInfor = od.getUserOrderInfor(2);
+        if (userOrderInfor.next()) {
+            String account = userOrderInfor.getString("Username");
+            System.out.println(account);
+        }
+
+    }
 }

@@ -11,90 +11,114 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author C15TQK
- */
 public class BrandDAO {
-    Connection conn;
 
-    public BrandDAO() {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    public List<BrandModel> getAll() {
+        List<BrandModel> list = new ArrayList<>();
+        String query = "select * from Brand";
         try {
-            conn = DBConnection.connect();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);
+            conn = new DBConnection().connect();//mo ket noi voi sql
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new BrandModel(rs.getInt(1), rs.getString(2), rs.getString(3)));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public void addBrand(String brandName, String origin) {
+        String query = "INSERT Brand \n"
+                + "(BrandName, Origin)\n"
+                + "VALUES(?,?)";
+        try {
+            conn = new DBConnection().connect();//mo ket noi voi sql
+            ps = conn.prepareStatement(query);
+            ps.setString(1, brandName);
+            ps.setString(2, origin);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
-    public ResultSet getAll() {
+    public void editBrand(String brandId, String brandName, String origin) {
+        String query = "UPDATE Brand "
+                + "SET BrandName = ?, "
+                + "Origin = ?, "
+                + "WHERE BrandID = ?";
+
         try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from Brand ");
-            return rs;
-        } catch (SQLException ex) {
-            Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);
+            conn = new DBConnection().connect();//mo ket noi voi sql
+            ps = conn.prepareStatement(query);
+            ps.setString(1, brandName);
+            ps.setString(2, origin);
+            ps.setString(3, brandId);
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void deleteBrand(String brandId) {
+        String query = "delete from Brand\n"
+                + "where BrandID = ?";
+        try {
+            conn = new DBConnection().connect();//mo ket noi voi sql
+            ps = conn.prepareStatement(query);
+            ps.setString(1, brandId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
+    public boolean isExist(String name) {
+        String query = "SELECT COUNT(*) FROM Brand WHERE BrandName = ?";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với SQL
+            ps = conn.prepareStatement(query);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0; // Trả về true nếu username tồn tại, ngược lại trả về false
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public BrandModel getBrandById(String id) {
+        String query = "select * from Brand\n"
+                + "where BrandID = ?";
+        try {
+            conn = new DBConnection().connect();//mo ket noi voi sql
+            ps = conn.prepareStatement(query);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return new BrandModel(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+        } catch (Exception e) {
         }
         return null;
     }
 
-    public BrandModel addNew(BrandModel nh) {
-        int count = 0;
-        try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Brand VALUES(?,?)");
-            ps.setString(1, nh.getBrandName());
-            ps.setInt(2, nh.getBrandStatus());
-            count = ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return (count == 0) ? null : nh;
-    }
+    public static void main(String[] args) {
+        BrandDAO test = new BrandDAO();
+        System.out.println(test.getBrandById("1"));
 
-    public BrandModel getBrand(int BrandID) {
-        BrandModel nh = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("select * from Brands where BrandID=?");
-            ps.setInt(1, BrandID);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                nh = new BrandModel(rs.getInt("BrandID"), rs.getString("BrandName"),rs.getInt("BrandStatus"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return nh;
     }
-
-    public BrandModel update(int BrandID, BrandModel nh) {
-        int count = 0;
-        try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE Brands SET BrandName=? WHERE BrandID=?");          
-            ps.setString(1, nh.getBrandName());
-            ps.setInt(2, nh.getBrandID());
-            count = ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return (count == 0) ? null : nh;
-    }
-
-    public BrandModel delete(int BrandID) {
-        int count = 0;
-        try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE Brands SET BrandStatus=? WHERE BrandID=?");
-            ps.setInt(1, 0);
-            ps.setInt(2, BrandID);
-            ps.executeUpdate();
-            count = ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return (count == 0) ? null : getBrand(BrandID);
-    }
-
 }

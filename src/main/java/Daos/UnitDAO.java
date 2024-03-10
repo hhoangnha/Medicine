@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
  * @author User
  */
 public class UnitDAO {
+
     Connection conn;
 
     public UnitDAO() {
@@ -33,6 +35,7 @@ public class UnitDAO {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public ResultSet getAll() {
         ResultSet rs = null;
         try {
@@ -44,6 +47,7 @@ public class UnitDAO {
         }
         return null;
     }
+
     public List<UnitModel> getAllUnit() {
         List<UnitModel> UnitItems = new ArrayList<>();
         try {
@@ -62,6 +66,7 @@ public class UnitDAO {
         }
         return UnitItems;
     }
+
     public UnitModel update(int UnitID, UnitModel sp) {
         int count = 0;
         try {
@@ -74,7 +79,8 @@ public class UnitDAO {
         }
         return (count == 0) ? null : sp;
     }
-    public void delete(int UnitId){
+
+    public void delete(int UnitId) {
         try {
             PreparedStatement ps = conn.prepareStatement("Delete from Units where UnitID = ?");
             ps.setInt(1, UnitId);
@@ -83,7 +89,8 @@ public class UnitDAO {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public UnitModel addnew(UnitModel obj){
+
+    public UnitModel addnew(UnitModel obj) {
         int count = 0;
         try {
             PreparedStatement ps = conn.prepareStatement("Insert into Units(UnitName) VALUES(?)");
@@ -92,13 +99,14 @@ public class UnitDAO {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-       return (count == 0) ? null : obj;
+        return (count == 0) ? null : obj;
     }
-    public UnitModel getUnit(String UnitID) {
+
+    public UnitModel getUnit(int UnitID) {
         UnitModel unit = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Units where UnitID = ?");
-            ps.setString(1, UnitID);
+            ps.setInt(1, UnitID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 unit = new UnitModel(rs.getInt("UnitID"), rs.getString("UnitName"));
@@ -108,4 +116,20 @@ public class UnitDAO {
         }
         return unit;
     }
+
+    public LinkedList<String> getAllUnitName() {
+        LinkedList<String> Unit = new LinkedList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT UnitName from Units");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String UnitName = rs.getString("UnitName");
+                Unit.add(UnitName);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return Unit;
+    }
+
 }

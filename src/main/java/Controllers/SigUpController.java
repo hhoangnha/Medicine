@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,6 +70,8 @@ public class SigUpController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
         String path = request.getRequestURI();
         if (request.getParameter("register") != null) {
             String fullname = request.getParameter("fullname");
@@ -79,7 +82,7 @@ public class SigUpController extends HttpServlet {
             String pass = request.getParameter("pass");
             String repass = request.getParameter("repass");
             String phone = request.getParameter("phone");
-             Date CreatedAt = getCurrentDate();
+            Date CreatedAt = getCurrentDate();
 //            LocalDate dateOfBirth = LocalDate.of(request.getParameter("birthday"));
             if (pass.equals(repass)) {
                 UserDAO CDAO = new UserDAO();
@@ -89,20 +92,25 @@ public class SigUpController extends HttpServlet {
                 if (a != null) {
                     System.out.println("that bai");
                     request.setAttribute("trung", "Username is duplicated.");
+                    session.setAttribute("Fail", "Account sigup fail");
                     request.getRequestDispatcher("/sigup.jsp").forward(request, response);
 
                 } else if (b != null) {
                     System.out.println("that bai");
                     request.setAttribute("trung", "Email is duplicated.");
+                    session.setAttribute("Fail", "Account sigup fail");
                     request.getRequestDispatcher("/sigup.jsp").forward(request, response);
                 } else if (c != null) {
                     System.out.println("that bai");
                     request.setAttribute("trung", "Phone is duplicated.");
+                    session.setAttribute("Fail", "Account sigup fail");
                     request.getRequestDispatcher("/sigup.jsp").forward(request, response);
                 } else {
                     System.out.println("thanh cong");
                     try {
                         CDAO.sigup(user, pass, fullname, email, phone, CreatedAt);
+                        session.setAttribute("Success", "Account sigup successfully");
+                        System.out.println("innnnn" + session.getAttribute("Success"));
                     } catch (Exception e) {
                         System.out.println(e);
                     }
@@ -120,7 +128,7 @@ public class SigUpController extends HttpServlet {
         return ageDifference.getYears() >= 18;
     }
 
-   public static Date getCurrentDate() {
+    public static Date getCurrentDate() {
         // Lấy ngày và tháng hiện tại
         LocalDate today = LocalDate.now();
 
@@ -141,7 +149,7 @@ public class SigUpController extends HttpServlet {
             return null;
         }
     }
-    
+
     /**
      * Returns a short description of the servlet.
      *

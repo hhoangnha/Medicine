@@ -55,11 +55,10 @@ public class UserDAO {
         try {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(password).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (Username = ? Or Email = ? or Phone = ?) AND Password = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (Username = ? Or Email = ?) AND Password = ?");
             ps.setString(1, username);
             ps.setString(2, username);
-            ps.setString(3, username);
-            ps.setString(4, hasPassword);
+            ps.setString(3, hasPassword);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 ac = new UserModel(rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"), rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"), rs.getString("Address"), rs.getDate("Birthday"), rs.getInt("Gender"), rs.getInt("IsAdmin"), rs.getDate("CreatedAt"));
@@ -146,33 +145,14 @@ public class UserDAO {
         }
         return ac;
     }
-
-    public int checkAccountPhoneUpdate(String Username, String Phone) {
-        UserModel ac = null;
-        int count = 0;
-        try {
-            Statement st = conn.createStatement();
-//            String hasPassword = getMd5(password).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE UserName= ? or Phone = ?");
-            ps.setString(1, Username);
-            ps.setString(2, Phone);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-//                ac = new UserModel(rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"), rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"), rs.getString("Address"), rs.getDate("Birthday"), rs.getInt("Gender"), rs.getInt("IsAdmin"), rs.getDate("CreatedAt"));
-                count++;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return count;
-    }
+    
 
     public void sigup(String user, String pass, String fullname, String email, String phone, Date createdat) {
         try {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(pass).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("insert into Accounts values( ?, ?, ?, ?, ?, '', '', '', '', '', ?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Accounts (Username, Password, Fullname, Email, Phone, ResetToken, Address, Birthday, Gender, IsAdmin, CreatedAt, UserStatus) \n"
+                    + "VALUES (?, ?, ?, ?, ?, '', '', '', '', 0, ?, 0);");
             ps.setString(1, user);
             ps.setString(2, hasPassword);
             ps.setString(3, fullname);
@@ -287,5 +267,26 @@ public class UserDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return (count == 0) ? 0 : 1;
+    }
+
+    public int checkAccountPhoneUpdate(String Username, String Phone) {
+        UserModel ac = null;
+        int count = 0;
+        try {
+            Statement st = conn.createStatement();
+//            String hasPassword = getMd5(password).toUpperCase();
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE Username= ? or Phone = ?");
+            ps.setString(1, Username);
+            ps.setString(2, Phone);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+//                ac = new UserModel(rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"), rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"), rs.getString("Address"), rs.getDate("Birthday"), rs.getInt("Gender"), rs.getInt("IsAdmin"), rs.getDate("CreatedAt"));
+                count++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
     }
 }

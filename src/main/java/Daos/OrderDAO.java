@@ -18,6 +18,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,17 +44,40 @@ public class OrderDAO {
 
     }
 
-    public ResultSet getAllByUsername(String username) {
+    public ResultSet getAllOrderByUserID(int UserID) {
+//        List<OrderModel> userOrders = new ArrayList<>();
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Orders WHERE Orders.Username=?");
-            ps.setString(1, username);
+            PreparedStatement ps = conn.prepareStatement("SELECT\n"
+                    + "    o.OrderID,\n"
+                    + "    o.OrderDate,\n"
+                    + "    SUM(up.Price * od.Quantity) AS Total,\n"
+                    + "    o.OrderStatus\n"
+                    + "FROM\n"
+                    + "    Orders o\n"
+                    + "JOIN \n"
+                    + "    Accounts acc ON acc.UserID = o.CustomerID\n"
+                    + "JOIN\n"
+                    + "    OrderDetails od ON od.OrderID = o.OrderID\n"
+                    + "JOIN\n"
+                    + "    Products p ON p.ProID = od.ProID\n"
+                    + "JOIN\n"
+                    + "    Units u ON u.UnitID = od.UnitID\n"
+                    + "JOIN\n"
+                    + "    UnitProduct up ON up.ProID = od.ProID AND up.UnitID = od.UnitID\n"
+                    + "WHERE\n"
+                    + "    o.CustomerID = ?\n"
+                    + "GROUP BY\n"
+                    + "    o.OrderID, o.OrderDate, o.OrderStatus;");
+            ps.setInt(1, UserID);
             rs = ps.executeQuery();
-            return rs;
+//            while (rs.next()) {
+//                userOrders.add(new OrderModel(rs.getInt(1), rs.getString(4), rs.getString(7), rs.getInt(6), rs.getInt(5), rs.getString(8), rs.getString(9), rs.getString(9)));
+//            }
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return rs;
     }
 
     public int addNewOrder(int customerID, int staffID, String orderDate, int orderStatus, int total, String[] selectCarts) {
@@ -93,7 +118,7 @@ public class OrderDAO {
                             psOrderDetail.setInt(4, quantity);
                             // Thực hiện chèn dữ liệu
                             psOrderDetail.executeUpdate();
-                            
+
                             // delete cart when create success
                             PreparedStatement psDeleteCart = conn.prepareStatement("DELETE FROM Carts WHERE CartID = ?");
                             psDeleteCart.setInt(1, cartID);
@@ -167,5 +192,23 @@ public class OrderDAO {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return (count == 0) ? 0 : 1;
+    }
+
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        OrderDAO d = new OrderDAO();
+        ResultSet rs = d.getAllOrderByUserID(6);
+        while (rs.next()) {
+            OrderID_DAOad dod = new OrderID_DAOad();
+            System.out.println("START WHILE1 ORDERID:" + rs.getInt("OrderID"));
+            System.out.println(">>>"+rs.getInt("OrderID"));
+            ResultSet rsc = dod.getProductOrder(rs.getInt("OrderID"));
+            while (rsc.next()) {
+                System.out.println("WHILE2 ORDERID:" + rs.getInt("OrderID"));
+            }
+            if (rs.getInt("OrderStatus") == 1) {
+                System.out.println("Cancel Order");
+            }
+            System.out.println("END WHILE1 ORDERID:" + rs.getInt("OrderID"));
+        }
     }
 }

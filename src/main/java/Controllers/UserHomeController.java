@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -100,7 +101,7 @@ public class UserHomeController extends HttpServlet {
             request.getRequestDispatcher("/user-products.jsp").forward(request, response);
         } else if (path.endsWith("/UserHomeController/Order")) {
             request.getRequestDispatcher("/user-order.jsp").forward(request, response);
-        } else if (path.startsWith("/UserHomeController/Profile")) {
+        } else if (path.startsWith("/UserHomeController/Profil")) {
             String[] s = path.split("/");
             try {
                 String Username = s[s.length - 1];
@@ -144,6 +145,7 @@ public class UserHomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         HttpSession session = request.getSession();
         if (request.getParameter("update") != null) {//Nguoi dung nhat nut update
             String username = request.getParameter("username");
             String fullname = request.getParameter("name");
@@ -157,7 +159,7 @@ public class UserHomeController extends HttpServlet {
 
             String address = request.getParameter("address");
             UserDAO CDAO = new UserDAO();
-            int c = CDAO.checkAccountPhoneUpdate( username ,phone);
+            int c = CDAO.checkAccountPhoneUpdate(username, phone);
             System.out.println("loi " + c);
             if (c != 1) {
                 System.out.println("that bai");
@@ -171,12 +173,12 @@ public class UserHomeController extends HttpServlet {
                 UserModel newinfo = new UserModel(0, username, phone, fullname, email, phone, username, address, birthday, genderInt, 0, birthday);
                 UserDAO cDAO;
                 cDAO = new UserDAO();
+                session.setAttribute("UpdateSuccess", "Update Success");
                 UserModel kh = cDAO.updateProfile(username, newinfo);
 //            product kh = cDAO.update(Integer.parseInt(cus_id), newinfo);
-                response.sendRedirect("/UserHomeController");
+                response.sendRedirect("/UserHomeController/Profile");
             }
         } else if (request.getParameter("changepass") != null) {
-            HttpSession session = request.getSession();
             String user = (String) session.getAttribute("user");
             System.out.println("in" + user);
             String newpass = request.getParameter("newpass");
@@ -200,6 +202,13 @@ public class UserHomeController extends HttpServlet {
             }
         }
 
+    }
+
+    public static boolean isEighteenOrOlder(Date dateOfBirth) {
+        LocalDate birthday = dateOfBirth.toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+        Period ageDifference = Period.between(birthday, currentDate);
+        return ageDifference.getYears() >= 18;
     }
 
     public static boolean checkPass(HttpSession session, HttpServletRequest request) {

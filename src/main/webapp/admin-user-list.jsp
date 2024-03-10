@@ -48,13 +48,31 @@
         * Author: BootstrapMade.com
         * License: https://bootstrapmade.com/license/
         ======================================================== -->
+      
+
     </head>
 
     <body>
- 
+
         <jsp:include page="admin-header.jsp" />
 
         <jsp:include page="admin-aside.jsp" />
+        <%
+            // L?y d? li?u t? session
+            String msgSuccess = (String) session.getAttribute("DeleteSuccess");
+            if (msgSuccess != null) {
+        %>
+        <script>
+            // S? d?ng SweetAlert ?? hi?n th? th?ng b?o
+            alertify.success("Account delete successfully");
+        </script>
+        <%
+                // X?a th?ng b?o sau khi hi?n th?
+                session.removeAttribute("DeleteSuccess");
+
+            }
+        %>
+
 
         <main id="main" class="main">
 
@@ -94,7 +112,7 @@
 
                                         <% //CusDAO cd = new CusDAO();
                                             userad_ad d = new userad_ad();
-                                            ResultSet rs = d.getAll("customer", 1);
+                                            ResultSet rs = d.getAll(0, 0);
 
                                             while (rs.next()) {
                                         %>
@@ -121,7 +139,7 @@
                                     </tbody>
                                 </table>
                                 <!-- End Table with stripped rows -->
-
+                                <p><%=session.getAttribute("Success")%></p>
                             </div>
                         </div>
 

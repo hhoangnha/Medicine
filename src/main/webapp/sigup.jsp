@@ -325,8 +325,32 @@
             }
         </script>
 
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <!-- Semantic UI theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+
     </head>
     <body>
+        <%
+            // Lấy dữ liệu từ session
+            String msgSuccess = (String) session.getAttribute("Fail");
+            if (msgSuccess != null) {
+        %>
+
+        <script>
+            // Sử dụng SweetAlert để hiển thị thông báo
+            alertify.error("Sigup Fail");
+        </script>
+        <%
+                // Xóa thông báo sau khi hiển thị
+                session.removeAttribute("Fail");
+            }
+        %>
         <!-- partial:index.partial.html -->
         <!-- Form-->
         <div class="form">
@@ -338,12 +362,12 @@
                 <form action="/SigUpController" method="post" class="form-signup" onsubmit="return check()">
                     <div class="text-danger">${trung}</div>
                     <div class="form-group">
-                        <label for="fullname">FullName</label>
-                        <input name="fullname" type="text" id="user-fullname" required="required"/>
-                    </div>
-                    <div class="form-group">
                         <label for="username">Username</label>
                         <input name="user" type="text" id="user-name" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="fullname">FullName</label>
+                        <input name="fullname" type="text" id="user-fullname" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -361,21 +385,21 @@
                         <input name="email" type="text" id="txtemail"  required/>
                         <div class="error" id="txtEmailMessage"></div>
                     </div>
-                                        <div class="form-group">
+                    <div class="form-group">
                         <label for="phone">Phone</label>
                         <input name="phone" type="text" id="txtphone"  required/>
                         <div class="error" id="txtPhoneMessage"></div>
                     </div>
-<!--                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input name="address" type="text" id="txtaddress"  required/>
-                        <div class="error" id="txtPhoneMessage"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="birthday">Birthday</label>
-                        <input name="birthday" type="date" id="txtbirthday"  required/>
-                        <div class="error" id="txtPhoneMessage"></div>
-                    </div>-->
+                    <!--                    <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <input name="address" type="text" id="txtaddress"  required/>
+                                            <div class="error" id="txtPhoneMessage"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="birthday">Birthday</label>
+                                            <input name="birthday" type="date" id="txtbirthday"  required/>
+                                            <div class="error" id="txtPhoneMessage"></div>
+                                        </div>-->
                     <div class="form-group">
                         <button type="submit" name="register">Register</button>
                     </div>

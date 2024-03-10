@@ -12,13 +12,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Manage Unit</title>
+        <title>Edit Unit</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons'><link rel="stylesheet" href="./style.css">
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
 
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -43,14 +42,6 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
-
-        <!-- =======================================================
-        * Template Name: NiceAdmin
-        * Updated: Sep 18 2023 with Bootstrap v5.3.2
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
     </head>
 
     <body>
@@ -65,6 +56,16 @@
                     <!-- Horizontal Form -->
                     <form  name="productForm" method="post" action='/UnitController' onsubmit="return validateFormOrder()">
                         <div class="row mb-3">
+                            <%
+                                String errorMessage = (String) request.getSession().getAttribute("errorMessage");
+                                if (errorMessage != null) {
+                            %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= errorMessage%>
+                            </div>
+                            <%-- Xóa thông báo lỗi khỏi session để tránh hiển thị nhiều lần --%>
+                            <% request.getSession().removeAttribute("errorMessage"); %>
+                            <% }%>
                             <label for="inputEmail3" class="col-sm-2 col-form-label">ID</label>
                             <div class="col-sm-10">
                                 <input type="text" id="UnitID" name="UnitID" value="<%= unitOld.getUnitID()%>"readonly class="form-control" >

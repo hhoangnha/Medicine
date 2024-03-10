@@ -1,3 +1,6 @@
+<%@page import="Model.BrandModel"%>
+<%@page import="Model.UnitModel"%>
+<%@page import="Daos.UnitDAO"%>
 <%@page import="Model.ManufacturerModel"%>
 <%@page import="java.util.List"%>
 <%@page import="Daos.ManufacturerDAO"%>
@@ -16,7 +19,7 @@
         <title>Product</title>
         <meta content="" name="description">
         <meta content="" name="keywords"> 
-
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
         <!-- Favicons -->
         <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
         <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -37,13 +40,7 @@
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
 
-        <!-- =======================================================
-        * Template Name: NiceAdmin
-        * Updated: Sep 18 2023 with Bootstrap v5.3.2
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
+
     </head>
 
     <body>
@@ -58,153 +55,166 @@
                     <form class="d-flex flex-row justify-content-center" method="post" onsubmit="return validateForm()" enctype="multipart/form-data" action="/ProductController" >
                         <br>
                         <div class="w-50 p-3">
-                            <div class="row">
-                                <div class="col-sm-4 "><p>Product ID</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="number" id="id" name="id" value="<%= sp.getProID()%>" readonly="" /></div>
-                            </div>
-                            <div class="row">                       
-                                <div class="col-sm-4 "> <p>Product Code</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="text" id="code" name="code" value="<%= sp.getProCode()%>" /></div>
-                            </div>
-                            <div class="row">                       
-                                <div class="col-sm-4 "> <p>Product Name</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="text" id="name" name="name" value="<%= sp.getProName()%>" /></div>
-                            </div>
-                            <div class="row">
+                            <div class="row">     
                                 <br>
-                                <div class="col-sm-4 col-xs-8"><p>Manufacture Date</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="date" id="manufacturedate" name="manufacturedate" value="<%= sp.getManufactureDate()%>"/></div>                       
+                                <div class="col-sm-4 col-xs-8"> <p>Product Code</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="text" disabled id="code" name="code" value="<%=sp.getProCode()%>"  /></div>
+
                             </div>
-                            <div class="row">
+                            <div class="row">     
                                 <br>
-                                <div class="col-sm-4 col-xs-8"><p>Expiration Date</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="date" id="expirationdate" name="expirationdate" value="<%= sp.getExpirationDate()%>"/></div>                       
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4 "><p>Categories ID</p></div>
-                                <div class="col-sm-8">
-                                    <select class="w-100" name="catid" id="catid">
-                                        <%
-                                            cate_ad cDAO = new cate_ad();
-                                            ResultSet rs = cDAO.getAll();
-
-                                            while (rs.next()) {
-                                                String brandID = rs.getInt("CateID") + "";
-                                                String selectedID = sp.getCateID() + "";
-                                                //                                    String brandName = r.getString("BrandName");
-                                                // Kiểm tra xem BrandID có phải là giá trị cũ không
-                                                //                                    boolean isSelected = (selectedBrandID == brandID);
-%>
-                                        <option value="<%= rs.getInt("CateID")%>"<%= brandID.equals(selectedID) ? "selected" : ""%>><%= rs.getString("CateName")%></option>
-                                        <%
-                                            }
-                                        %>
-                                    </select>
-
-                                </div>
-                            </div>    
-                            <div class="row">
-                                <div class="col-sm-4 "><p>Brand ID</p></div>
-                                <div class="col-sm-8">
-                                    <select class="w-100" name="brandid" id="brandid" value="<%= sp.getBrandID()%>">
-                                        <%
-                                            BrandDAO cDAO2 = new BrandDAO();
-                                            ResultSet r = cDAO2.getAll();
-
-                                            request.setAttribute("selected", sp.getBrandID());
-                                            while (r.next()) {
-                                                String brandID = r.getInt("BrandID") + "";
-                                                String selectedID = sp.getBrandID() + "";
-                                                //                                    String brandName = r.getString("BrandName");
-                                                // Kiểm tra xem BrandID có phải là giá trị cũ không
-                                                //                                    boolean isSelected = (selectedBrandID == brandID);
-                                        %>
-                                        <option value="<%= r.getInt("BrandID")%>"<%= brandID.equals(selectedID) ? "selected" : ""%>><%= r.getString("BrandName")%></option>
-                                        <%
-                                            }
-                                        %>
-                                    </select>                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4 "><p>Manu ID</p></div>
-                                <div class="col-sm-8">
-                                    <select class="w-100" name="manuid" id="manuid" value="<%= sp.getManuID()%>">
-                                        <%
-                                            ManufacturerDAO manuDAO = new ManufacturerDAO();
-                                            List<ManufacturerModel> rsManu = manuDAO.getAllManufacturer();
-                                            for (int i = 0; i < rsManu.size(); i++) {
-                                                String ManuID = rsManu.get(i).getManuID() + "";
-                                                String selectedID = rsManu.get(i).getManuName() + "";
-                                                //                                    String brandName = r.getString("BrandName");
-                                                // Kiểm tra xem BrandID có phải là giá trị cũ không
-                                                //                                    boolean isSelected = (selectedBrandID == brandID);
-                                        %>
-                                        <option  value="<%= rsManu.get(i).getManuID()%>"<%= ManuID.equals(selectedID) ? "selected" : ""%>><%= rsManu.get(i).getManuName()%></option>
-                                        <%
-                                            }
-                                        %>
-                                    </select>                    
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row ">
-                                <div class="w-50">
-                                    <div class="col-sm-12 "><p>Old Image:</p></div>
-                                    <div class="col-sm-12">
-                                        <img src="/resources/images/<%= sp.getProImage()%>" alt="Product Image" width="100px" height="100px">
-                                       
-                                    </div>
-                                </div>
-                                    <div class="w-50">
-                                    <div class="col-sm-12"><p>Image Options:</p></div>
-                                    <br>
-                                    <div class="col-sm-12">
-                                        <!--                                <input  id="updateImage" name="updateImage" >
-                                                                        <label for="updateImage">Cập nhật ảnh</label>
-                                                                        <br>-->
-                                        <input type="file" id="newImage" name="newImage" size="50" >
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="w-50 p-3">
-                            <div class="row">
-                                <br>
-                                <div class="col-sm-4 col-xs-8"><p>Description</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="text" id="des" name="des" value="<%= sp.getProDescription()%>"/></div>
+                                <div class="col-sm-4 col-xs-8"> <p>Product Name</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="text" id="name" name="name"  value="<%=sp.getProName()%>" /></div>
 
                             </div>
                             <div class="row">
                                 <br>
                                 <div class="col-sm-4 col-xs-8"><p>Quantity</p></div>
-                                <div class="col-sm-8"><input class="form-control" type="number" id="quantity" name="quantity" value="<%= sp.getQuantity()%>"/></div>                       
+                                <div class="col-sm-8"><input class="form-control" type="number" id="quantity" name="quantity" value="<%=sp.getQuantity()%>" /></div>                       
+                            </div>
+                            <div class="row">
+                                <br>
+                                <div class="col-sm-4 col-xs-8"><p>Manufacture Date</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="date" id="manufacturedate" name="manufacturedate" value="<%=sp.getManufactureDate()%>" /></div>                       
+                            </div>
+                            <div class="row">
+                                <br>
+                                <div class="col-sm-4 col-xs-8"><p>Expiration Date</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="date" id="expirationdate" name="expirationdate" value="<%=sp.getExpirationDate()%>" /></div>                       
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 col-xs-8"><p>Categories</p></div>
+                                <div class="col-sm-8">
+                                    <select name="catid" id="catid" class="form-control">
+                                        <option>Select Category</option>
+                                        <%
+                                            cate_ad cDAO = new cate_ad();
+                                            ResultSet rs = cDAO.getAll();
+                                            while (rs.next()) {
+
+                                        %>
+                                        <option 
+                                            <%if (sp.getCateID() == rs.getInt("CateID")) {  %>
+                                            selected
+                                            <%}
+                                            %>
+                                            value="<%= rs.getInt("CateID")%>"><%= rs.getString("CateName")%></option>
+
+                                        <%
+                                            }
+                                        %>
+                                    </select>
+                                </div>            
+                            </div>
+                            <div class ="row">
+                                <div class="col-sm-4 col-xs-8"><p>Brand ID</p></div>
+                                <div class="col-sm-8">
+                                    <select name="brandid" id="brandid" class="form-control">
+                                        <option>Select Brand</option>
+                                        <%
+                                            BrandDAO cDAO2 = new BrandDAO();
+                                            List<BrandModel> r = cDAO2.getAll();
+                                            for (BrandModel item : r) {%>
+                                        <option 
+                                            <%if (sp.getBrandID() == item.getBrandID()) {  %>
+                                            selected
+                                            <%}%>
+                                            value="<%= item.getBrandID()%>"><%= item.getBrandName()%></option>
+                                        <% }
+
+                                        %>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <br>
+                                <div class="col-sm-4 col-xs-8"><p>Manufacture</p></div>
+                                <div class="col-sm-8">
+                                    <select name="manuid" id="manuid" class="form-control">
+                                        <option>Select Manufacture</option>
+                                        <%                                            ManufacturerDAO manuDAO = new ManufacturerDAO();
+                                            List<ManufacturerModel> rsManu = manuDAO.getAllManufacturer();
+                                            for (int i = 0; i < rsManu.size(); i++) {
+
+                                        %>
+                                        <option
+                                            <%if (sp.getManuID() == rsManu.get(i).getManuID()) {  %>
+                                            selected
+                                            <%}%>
+                                            value="<%= rsManu.get(i).getManuID()%>"><%= rsManu.get(i).getManuName()%></option>
+
+                                        <%
+                                            }
+                                        %>
+                                    </select>
+                                </div>                       
                             </div>
                             <div class="row"><br/>
+                                <div class="col-sm-4 col-xs-8"><p>Image</p></div>
+                                <div class="col-sm-8"><input class="form-control" type="file" id="image" name="image" size="50"  /></div>   
+                                <img style="max-height:200px" src="/resources/images/<%= sp.getProImage() %>" alt="">
+                            </div>
+                            <div class="row">
+                                <br>
+
+                                <div class="col-sm-4 col-xs-8"><p>Units</p></div>
+                                <div class="col-sm-8">
+                                    <select name="unitid" id="unitid" multiple class="form-control">
+                                        <option>Select Unit</option>
+                                        <%
+                                            UnitDAO unitDAO = new UnitDAO();
+                                            List<UnitModel> rsUnit = unitDAO.getAllUnit();
+                                            for (UnitModel item : rsUnit) {
+                                        %>
+                                        <option value="<%= item.getUnitID()%>"><%= item.getUnitName()%></option>
+
+                                        <%}
+                                        %>
+                                    </select>
+                                </div>                       
+                            </div>
+                            <div id="unitDetails"></div>
+                        </div>
+                        <div class="w-50 p-3">
+
+                            <div class="row"><br/>
+                                <div class="col-sm-4 col-xs-8"><p>Description</p></div>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" type="text" id="des" name="des"><%= sp.getProDescription()  %></textarea>
+                                </div>                        
+                            </div>
+
+                            <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Indication</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="indicaction" type="text" name="indication" value="<%= sp.getIndication()%>"/></div>                        
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="indicaction" type="text" name="indication"><%= sp.getIndication()%></textarea>
+                                </div>                        
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Contraindication</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="contraindication" type="text" name="contraindication" value="<%= sp.getContraindication()%>"/></div>                        
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="contraindication" type="text" name="contraindication"><%= sp.getContraindication()%></textarea>
+                                </div>                        
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Using</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="using" type="text" name="using" value="<%= sp.getUsing()%>"/></div>                        
+                                <div class="col-sm-8">
+                                    <textarea  class="form-control" id="using" type="text" name="using"><%= sp.getUsing()%></textarea></div>                        
                             </div> 
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Element</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="element" type="text" name="element" value="<%= sp.getElement()%>"/></div>                        
+                                <div class="col-sm-8"><input class="form-control" id="element" type="text" value="<%= sp.getElement()%>" name="element"/></div>                        
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Made in</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="madein" type="text" name="madein"value="<%= sp.getMadeIn()%>"/></div>                        
+                                <div class="col-sm-8"><input class="form-control" id="madein" type="text" <%= sp.getMadeIn() %> name="madein"/></div>                        
                             </div>
                             <div class="row">
                                 <div class="col-sm-4 col-xs-8"></div>
                                 <div class="col-sm-8 d-flex flex-row justify-content-center" id="lbtn">
                                     <a href='/ProductController' class="btn btn-secondary mx-3" id="btl">Back to List</a>  
-                                    <input class="btn btn-primary me-3" id="submit" type="submit" name="btnUpdate" value="Add New"/>
+                                    <input class="btn btn-primary me-3" id="submit" type="submit" name="btnAddNew" value="Add New"/>
                                 </div>
                             </div>
                         </div>
@@ -213,7 +223,7 @@
 
 
 
-                      
+
                     </form>
 
                 </div>
@@ -231,7 +241,33 @@
         <script src="/resources/AdminAssets/vendor/simple-datatables/simple-datatables.js"></script>
         <script src="/resources/AdminAssets/vendor/tinymce/tinymce.min.js"></script>
         <script src="/resources/AdminAssets/vendor/php-email-form/validate.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script >
+                        $(document).ready(function () {
+                            $('#unitid').select2();
+                            $('#unitid').change(function () {
+                                $('#unitDetails').empty(); // Xóa bỏ các input hiện tại trước khi thêm mới
+
+                                $(this).find('option:selected').each(function () {
+                                    var selectedUnitID = $(this).val();
+                                    var selectedUnitName = $(this).text();
+                                    var unitInputHTML = '<div class="form-group">' +
+                                            '<label for="unitPrice">Price for ' + selectedUnitName + '</label>' +
+                                            '<input name="prices[]" type="number" class="form-control unitPrice" data-unitid="' + selectedUnitID + '" placeholder="Enter price">' +
+                                            '</div>';
+                                    $('#unitDetails').append(unitInputHTML);
+                                });
+                            });
+
+                            // Xóa input khi bỏ chọn một đơn vị
+                            $('#unitid').on('change', function () {
+                                $(this).find('option:not(:selected)').each(function () {
+                                    var unselectedUnitID = $(this).val();
+                                    $('.unitPrice[data-unitid="' + unselectedUnitID + '"]').parent().remove();
+                                });
+                            });
+                        });
                         function validateForm() {
 
                             var name = document.getElementById("name2").value;

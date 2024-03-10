@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import xuly.md5;
@@ -33,7 +35,8 @@ public class cate_ad {
         }
     }
 
-    public ResultSet getAll() {
+    public List<CategorieModel> getListCateModel() {
+        List<CategorieModel> listCategory = new ArrayList<>();
         ResultSet rs = null;
         try {
             // Create a PreparedStatement with a parameterized query
@@ -43,11 +46,27 @@ public class cate_ad {
             // ps.setInt(1, st);  // 0 là tồn tại nên để lại 
             // Execute the query and store the result in the ResultSet
             rs = ps.executeQuery();
+            while(rs.next()){
+                listCategory.add(new CategorieModel(rs.getInt(1), rs.getString(2), rs.getString(3)));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(userad_ad.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return listCategory;
+    }
+    
+    public ResultSet getAll(){
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT * FROM Categories";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            return rs;
+        } catch (Exception e) {
+        }
         return rs;
     }
+    
     public int checkDuplicate(int cateid, String cateName) throws SQLException{
 //        CategorieModel isDuplicate = new CategorieModel();
         int isDuplicate = 0;
@@ -159,8 +178,13 @@ public class cate_ad {
         return ct;
     }
     public static void main(String[] args) throws SQLException {
-//        cate_ad ct = new cate_ad();
-         
-//        System.out.println(rs);
+        cate_ad ct = new cate_ad();
+         List<CategorieModel> listCategory = ct.getListCateModel();
+         for(int i = 0; i < listCategory.size(); i++){
+             System.out.println(listCategory.get(i).getCateID());
+             System.out.println(listCategory.get(i).getCateName());
+             System.out.println(listCategory.get(i).getCateDescription());
+         }
+        
     }
 }

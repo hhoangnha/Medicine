@@ -1,3 +1,6 @@
+<%@page import="Model.BrandModel"%>
+<%@page import="Model.BrandModel"%>
+<%@page import="java.util.List"%>
 <%@page import="Daos.BrandDAO"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,13 +19,9 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Category</title>
+        <title>Brand</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
-
-        <!-- Favicons -->
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -57,20 +56,12 @@
     </head>
 
     <body>
-        <%
-            // Lấy dữ liệu từ session
-            String msgSuccess = (String) session.getAttribute("msgSuccess");
-            if (msgSuccess != null) {
-        %>
+        
         <script>
             // Sử dụng SweetAlert để hiển thị thông báo
           alertify.success("Thành công");
         </script>
-        <%
-                // Xóa thông báo sau khi hiển thị
-                session.removeAttribute("message");
-            }
-        %>
+       
         <jsp:include page="admin-header.jsp" />
         <jsp:include page="admin-aside.jsp" />
 
@@ -95,38 +86,41 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Brand</h5>
-                                <a href="/BrandController/Create" class="btn btn-primary ">Add new</a>
-                                <!-- Table with stripped rows -->
+                                <a href="/admin-brand-create.jsp" class="btn btn-primary ">Add new</a>
+                               <!-- Table with stripped rows -->
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Brand name</th>
+                                            <th>Origin</th>
 
-                                            <th></th>
-                                            <th></th>
-
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        <%
-                                            BrandDAO d = new BrandDAO();
-                                            ResultSet rs = d.getAll();
 
-                                            while (rs.next()) {
+                                        <%
+                                            List<BrandModel> listB = (List<BrandModel>) request.getAttribute("listB");
+                                            if (listB != null) {
+                                                for (BrandModel o : listB) {
+                                        %>
+                                        <tr>
+                                            <td><%= o.getBrandID()%></td>
+                                            <td><%= o.getBrandName()%></td>
+                                            <td><%= o.getOrigin()%></td>
+
+                                            <td>
+                                                <a style="color:white" class="btn bg-primary btn-sm" href="/BrandController?edit=<%= o.getBrandID()%>">Edit</a>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Brand can not restore');" class="btn bg-danger btn-sm" href="/BrandController?delete=<%= o.getBrandID()%>">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <%
+                                                }
+                                            }
                                         %>
 
-                                        <tr>
-                                            <td><%= rs.getInt("BrandID")%></td>
-                                            <td><%= rs.getString("BrandName")%> </td>
-                                            <td>
-                                                <a style="color:white" class="btn bg-primary btn-sm " href="/BrandController/Edit/<%= rs.getInt("BrandID")%>" >Edit</a>
-                                                <a style="color:white" onclick="return confirm('Are you sure? Brand can not restore');" class="btn bg-danger btn-sm " href="/BrandController/Delete/<%= rs.getInt("BrandID")%>" >delete</a> <br>  
-                                        </tr>
-
-
-                                        <% }%>
 
                                     </tbody>
                                 </table>

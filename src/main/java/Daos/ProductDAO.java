@@ -55,10 +55,12 @@ public class ProductDAO {
                     + "join Manufacturer m on m.ManuID = p.ManuID");
             return rs;
         } catch (SQLException ex) {
+            System.out.println(ex);
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
+    
 
     public ResultSet getByCategory(int cateID) {
         ResultSet rs = null;
@@ -227,7 +229,7 @@ public class ProductDAO {
             if (rs.next()) {
                 return -1;
             } else {
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,`Using`,MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, ProCode);
                 ps.setString(2, ProName);
                 ps.setString(3, ProDescription);

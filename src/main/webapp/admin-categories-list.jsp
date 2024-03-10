@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,22 +121,22 @@
 
                                         <% //CusDAO cd = new CusDAO();
                                             cate_ad d = new cate_ad();
-                                            ResultSet rs = d.getAll();
+                                            List<CategorieModel> listCategory = d.getListCateModel();
 
                                             // list<user> lu = d.getAdminUser("user");
-                                            while (rs.next()) {
+                                            for(int i = 0; i < listCategory.size(); i++) {
                                         %>
 
                                         <tr>
-                                            <td><%=  rs.getInt("CateID")%></td>
-                                            <td class="CateNameColumn"><%= rs.getString("Catename")%> </td>
+                                            <td><%=listCategory.get(i).getCateID()%></td>
+                                            <td class="CateNameColumn"><%=listCategory.get(i).getCateName()%> </td>
 
-                                            <td><%=  rs.getString("CateDescription")%></td>
+                                            <td><%=listCategory.get(i).getCateDescription()%></td>
 
 
                                             <td style="width: 20%; text-align: center">
-                                                <a style="color:white" class="btn bg-primary btn-sm " href="/AdminCateController/Edit/<%= rs.getInt("CateID")%>" >Edit</a>
-                                                <a style="color:white" onclick="return confirm('Are you sure? Category can not restore');" class="btn bg-danger btn-sm " href="/AdminCateController/Delete/<%= rs.getInt("CateID")%>" >Delete</a> <br>  
+                                                <a style="color:white" class="btn bg-primary btn-sm " href="/AdminCateController/Edit/<%=listCategory.get(i).getCateID()%>" >Edit</a>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Category can not restore');" class="btn bg-danger btn-sm " href="/AdminCateController/Delete/<%=listCategory.get(i).getCateID()%>" >Delete</a> <br>  
 
 
 

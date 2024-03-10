@@ -243,7 +243,7 @@ public class ProductController extends HttpServlet {
 
                         upd.addNew(unitId, rs, price);
                     }
-                    response.sendRedirect("/ProductController");
+//                    response.sendRedirect("/ProductController");
                 }
 
             }

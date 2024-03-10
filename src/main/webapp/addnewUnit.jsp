@@ -10,8 +10,6 @@
         <meta content="" name="keywords">
 
         <!-- Favicons -->
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -39,6 +37,7 @@
     </head>
 
     <body>
+
         <div class="col-lg-12  container mt-5">
 
             <div class="card">
@@ -48,6 +47,16 @@
                     <!-- Horizontal Form -->
                     <form id="formCreateUnit" method="post" action="UnitController" onsubmit="return validateFormOrder()">
                         <div class="row mb-3">
+                            <%
+                                String errorMessage = (String) request.getSession().getAttribute("errorMessage");
+                                if (errorMessage != null) {
+                            %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= errorMessage%>
+                            </div>
+                            <%-- X?a th?ng b?o l?i kh?i session ?? tr?nh hi?n th? nhi?u l?n --%>
+                            <% request.getSession().removeAttribute("errorMessage"); %>
+                            <% }%>
                             <label class="col-sm-2 col-form-label">Unit Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name='UnitName' class="form-control" id="UnitName">
@@ -73,19 +82,19 @@
         <script src="/resources/AdminAssets/vendor/tinymce/tinymce.min.js"></script>
         <script src="/resources/AdminAssets/vendor/php-email-form/validate.js"></script>
         <script>
-                         function validateFormOrder() {
+                        function validateFormOrder() {
 
 
-                             var productname = document.forms["productForm"]["name"].value;
-                             var prodes = document.forms["productForm"]["des"].value;
+                            var productname = document.forms["productForm"]["name"].value;
+                            var prodes = document.forms["productForm"]["des"].value;
 
-                             //  var date = document.forms["productForm"]["txtdate"].value;
-                             if (productname === "" || prodes === "") {
-                                 alert("Please enter all flies");
-                                 return false;
-                             }
-                             return true;
-                         }
+                            //  var date = document.forms["productForm"]["txtdate"].value;
+                            if (productname === "" || prodes === "") {
+                                alert("Please enter all flies");
+                                return false;
+                            }
+                            return true;
+                        }
         </script>
         <!-- Template Main JS File -->
         <script src="/resources/AdminAssets/js/main.js"></script>
