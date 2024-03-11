@@ -76,6 +76,7 @@ public class OrderController extends HttpServlet {
                     int OrderID = Integer.parseInt(s[s.length - 1]);
                     OrderDAO o = new OrderDAO();
                     o.updateStatus(OrderID, 2);
+                    
                     o.updateStaffIDForOrder(OrderID, staffID);
                     session.setAttribute("msgSuccess", "Delete successfully!");
                     response.sendRedirect("/OrderController");

@@ -179,7 +179,8 @@ public class OrderDAO {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public int updateStaffIDForOrder(int OrderID, int staffID){
+
+    public int updateStaffIDForOrder(int OrderID, int staffID) {
         int count = 0;
         try {
             PreparedStatement ps = conn.prepareStatement("update Orders set StaffID = ? where OrderID = ?");;
@@ -190,6 +191,7 @@ public class OrderDAO {
         }
         return (count == 0) ? 0 : 1;
     }
+
     public int updateStatus(int OrderID, int orderStatus) {
         int count = 0;
         try {
@@ -210,7 +212,7 @@ public class OrderDAO {
         while (rs.next()) {
             OrderID_DAOad dod = new OrderID_DAOad();
             System.out.println("START WHILE1 ORDERID:" + rs.getInt("OrderID"));
-            System.out.println(">>>"+rs.getInt("OrderID"));
+            System.out.println(">>>" + rs.getInt("OrderID"));
             ResultSet rsc = dod.getProductOrder(rs.getInt("OrderID"));
             while (rsc.next()) {
                 System.out.println("WHILE2 ORDERID:" + rs.getInt("OrderID"));
