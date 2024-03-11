@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class CheckingNumber {
 
     public boolean isValidPhoneNumber(String phoneNumber) {
-        // Định dạng số điện thoại: 10 chữ số (hoặc 11 nếu có mã quốc gia)
+        // Định dạng số điện thoại: 10 chữ số (hoặc 11 nếu có mã quốc gia ok ko)
         Pattern pattern = Pattern.compile("^[0-9]{10,11}$");
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
