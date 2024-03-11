@@ -22,6 +22,7 @@ public class CheckingDate {
         // Format date as SQL Date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return currentDate.format(formatter);
+        //ok
     }
 
     public boolean isValidDate(String inputDate) {
