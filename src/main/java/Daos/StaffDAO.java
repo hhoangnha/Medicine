@@ -69,6 +69,24 @@ public class StaffDAO {
         return currentDate.format(formatter);
     }
 
+    public int getStaffIDByUserID(int userID) {
+        int staffID = 0;
+        String query = "SELECT Staff.StaffID FROM Accounts acc \n"
+                + "JOIN Staff ON Staff.UserID = acc.UserID\n"
+                + "WHERE acc.UserID = ?";
+        try {
+            conn = new DBConnection().connect(); 
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                staffID = rs.getInt("StaffID");
+            }
+        } catch (Exception e) {
+        }
+        return staffID;
+    }
+
     // Method to add a new staff member
     public void addAccount(String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
         String query = "INSERT INTO Accounts "
@@ -367,13 +385,12 @@ public class StaffDAO {
         return false;
     }
 
-    
-
     public static void main(String[] args) {
         // Tạo một đối tượng của lớp StaffManager để sử dụng hàm addStaff()
         StaffDAO staffManager = new StaffDAO();
-
-        StaffDAO test = new StaffDAO();
-        System.out.println(test.isUsernameExists("vinh2k34"));
+        int staffID = staffManager.getStaffIDByUserID(2);
+        System.out.println("staffID: " +staffID);
+//        StaffDAO test = new StaffDAO();
+//        System.out.println(test.isUsernameExists("vinh2k34"));
     }
 }

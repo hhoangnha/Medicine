@@ -1,3 +1,6 @@
+<%@page import="Daos.OrderDAO"%>
+<%@page import="Daos.StaffDAO"%>
+<%@page import="Model.UserModel"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Daos.OrderID_DAOad"%>
 <%@page import="Model.OrderModel"%>
@@ -58,6 +61,11 @@
 
                     }
                 }
+                OrderDAO o = new OrderDAO();
+                UserModel user = (UserModel) session.getAttribute("acc");
+                StaffDAO callStaffFunc = new StaffDAO();
+                int staffID = callStaffFunc.getStaffIDByUserID(user.getUserID());
+                o.updateStaffIDForOrder(oid, staffID);
                 OrderID_DAOad od = new OrderID_DAOad();
                 ResultSet userOrderInfor = od.getUserOrderInfor(oid);
                 int orderStatus = 1;

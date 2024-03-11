@@ -5,7 +5,9 @@
 package Controllers;
 
 import Daos.OrderDAO;
+import Daos.StaffDAO;
 import Model.OrderModel;
+import Model.UserModel;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,9 +69,14 @@ public class OrderController extends HttpServlet {
             if (path.startsWith("/OrderController/confirmOrder/")) {
                 String[] s = path.split("/");
                 try {
+                    UserModel user = (UserModel) session.getAttribute("acc");
+                    StaffDAO callStaffFunc = new StaffDAO();
+                    int staffID = callStaffFunc.getStaffIDByUserID(user.getUserID());
+                    
                     int OrderID = Integer.parseInt(s[s.length - 1]);
                     OrderDAO o = new OrderDAO();
                     o.updateStatus(OrderID, 2);
+                    o.updateStaffIDForOrder(OrderID, staffID);
                     session.setAttribute("msgSuccess", "Delete successfully!");
                     response.sendRedirect("/OrderController");
                 } catch (Exception ex) {
