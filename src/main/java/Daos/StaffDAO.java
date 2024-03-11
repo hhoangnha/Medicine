@@ -12,12 +12,14 @@ import Model.StaffModel;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import xuly.CheckingDate;
 
 public class StaffDAO {
 
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
+    CheckingDate day = new CheckingDate();
 
     // Hàm lấy danh sách thông tin staff
     public List<StaffModel> getStaffList() {
@@ -60,15 +62,6 @@ public class StaffDAO {
         return staffList;
     }
 
-    private String getCurrentDate() {
-        // Get current date
-        LocalDate currentDate = LocalDate.now();
-
-        // Format date as SQL Date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return currentDate.format(formatter);
-    }
-
     // Method to add a new staff member
     public void addAccount(String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
         String query = "INSERT INTO Accounts "
@@ -89,7 +82,7 @@ public class StaffDAO {
             ps.setString(7, birthday);
             ps.setString(8, gender);
             ps.setInt(9, 2); // Giá trị mặc định cho trường isAdmin
-            ps.setString(10, getCurrentDate()); // Sử dụng phương thức để lấy ngày hiện tại
+            ps.setString(10, day.getCurrentDate()); // Sử dụng phương thức để lấy ngày hiện tại
             ps.executeUpdate();
 
 //            // Thêm bản ghi mới vào bảng Staff
@@ -367,13 +360,28 @@ public class StaffDAO {
         return false;
     }
 
-    
+    public boolean isIDNumberExist(String id) {
+        String query = "SELECT COUNT(*) FROM Staff WHERE IDNumber = ?";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với SQL
+            ps = conn.prepareStatement(query);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0; // Trả về true nếu username tồn tại, ngược lại trả về false
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         // Tạo một đối tượng của lớp StaffManager để sử dụng hàm addStaff()
         StaffDAO staffManager = new StaffDAO();
 
         StaffDAO test = new StaffDAO();
-        System.out.println(test.isUsernameExists("vinh2k34"));
+        System.out.println(test.day.getCurrentDate());
     }
 }
