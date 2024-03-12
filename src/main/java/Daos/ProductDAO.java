@@ -49,10 +49,11 @@ public class ProductDAO {
     public ResultSet getAll() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select p.ProID, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
+            ResultSet rs = st.executeQuery("select p.ProID,p.ProCode , p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
                     + "join Categories c on c.CateID = p.CateID\n"
                     + "join Brand b on b.BrandID = p.BrandID\n"
-                    + "join Manufacturer m on m.ManuID = p.ManuID");
+                    + "join Manufacturer m on m.ManuID = p.ManuID "
+                    + "Order By p.ProID DESC");
             return rs;
         } catch (SQLException ex) {
             System.out.println(ex);

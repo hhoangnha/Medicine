@@ -100,7 +100,7 @@
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>Code</th>
                                             <th >Name</th>  
                                             <th>Quantity</th>
                                             <th>Picture</th>
@@ -122,7 +122,7 @@
 
 
                                         <tr>
-                                            <td><%= rs.getInt("ProID")%></td>
+                                            <td><%= rs.getString("ProCode")%></td>
                                             <td><%= rs.getString("ProName")%></td>
                                             <td><%=  rs.getInt("Quantity")%></td>
                                             <td>
