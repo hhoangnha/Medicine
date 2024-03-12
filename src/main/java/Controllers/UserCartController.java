@@ -80,18 +80,26 @@ public class UserCartController extends HttpServlet {
         UserModel uM = (UserModel) session.getAttribute("acc");
         CartDAO cd = new CartDAO();
         if (path.startsWith("/UserCartController/AddToCart")) {
+            response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
 
             int quan = Integer.parseInt(request.getParameter("quan"));
-            int unit = Integer.parseInt(request.getParameter("unit"));
-            String[] s = path.split("/");
-            // response.sendRedirect("/product-detail.jsp");
-            int pro_id = Integer.parseInt(s[s.length - 1]);
+            int unit = 0;
+                
+            try {
+                unit = Integer.parseInt(request.getParameter("unit"));
+                String[] s = path.split("/");
+                // response.sendRedirect("/product-detail.jsp");
+                int pro_id = Integer.parseInt(s[s.length - 1]);
 
-            cd.addOrUpdateCartItem(uM.getUserID(), pro_id, quan, unit);
+                cd.addOrUpdateCartItem(uM.getUserID(), pro_id, quan, unit);
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{ \"success\": true }");
+                
+                response.getWriter().write("{ \"success\": true }");
+            } catch (Exception e) {
+                //-1 lỗi ko thêm unit
+                response.getWriter().write("{ \"success\": failed,\"status\":-1  }");
+            }
 
         } else if (path.startsWith(
                 "/UserCartController/RemoveFromCart")) {
@@ -202,6 +210,7 @@ public class UserCartController extends HttpServlet {
                     int od = oC.addNewOrder(uM.getUserID(), 0, formattedDate, 1, total, selectedProductIDs);
 
                     if (od != 0) {
+                        session.setAttribute("orderCreated", true);
                         System.out.println("Tạo đơn thành công");
                         response.sendRedirect("/UserHomeController");
                     }

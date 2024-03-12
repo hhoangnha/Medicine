@@ -14,10 +14,6 @@
         <meta content="" name="description">
         <meta content="" name="keywords">
 
-        <!-- Favicons -->
-        <link href="https://fonts.gstatic.com" rel="preconnect">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
         <!-- Vendor CSS Files -->
         <link href="/resources/AdminAssets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/AdminAssets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -38,13 +34,6 @@
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
 
-        <!-- =======================================================
-        * Template Name: NiceAdmin
-        * Updated: Sep 18 2023 with Bootstrap v5.3.2
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
     </head>
 
     <body>
@@ -86,7 +75,26 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Product</h5>
+                                <form action="/DownloadTemplateServlet" onsubmit="return validateForm()" method="post" enctype="multipart/form-data"> <div class="mb-3">
+                                        <label for="formFile" class="form-label">Import product by excel. <a href="DownloadTemplateServlet">Download import template</a></label>
+
+
+                                        <div class="row">
+                                            <div class="col-md-8"> 
+                                                <input class="form-control" name="file" accept=".xls,.xlsx" type="file" id="formFile">
+                                            </div>
+                                            <div class="col-md-2"> 
+                                                <button type="submit" class="btn btn-success">Upload</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+
                                 <a href="/ProductController/Create" class="btn btn-primary ">Add new</a>
+
+
+
 
                                 <!-- Table with stripped rows -->
                                 <table class="table datatable">
@@ -163,7 +171,15 @@
 
         <!-- Template Main JS File -->
         <script src="/resources/AdminAssets/js/main.js"></script>
-
+        <script>function validateForm() {
+        var fileInput = document.getElementById('formFile');
+        var file = fileInput.files[0];
+        if (!file) {
+            alert("Please select a file.");
+            return false;
+        }
+        return true;
+    }</script>
     </body>
 
 </html>

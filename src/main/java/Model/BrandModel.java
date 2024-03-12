@@ -48,9 +48,14 @@ public class BrandModel {
         this.origin = origin;
     }
 
+//    @Override
+//    public String toString() {
+//        return "BrandModel{" + "BrandID=" + BrandID + ", BrandName=" + BrandName + ", origin=" + origin + '}';
+//    }
+    
     @Override
     public String toString() {
-        return "BrandModel{" + "BrandID=" + BrandID + ", BrandName=" + BrandName + ", origin=" + origin + '}';
+        return BrandID+"-"+BrandName;
     }
 
   

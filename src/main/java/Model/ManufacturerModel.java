@@ -33,7 +33,6 @@ public class ManufacturerModel {
         this.ManuAddress = ManuAddress;
         this.Phone = Phone;
     }
-    
 
     public int getManuID() {
         return ManuID;
@@ -75,9 +74,12 @@ public class ManufacturerModel {
         this.Phone = Phone;
     }
 
+//    @Override
+//    public String toString() {
+//        return "ManufacturerModel{" + "ManuID=" + ManuID + ", ManuName=" + ManuName + ", MfgLicense=" + MfgLicense + ", ManuAddress=" + ManuAddress + ", Phone=" + Phone + '}';
+//    }
     @Override
     public String toString() {
-        return "ManufacturerModel{" + "ManuID=" + ManuID + ", ManuName=" + ManuName + ", MfgLicense=" + MfgLicense + ", ManuAddress=" + ManuAddress + ", Phone=" + Phone + '}';
+        return ManuID+"-"+ManuName;
     }
-
 }

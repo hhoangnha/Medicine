@@ -208,7 +208,7 @@
                                             <div class="row text-muted"><%=pdm.getProName()%> - <%= item.getCartID()%></div>
                                             <div class="row"><%= cd.getUnitName(item.getUnitID()).getUnitName()%></div>
                                             <small>Price: <%=um.getPrice()%></small><br/>
-                                            <small>chỉ còn: <%=pdm.getQuantity()%> sản phẩm</small>
+                                            <small>Only: <%=pdm.getQuantity()%> product</small>
                                         </div>
                                         <div class="col">
 
@@ -246,11 +246,10 @@
                             <input type="text" value="<%=udd.getPhone()%>" name="phone" >
                             <p>Address</p>
                             <textarea name='address'><%=udd.getAddress()%></textarea>
-                            <p>Note</p>
-                            <textarea name='note'></textarea>
+                           
 
                             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                                <div class="col">Total order</div>
+                                <!--<div class="col">Total order</div>-->
                             </div>
                             <button class="btn" type="submit">Confirm order</button>
 
@@ -260,7 +259,7 @@
                         } else { %>
 
                         <div class="mt-3">
-                            <a href="/loginController"> Bạn chưa đăng nhập <small  class="text-primary">Đăng nhập ngay</small></a>
+                            <a href="/loginController"> You not login <small  class="text-primary">Login now</small></a>
                         </div>
                         <%}
 
@@ -341,11 +340,11 @@
 
                                             function confirmRemove(productId, unitId) {
                                                 Swal.fire({
-                                                    title: 'Xác nhận xoá khỏi giỏ hàng!',
+                                                    title: 'Confirm to remove !',
                                                     icon: 'warning',
                                                     showCancelButton: true,
-                                                    confirmButtonText: 'Đồng ý',
-                                                    cancelButtonText: "Đóng",
+                                                    confirmButtonText: 'Confirm',
+                                                    cancelButtonText: "Close",
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
                                                         $.ajax({
@@ -366,11 +365,11 @@
 
                                                 if ($('#val' + productId).text() == 1) {
                                                     Swal.fire({
-                                                        title: 'Nếu bạn chọn đồng ý, sản phẩm sẽ bị xoá khỏi giỏ hàng!',
+                                                        title: 'If confirm, product will be remove from cart!',
                                                         icon: 'warning',
                                                         showCancelButton: true,
-                                                        confirmButtonText: 'Đồng ý',
-                                                        cancelButtonText: "Đóng",
+                                                        confirmButtonText: 'Confirm',
+                                                        cancelButtonText: "Close",
                                                     }).then((result) => {
                                                         if (result.isConfirmed) {
                                                             $.ajax({

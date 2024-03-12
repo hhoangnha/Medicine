@@ -88,11 +88,11 @@ public class CartDAO {
                 int currentQuantity = rs.getInt("Quantity");
                 int newQuantity = currentQuantity + Quantity;
 
-                PreparedStatement updatePs = conn.prepareStatement("UPDATE Carts SET Quantity = ? WHERE CustomerID = ? AND ProID = ?");
+                PreparedStatement updatePs = conn.prepareStatement("UPDATE Carts SET Quantity = ? WHERE CustomerID = ? AND ProID = ? AND UnitID = ?");
                 updatePs.setInt(1, newQuantity);
                 updatePs.setInt(2, CustomerID);
                 updatePs.setInt(3, ProID);
-
+                updatePs.setInt(4, Unit);
                 count = updatePs.executeUpdate();
                 System.out.println(count + " rows updated");
                 System.out.println("Cart item updated successfully");

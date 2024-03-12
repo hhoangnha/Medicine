@@ -60,7 +60,6 @@ public class ProductDAO {
         }
         return null;
     }
-    
 
     public ResultSet getByCategory(int cateID) {
         ResultSet rs = null;
@@ -251,7 +250,7 @@ public class ProductDAO {
                 if (count > 0) {
                     ResultSet generatedKeys = ps.getGeneratedKeys();
                     if (generatedKeys.next()) {
-                         idNewProduct = generatedKeys.getInt(1);
+                        idNewProduct = generatedKeys.getInt(1);
                     }
                 }
             }
@@ -259,8 +258,72 @@ public class ProductDAO {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
-            
+
         }
+        return idNewProduct;
+    }
+
+    public int addOrUpdateProduct(String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+        int idNewProduct = 0; // Mặc định
+
+        try {
+            // Kiểm tra xem sản phẩm đã tồn tại trong hệ thống chưa
+            PreparedStatement psCheck = conn.prepareStatement("SELECT * FROM Products WHERE ProCode = ?");
+            psCheck.setString(1, ProCode);
+            ResultSet rs = psCheck.executeQuery();
+
+            if (rs.next()) {
+                // Nếu sản phẩm đã tồn tại, thực hiện cập nhật số lượng của sản phẩm
+                int currentQuantity = rs.getInt("Quantity");
+                int updatedQuantity = currentQuantity + Quantity;
+
+                PreparedStatement psUpdate = conn.prepareStatement("UPDATE Products SET Quantity = ? WHERE ProCode = ?");
+                psUpdate.setInt(1, updatedQuantity);
+                psUpdate.setString(2, ProCode);
+
+                int count = psUpdate.executeUpdate();
+
+                if (count > 0) {
+                    idNewProduct = rs.getInt("ProID");
+                    
+                    return 2;// trả về 2 nếu cập nhật
+                }
+                
+            } else {
+                // Nếu sản phẩm chưa tồn tại, thực hiện thêm mới sản phẩm
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, ProCode);
+                ps.setString(2, ProName);
+                ps.setString(3, ProDescription);
+                ps.setInt(4, CateID);
+                ps.setInt(5, BrandID);
+                ps.setInt(6, ManuID);
+//                ps.setString(7, ManufactureDate);
+//                ps.setString(8, ExpirationDate);
+                ps.setString(7, Element);
+                ps.setInt(8, Quantity);
+                ps.setString(9, Indication);
+                ps.setString(10, Contraindication);
+                ps.setString(11, Using);
+                ps.setString(12, MadeIn);
+                ps.setString(13, ProImage);
+
+                int count = ps.executeUpdate();
+
+//                if (count > 0) {
+//                    ResultSet generatedKeys = ps.getGeneratedKeys();
+//                    if (generatedKeys.next()) {
+//                        idNewProduct = generatedKeys.getInt(1);
+//                    }
+//                }
+return 1; // trả về 1 nếu thành công
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+            return -1; //-1 nếu thất bại
+        }
+
         return idNewProduct;
     }
 

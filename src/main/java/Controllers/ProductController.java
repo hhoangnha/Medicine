@@ -255,12 +255,14 @@ public class ProductController extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             String ProCode = request.getParameter("code");
             String ProName = request.getParameter("name");
+            String currentImage = request.getParameter("currentImage");
             String manufactureDateStr = request.getParameter("manufacturedate");
             String expirationDate = request.getParameter("expirationdate");
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
             int manuid = Integer.parseInt(request.getParameter("manuid"));
             Part newFilePart = request.getPart("newImage");
+            String newFileName;
 
             String des = request.getParameter("des");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -269,7 +271,12 @@ public class ProductController extends HttpServlet {
             String using = request.getParameter("using");
             String element = request.getParameter("element");
             String madein = request.getParameter("madein");
-            String newFileName = extractFileName(newFilePart);
+
+            if (newFilePart != null) {
+                newFileName = extractFileName(newFilePart);
+            } else {
+                newFileName = null;
+            }
             if (newFilePart != null) {
                 String allowedExtensions = ".jpg,.jpeg,.png,.gif";
                 String[] fileParts = newFileName.split("\\.");

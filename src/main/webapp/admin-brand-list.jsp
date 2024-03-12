@@ -59,7 +59,7 @@
         
         <script>
             // Sử dụng SweetAlert để hiển thị thông báo
-          alertify.success("Thành công");
+//          alertify.success("Thành công");
         </script>
        
         <jsp:include page="admin-header.jsp" />

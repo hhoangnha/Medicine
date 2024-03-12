@@ -1,3 +1,5 @@
+<%@page import="Daos.UnitProductDAO"%>
+<%@page import="Model.UnitProductModel"%>
 <%@page import="Model.BrandModel"%>
 <%@page import="Model.UnitModel"%>
 <%@page import="Daos.UnitDAO"%>
@@ -20,9 +22,6 @@
         <meta content="" name="description">
         <meta content="" name="keywords"> 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-        <!-- Favicons -->
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -55,6 +54,7 @@
                     <form class="d-flex flex-row justify-content-center" method="post" onsubmit="return validateForm()" enctype="multipart/form-data" action="/ProductController" >
                         <br>
                         <div class="w-50 p-3">
+                            <input class="form-control" type="text" hidden id="id" name="id" value="<%=sp.getProID()%>"  />
                             <div class="row">     
                                 <br>
                                 <div class="col-sm-4 col-xs-8"> <p>Product Code</p></div>
@@ -153,17 +153,44 @@
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Image</p></div>
                                 <div class="col-sm-8"><input class="form-control" type="file" id="image" name="image" size="50"  /></div>   
-                                <img style="max-height:200px" src="/resources/images/<%= sp.getProImage() %>" alt="">
+                                <img style="max-height:200px" src="/resources/images/<%= sp.getProImage()%>" alt="">
+                                <input name="currentImage" hidden value="<%= sp.getProImage()%>"  />
                             </div>
                             <div class="row">
                                 <br>
 
                                 <div class="col-sm-4 col-xs-8"><p>Units</p></div>
-                                <div class="col-sm-8">
+                                <small>To change the currency, please delete the old data and select a new unit</small>
+                                <div class="alert alert-secondary mt-3" role="alert">
+
+                                    <%
+                                        UnitDAO unitDAO = new UnitDAO(); 
+                                        UnitProductDAO uPD = new UnitProductDAO();
+                                        List<UnitProductModel> uProData = uPD.getProductUnits(sp.getProID());
+
+                                        for (UnitProductModel uPitem : uProData) { 
+                                        UnitModel unitItem = unitDAO.getUnit(uPitem.getUnitID());
+                                    %>
+                                        
+                                    <div class="d-flex justify-content-between">
+                                        <span><%= unitItem.getUnitName() %>: <span class="text-danger"><%= uPitem.getPrice() %></span> </span>
+                                        <button type="button" class="btn " >
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <%    }
+
+                                    %>
+
+
+
+
+
+                                </div>
+                                <div class="col-sm-8 mb-2">
                                     <select name="unitid" id="unitid" multiple class="form-control">
                                         <option>Select Unit</option>
-                                        <%
-                                            UnitDAO unitDAO = new UnitDAO();
+                                        <%                                            
                                             List<UnitModel> rsUnit = unitDAO.getAllUnit();
                                             for (UnitModel item : rsUnit) {
                                         %>
@@ -172,7 +199,10 @@
                                         <%}
                                         %>
                                     </select>
-                                </div>                       
+                                </div>   
+
+
+
                             </div>
                             <div id="unitDetails"></div>
                         </div>
@@ -181,7 +211,7 @@
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Description</p></div>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" type="text" id="des" name="des"><%= sp.getProDescription()  %></textarea>
+                                    <textarea class="form-control" type="text" id="des" name="des"><%= sp.getProDescription()%></textarea>
                                 </div>                        
                             </div>
 
@@ -208,13 +238,13 @@
                             </div>
                             <div class="row"><br/>
                                 <div class="col-sm-4 col-xs-8"><p>Made in</p></div>
-                                <div class="col-sm-8"><input class="form-control" id="madein" type="text" <%= sp.getMadeIn() %> name="madein"/></div>                        
+                                <div class="col-sm-8"><input class="form-control" id="madein" type="text" <%= sp.getMadeIn()%> name="madein"/></div>                        
                             </div>
                             <div class="row">
                                 <div class="col-sm-4 col-xs-8"></div>
                                 <div class="col-sm-8 d-flex flex-row justify-content-center" id="lbtn">
                                     <a href='/ProductController' class="btn btn-secondary mx-3" id="btl">Back to List</a>  
-                                    <input class="btn btn-primary me-3" id="submit" type="submit" name="btnAddNew" value="Add New"/>
+                                    <input class="btn btn-primary me-3" id="submit" type="submit" name="btnUpdate" value="Update"/>
                                 </div>
                             </div>
                         </div>

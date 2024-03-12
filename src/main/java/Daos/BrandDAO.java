@@ -117,8 +117,8 @@ public class BrandDAO {
     }
 
     public static void main(String[] args) {
-        BrandDAO test = new BrandDAO();
-        System.out.println(test.getBrandById("1"));
+//        BrandDAO test = new BrandDAO();
+//        System.out.println(test.getBrandById("1"));
 
     }
 }
