@@ -88,7 +88,7 @@
 
                     <form  method="post" action='/OrderID_ad' onsubmit="return validateFormOrder()">
                         <input name='oid' value='<%=oid%>' hidden />
-                        <input name='staffID' value='<%=staffID%>'/>
+                        <input name='staffID' value='<%=staffID%>'hidden/>
                         <div class='row '>
                             <div class='col-md-4 card'>
                                 <h5 class="card-title">Order Detail</h5>
