@@ -39,7 +39,7 @@ public class ForgotController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -138,7 +138,7 @@ public class ForgotController extends HttpServlet {
                     message.setContent(emailContent, "text/html; charset=utf-8");
 
                     Transport.send(message);
-                 
+
                 } catch (MessagingException mex) {
                     mex.printStackTrace();
                     System.out.println("Lỗi gửi");
@@ -148,15 +148,16 @@ public class ForgotController extends HttpServlet {
             //
             response.sendRedirect("/EmailSuccess.jsp");
 
-        }else{
-             HttpSession session = request.getSession();
+        } else {
+            HttpSession session = request.getSession();
             String password = request.getParameter("forgotpass");
-  
+
             UserModel user = (UserModel) session.getAttribute("khreset");
-         
+
             int res = ud.updatePass(user.getUsername(), password);
-            
-            if(res !=0){
+
+            if (res != 0) {
+                session.setAttribute("SuccessPass", "Account reset password successfully");
                 ud.updateToken(user.getEmail(), "");
                 session.setAttribute("khreset", null);
                 response.sendRedirect("/loginController");

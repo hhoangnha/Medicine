@@ -282,7 +282,7 @@
         <script type="text/javascript">
 
         </script>
-          <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
         <!-- CSS -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
@@ -290,17 +290,18 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
         <!-- Semantic UI theme -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
-<!--        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css"
-            />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js"></script>-->
+        <!--        <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css"
+                    />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js"></script>-->
 
     </head>
     <body>
         <%
             // Lấy dữ liệu từ session
             String msgSuccess = (String) session.getAttribute("Success");
+            String ForgotSuccess = (String) session.getAttribute("SuccessPass");
             if (msgSuccess != null) {
         %>
 
@@ -309,10 +310,25 @@
             alertify.success("Sigup Successfully");
         </script>
         <%
-                // Xóa thông báo sau khi hiển thị
-                session.removeAttribute("Success");
+            // Xóa thông báo sau khi hiển thị
+            session.removeAttribute("Success");
 
+        } else if (ForgotSuccess != null) {
+        %>
+
+        <script>
+            // Sử dụng SweetAlert để hiển thị thông báo
+            alertify.success("Change password Successfully");
+        </script>
+        <%
+                // Xóa thông báo sau khi hiển thị
+                session.removeAttribute("SuccessPass");
+
+            } else if (ForgotSuccess != null) {
             }
+        %>
+
+
         %>
 
         <!-- partial:index.partial.html -->
