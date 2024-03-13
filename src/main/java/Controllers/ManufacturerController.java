@@ -1,4 +1,3 @@
-
 package Controllers;
 
 import static Controllers.loginController.checkAdmin;
@@ -21,12 +20,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.List;
+import xuly.CheckingNumber;
+import xuly.SaveToSession;
 
 /**
  *
  * @author C15TQK
  */
 public class ManufacturerController extends HttpServlet {
+
+    SaveToSession ss = new SaveToSession();
+    CheckingNumber checkNumber = new CheckingNumber();
+    HttpSession session;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,18 +79,38 @@ public class ManufacturerController extends HttpServlet {
 
         if (editId != null) {
             ManufacturerModel manu = dao.getManuById(editId);
-            dao.editManufacturer(editId, editManuName, editManuLicense,editAddress, editPhone );
+            if (!checkNumber.isValidPhoneNumber(editPhone)) {
+                request.setAttribute("detail", manu);
+                request.setAttribute("manuPhone", editPhone);
+                request.setAttribute("validPhone", "This phone is invalid!");
+                request.getRequestDispatcher("/admin-manufacturer-edit.jsp").forward(request, response);
+            } else {
+                dao.editManufacturer(editId, editManuName, editManuLicense, editAddress, editPhone);
+            }
 
         } else {
             String manuName = request.getParameter("manuName");
             String manuLicense = request.getParameter("manuLicense");
             String manuAddress = request.getParameter("manuAddress");
             String manuPhone = request.getParameter("manuPhone");
-            dao.addManufacturer(manuName, manuLicense, manuAddress, manuPhone);
+
+            ss.saveToSession(request, manuName, manuLicense, manuAddress, manuPhone);
+            if (dao.isExist(manuName)) {
+                request.setAttribute("existName", "This name already exists!");
+                request.getRequestDispatcher("/admin-manufacturer-create.jsp").forward(request, response);
+            } else if (!checkNumber.isValidPhoneNumber(manuPhone)) {
+                request.setAttribute("validPhone", "This phone is invalid!");
+                request.getRequestDispatcher("/admin-manufacturer-create.jsp").forward(request, response);
+            } else {
+
+                dao.addManufacturer(manuName, manuLicense, manuAddress, manuPhone);
+            }
+        }
+        if (session != null) {
+            session.invalidate();
         }
         response.sendRedirect("/ManufacturerController");
     }
-
 
     @Override
     public String getServletInfo() {

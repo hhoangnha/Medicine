@@ -72,7 +72,6 @@
         <servlet-name>OrderController</servlet-name>
         <servlet-class>Controllers.OrderController</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/resources/*</url-pattern>
@@ -113,7 +112,7 @@
         <servlet-name>UserProductController</servlet-name>
         <url-pattern>/UserProductController/*</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ManageStaffController</servlet-name>
         <url-pattern>/ManageStaffController/*</url-pattern>
     </servlet-mapping>
@@ -125,11 +124,10 @@
         <servlet-name>OrderID_ad</servlet-name>
         <url-pattern>/OrderID_ad/*</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>OrderController</servlet-name>
         <url-pattern>/OrderController/*</url-pattern>
     </servlet-mapping>
-    
     <!-- SMTP settings -->
     <context-param>
         <param-name>host</param-name>
@@ -139,7 +137,6 @@
         <param-name>port</param-name>
         <param-value>587</param-value>
     </context-param>
-
     <servlet-mapping>
         <servlet-name>EmailSendingServlet</servlet-name>
         <url-pattern>/EmailSendingServlet</url-pattern>

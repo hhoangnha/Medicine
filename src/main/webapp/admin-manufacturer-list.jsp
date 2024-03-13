@@ -78,13 +78,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Manufacturer</h5>
-                                <a href="admin-manufacturer-create.jsp" class="btn btn-primary ">Add new Manufacturer</a>
+                                <a href="/admin-manufacturer-create.jsp" class="btn btn-primary ">Add new Manufacturer</a>
                                 <!-- Table with stripped rows -->
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Manufacturer name</th>
+                                            <th>Manufacturer name </th>
                                             <th>License</th>
                                             <th>Address</th>
                                             <th>Phone</th>
