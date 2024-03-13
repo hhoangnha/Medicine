@@ -308,11 +308,11 @@
                             <div class="down-content">
                                 <h4><%= rs.getString("ProName")%></h4>
                                 <div class="row d-flex justify-content-between">
-                                    <div class="col-md-6"><span class="text-danger">123</span></div>
+                                   <div class="col-md-6"><span class="text-danger"><%= rs.getString("Origin")%></span></div>
                                     <div class="col-md-6"><p > <%= rs.getString("BrandName")%></span></div>
                                 </div>
 
-                                <small>Chỉ còn <%= rs.getInt("Quantity")%> sản phẩm</small>
+                                <small>Only <%= rs.getInt("Quantity")%> products</small>
                             </div>
                         </div>
                     </div>
