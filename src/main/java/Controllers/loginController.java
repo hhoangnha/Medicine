@@ -129,7 +129,7 @@ public class loginController extends HttpServlet {
                 response.addCookie(cookieFullname);
                    
                 System.out.println(rs.getIsAdmin());
-                if (rs.getIsAdmin()==1) {
+                if (rs.getIsAdmin()==1 || rs.getIsAdmin() == 2) {
                     System.out.println("Đang chuyển hướng sang admin");
                     response.sendRedirect("/AdminController");
                 } else {
