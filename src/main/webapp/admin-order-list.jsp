@@ -185,7 +185,7 @@
                                             } else if (rs.getInt("OrderStatus") == 3){
                                                 t = "Delivered";
                                             } else if (rs.getInt("OrderStatus") == 4){
-                                                t = "Cancle Order";
+                                                t = "Cancel Order";
                                             }
                                         %>
                                         <tr>
