@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@taglib  prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
     <%@page import="Daos.userad_ad"%>
     <%@page import="java.sql.ResultSet"%>
     <%@page import="Model.UserModel"%>
@@ -130,8 +131,10 @@
 
                                             <td>
                                                 <a class="btn btn-sm btn-info" href="/AdminController/Users/View/<%= rs.getString("username")%>">View</a>
+                                                <c:if test="${sessionScope.IsAdmin==1}">
                                                 <a style="color:white" class="btn bg-danger btn-sm "  onclick="return confirm('Are you sure? You can active in Resore user');" href="/AdminController/Users/Delete/<%= rs.getString("username")%>" >Inactive</a> <br><!-- comment -->
-                                        </tr>
+                                            </c:if>
+                                            </tr>
 
 
                                         <% }%>
@@ -139,7 +142,7 @@
                                     </tbody>
                                 </table>
                                 <!-- End Table with stripped rows -->
-                                <p><%=session.getAttribute("Success")%></p>
+                                <!-- <p><%=session.getAttribute("Success")%></p> -->
                             </div>
                         </div>
 

@@ -3,7 +3,7 @@
 <%@page import="Model.CategorieModel"%>
 <%@page import="java.util.List"%>
 <%@page import="Daos.BrandDAO"%>
-<%@page import="Daos.cate_ad"%>
+<%@page import="Daos.cate_ad"%> 
 <%@page import="Daos.ManufacturerDAO"%>
 <%@page import="Daos.ProductDAO"%>
 <%@page import="java.sql.ResultSet"%>

@@ -1,14 +1,18 @@
+
 <%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@taglib  prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<% String isCollapsed = "collapsed";%>
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
+        <c:if test="${sessionScope.IsAdmin==1}">
         <li class="nav-item ">
             <a class="nav-link <%= request.getRequestURI().endsWith("/AdminController") ? isCollapsed : "collapsed"%> " href="/AdminController">
                 <i class="bi bi-grid"></i>
                 <span class="">Report</span>
             </a>
         </li>
+    </c:if>
 
         <!-- End Tables Nav -->
 
@@ -23,16 +27,20 @@
                             <i class="bi bi-circle"></i><span>User Manager</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="/ManageStaffController" >
-                            <i class="bi bi-circle"></i><span>Staff Manager</span>
-                        </a>
-                    </li>
+                    <c:if test="${sessionScope.IsAdmin==1}">
+                        <li>
+                            <a href="/ManageStaffController" >
+                                <i class="bi bi-circle"></i><span>Staff Manager</span>
+                            </a>
+                        </li>
+                    
+                    
                     <li>
                         <a href="/AdminController/RestoreUsers">
                             <i class="bi bi-circle"></i><span>Restore Manager</span>
                         </a>
                     </li>
+                </c:if>
                 </ul>
             </li><!-- End Tables Nav -->
 
@@ -161,34 +169,19 @@
                     </li>
                 </ul>
 
-      <!-- vinh -->
-    </li>
-    <c:if test="${sessionScope.IsAdmin==1}">
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="/ManufacturerController">
-        <i class="bi bi-grid"></i>
-        <span>Manufacturer</span>
-      </a>
-    </li>
-    </c:if>
-  </ul>
                 <!-- vinh -->
             </li>
 
 
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#icons-nav5" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-box"></i><span>Manufacturer</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="icons-nav5" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="/ManufacturerController">
-                            <i class="bi bi-circle"></i><span>Manufacturer Manager</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            <c:if test="${sessionScope.IsAdmin==1}">
+                <li class="nav-item">
+                  <a class="nav-link collapsed" href="/ManufacturerController">
+                    <i class="bi bi-grid"></i>
+                    <span>Manufacturer</span>
+                  </a>
+                </li>
+                </c:if>
 
         </ul>
 </aside>
