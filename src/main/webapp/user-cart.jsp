@@ -221,7 +221,7 @@
                                                 }
                                             %>
                                         </div>
-                                        <div class="col"> <%=um.getPrice() * item.getQuantity()%> <span class="close" onclick="confirmRemove(<%=pdm.getProID()%>,<%=item.getUnitID()%>)">&#10005;</span></div>
+                                        <div class="col"><p class="price"><%=um.getPrice() * item.getQuantity()%></p> <span class="close" onclick="confirmRemove(<%=pdm.getProID()%>,<%=item.getUnitID()%>)">&#10005;</span></div>
                                     </div>
                                 </div>
                                 <% }
@@ -246,7 +246,7 @@
                             <input type="text" value="<%=udd.getPhone()%>" name="phone" >
                             <p>Address</p>
                             <textarea name='address'><%=udd.getAddress()%></textarea>
-                           
+
 
                             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                                 <!--<div class="col">Total order</div>-->
@@ -303,69 +303,44 @@
         <!-- Global Init -->
         <script src="/resources/UserAssets/js/custom.js"></script>
         <script>
-                                            function validateForm() {
-                                                var name = document.forms["form"]["name"].value;
-                                                if (name == "") {
-                                                    alert("Name not empty.");
-                                                    return false;
-                                                }
-                                                var phone = document.forms["form"]["phone"].value;
-                                                if (phone == "" || isNaN(phone) || phone.length() != 10) {
-                                                    alert("Phone is invalid. Phone must be 10 number.");
-                                                    return false;
-                                                }
-                                                var address = document.forms["form"]["address"].value;
-                                                if (address == "") {
-                                                    alert("Please enter address.");
-                                                    return false;
-                                                }
-
-                                                var selectedProducts = document.getElementsByName("selectedProducts");
-                                                var selected = false;
-
-                                                for (var i = 0; i < selectedProducts.length; i++) {
-                                                    if (selectedProducts[i].checked) {
-                                                        selected = true;
-                                                        break;
+                                                function validateForm() {
+                                                    var name = document.forms["form"]["name"].value;
+                                                    if (name == "") {
+                                                        alert("Name not empty.");
+                                                        return false;
                                                     }
-                                                }
-
-                                                if (!selected) {
-                                                    alert("Please select at least one product.");
-                                                    return false;
-                                                }
-
-
-                                            }
-
-                                            function confirmRemove(productId, unitId) {
-                                                Swal.fire({
-                                                    title: 'Confirm to remove !',
-                                                    icon: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonText: 'Confirm',
-                                                    cancelButtonText: "Close",
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        $.ajax({
-                                                            type: "GET",
-                                                            url: "UserCartController/RemoveFromCart/" + productId + '?unit=' + unitId,
-                                                            success: function (response) {
-                                                                location.reload();
-                                                            },
-                                                            error: function () {
-                                                                console.error('Lỗi khi gửi yêu cầu AJAX');
-                                                            }
-                                                        });
+                                                    var phone = document.forms["form"]["phone"].value;
+                                                    if (phone == "" || isNaN(phone) || phone.length() != 10) {
+                                                        alert("Phone is invalid. Phone must be 10 number.");
+                                                        return false;
                                                     }
-                                                });
-                                            }
-                                            function decreaseQuantity(productId, unitId) {
+                                                    var address = document.forms["form"]["address"].value;
+                                                    if (address == "") {
+                                                        alert("Please enter address.");
+                                                        return false;
+                                                    }
+
+                                                    var selectedProducts = document.getElementsByName("selectedProducts");
+                                                    var selected = false;
+
+                                                    for (var i = 0; i < selectedProducts.length; i++) {
+                                                        if (selectedProducts[i].checked) {
+                                                            selected = true;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if (!selected) {
+                                                        alert("Please select at least one product.");
+                                                        return false;
+                                                    }
 
 
-                                                if ($('#val' + productId).text() == 1) {
+                                                }
+
+                                                function confirmRemove(productId, unitId) {
                                                     Swal.fire({
-                                                        title: 'If confirm, product will be remove from cart!',
+                                                        title: 'Confirm to remove !',
                                                         icon: 'warning',
                                                         showCancelButton: true,
                                                         confirmButtonText: 'Confirm',
@@ -374,7 +349,7 @@
                                                         if (result.isConfirmed) {
                                                             $.ajax({
                                                                 type: "GET",
-                                                                url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit=" + unitId,
+                                                                url: "UserCartController/RemoveFromCart/" + productId + '?unit=' + unitId,
                                                                 success: function (response) {
                                                                     location.reload();
                                                                 },
@@ -382,15 +357,55 @@
                                                                     console.error('Lỗi khi gửi yêu cầu AJAX');
                                                                 }
                                                             });
-                                                        } else {
-                                                            return false;
                                                         }
                                                     });
+                                                }
+                                                function decreaseQuantity(productId, unitId) {
 
-                                                } else {
+
+                                                    if ($('#val' + productId).text() == 1) {
+                                                        Swal.fire({
+                                                            title: 'If confirm, product will be remove from cart!',
+                                                            icon: 'warning',
+                                                            showCancelButton: true,
+                                                            confirmButtonText: 'Confirm',
+                                                            cancelButtonText: "Close",
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                $.ajax({
+                                                                    type: "GET",
+                                                                    url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit=" + unitId,
+                                                                    success: function (response) {
+                                                                        location.reload();
+                                                                    },
+                                                                    error: function () {
+                                                                        console.error('Lỗi khi gửi yêu cầu AJAX');
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                return false;
+                                                            }
+                                                        });
+
+                                                    } else {
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit=" + unitId,
+                                                            success: function (response) {
+                                                                location.reload();
+                                                            },
+                                                            error: function () {
+                                                                console.error('Lỗi khi gửi yêu cầu AJAX');
+                                                            }
+                                                        });
+                                                    }
+
+
+                                                }
+                                                function increaseQuantity(productId, unitId) {
                                                     $.ajax({
                                                         type: "GET",
-                                                        url: "UserCartController/DecreaseQuantity/" + productId + "?quan=-1&unit=" + unitId,
+                                                        url: "UserCartController/IncreaseQuantity/" + productId + "?quan=1&unit=" + unitId,
                                                         success: function (response) {
                                                             location.reload();
                                                         },
@@ -399,21 +414,6 @@
                                                         }
                                                     });
                                                 }
-
-
-                                            }
-                                            function increaseQuantity(productId, unitId) {
-                                                $.ajax({
-                                                    type: "GET",
-                                                    url: "UserCartController/IncreaseQuantity/" + productId + "?quan=1&unit=" + unitId,
-                                                    success: function (response) {
-                                                        location.reload();
-                                                    },
-                                                    error: function () {
-                                                        console.error('Lỗi khi gửi yêu cầu AJAX');
-                                                    }
-                                                });
-                                            }
         </script>
 
     </body>

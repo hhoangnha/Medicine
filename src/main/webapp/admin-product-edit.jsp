@@ -154,7 +154,7 @@
                                 <div class="col-sm-4 col-xs-8"><p>Image</p></div>
                                 <div class="col-sm-8"><input class="form-control" type="file" id="image" name="image" size="50"  /></div>   
                                 <img style="max-height:200px" src="/resources/images/<%= sp.getProImage()%>" alt="">
-                                <input name="currentImage" hidden value="<%= sp.getProImage()%>"  />
+                                <input name="currentImage" value="<%= sp.getProImage()%>"  />
                             </div>
                             <div class="row">
                                 <br>

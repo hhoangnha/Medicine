@@ -160,27 +160,26 @@ public class ProductDAO {
         int count = 0;
         try {
             PreparedStatement ps = conn.prepareStatement("update Products\n"
-                    + " set ProCode = ?, ProName = ?, ProDescription = ?, CateID = ?, BrandID = ?, ManuID = ?,\n"
+                    + " SET ProName = ?, ProDescription = ?, CateID = ?, BrandID = ?, ManuID = ?,\n"
                     + "       ManufactureDate = ?, ExpirationDate = ?, Element = ?,\n"
                     + "       Quantity = ?, Indication = ?, Contraindication = ?, [Using] = ?,\n"
                     + "       MadeIn = ?, ProImage = ?\n"
                     + " where ProID = ?");
-            ps.setString(1, ProCode);
-            ps.setString(2, ProName);
-            ps.setString(3, ProDescription);
-            ps.setInt(4, CateID);
-            ps.setInt(5, BrandID);
-            ps.setInt(6, ManuID);
-            ps.setString(7, ManufactureDate);
-            ps.setString(8, ExpirationDate);
-            ps.setString(9, Element);
-            ps.setInt(10, Quantity);
-            ps.setString(11, Indication);
-            ps.setString(12, Contraindication);
-            ps.setString(13, Using);
-            ps.setString(14, MadeIn);
-            ps.setString(15, ProImage);
-            ps.setInt(16, ProID);
+            ps.setString(1, ProName);
+            ps.setString(2, ProDescription);
+            ps.setInt(3, CateID);
+            ps.setInt(4, BrandID);
+            ps.setInt(5, ManuID);
+            ps.setString(6, ManufactureDate);
+            ps.setString(7, ExpirationDate);
+            ps.setString(8, Element);
+            ps.setInt(9, Quantity);
+            ps.setString(10, Indication);
+            ps.setString(11, Contraindication);
+            ps.setString(12, Using);
+            ps.setString(13, MadeIn);
+            ps.setString(14, ProImage);
+            ps.setInt(15, ProID);
 
             count = ps.executeUpdate();
         } catch (SQLException ex) {
