@@ -7,7 +7,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
         <c:if test="${sessionScope.IsAdmin==1}">
         <li class="nav-item ">
-            <a class="nav-link <%= request.getRequestURI().endsWith("/AdminController") ? isCollapsed : "collapsed"%> " href="/AdminController">
+            <a class="nav-link <%= request.getRequestURI().endsWith("/AdminController") ? isCollapsed : ""%> " href="/AdminController">
                 <i class="bi bi-grid"></i>
                 <span class="">Report</span>
             </a>
