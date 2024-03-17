@@ -282,7 +282,7 @@
         <script type="text/javascript">
 
         </script>
-          <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
         <!-- CSS -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
@@ -290,11 +290,11 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
         <!-- Semantic UI theme -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
-<!--        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css"
-            />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js"></script>-->
+        <!--        <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css"
+                    />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js"></script>-->
 
     </head>
     <body>
@@ -338,9 +338,9 @@
                             <a class="form-recovery" href="/EmailForgot.jsp">Forgot password?</a>
                             </label><a class="form-recovery" href="/SigUpController">Sign up?</a>
                         </div>
-                    <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block mb-4"/></div>
-                </form>
-
+                        <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block mb-4"/>
+                    </form>
+                </div>
             </div>
         </div>
 

@@ -1,4 +1,3 @@
-
 package Controllers;
 
 import static Controllers.loginController.checkAdmin;
@@ -40,23 +39,29 @@ public class ManufacturerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String deleteID = request.getParameter("delete");
         String editId = request.getParameter("edit");
+
         ManufacturerDAO dao = new ManufacturerDAO();
         System.out.println(deleteID);
-        if (deleteID != null) {
-            dao.deleteManufacturer(deleteID);
-            response.sendRedirect("/ManufacturerController");
-        } else if (editId != null) {
-            String id = request.getParameter(editId);
-            ManufacturerModel manu = dao.getManuById(editId);
+        if ((int) session.getAttribute("IsAdmin") == 1) {
+            if (deleteID != null) {
+                dao.deleteManufacturer(deleteID);
+                response.sendRedirect("/ManufacturerController");
+            } else if (editId != null) {
+                String id = request.getParameter(editId);
+                ManufacturerModel manu = dao.getManuById(editId);
 
-            request.setAttribute("detail", manu);
+                request.setAttribute("detail", manu);
 
-            request.getRequestDispatcher("admin-manufacturer-edit.jsp").forward(request, response);
+                request.getRequestDispatcher("admin-manufacturer-edit.jsp").forward(request, response);
+            } else {
+                // Nếu không phải yêu cầu xóa, tiếp tục xử lý các yêu cầu khác
+                processRequest(request, response);
+            }
         } else {
-            // Nếu không phải yêu cầu xóa, tiếp tục xử lý các yêu cầu khác
-            processRequest(request, response);
+            response.sendRedirect("/AdminController");
         }
     }
 
@@ -74,7 +79,7 @@ public class ManufacturerController extends HttpServlet {
 
         if (editId != null) {
             ManufacturerModel manu = dao.getManuById(editId);
-            dao.editManufacturer(editId, editManuName, editManuLicense,editAddress, editPhone );
+            dao.editManufacturer(editId, editManuName, editManuLicense, editAddress, editPhone);
 
         } else {
             String manuName = request.getParameter("manuName");
@@ -85,7 +90,6 @@ public class ManufacturerController extends HttpServlet {
         }
         response.sendRedirect("/ManufacturerController");
     }
-
 
     @Override
     public String getServletInfo() {
