@@ -14,18 +14,7 @@ public class CategorieModel {
     private String CateName;
     private String CateDescription;
 //    private int CateStatus;
-//
-//    public int getCateStatus() {
-//        return CateStatus;
-//    }
-//
-//    public void setCateStatus(int CateStatus) {
-//        this.CateStatus = CateStatus;
-//    }
-
-    public CategorieModel() {
-    }
-
+    
 //    public CategorieModel(int CateID, String CateName, String CateDescription, int CateStatus) {
         public CategorieModel(int CateID, String CateName, String CateDescription) {
         this.CateID = CateID;
@@ -33,9 +22,10 @@ public class CategorieModel {
         this.CateDescription = CateDescription;
 //        this.CateStatus = CateStatus;
     }
-
-   
-
+    
+    public CategorieModel() {
+    }
+    
     public int getCateID() {
         return CateID;
     }

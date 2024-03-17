@@ -9,7 +9,6 @@ import java.util.List;
 
 import DB.DBConnection;
 import Model.StaffModel;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import xuly.CheckingDate;
@@ -62,14 +61,42 @@ public class StaffDAO {
         return staffList;
     }
 
+    private String getCurrentDate() {
+        // Get current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Format date as SQL Date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return currentDate.format(formatter);
+    }
+
+    public int getStaffIDByUserID(int userID) {
+        int staffID = 0;
+        String query = "SELECT Staff.StaffID FROM Accounts acc \n"
+                + "JOIN Staff ON Staff.UserID = acc.UserID\n"
+                + "WHERE acc.UserID = ?";
+        try {
+            conn = new DBConnection().connect();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                staffID = rs.getInt("StaffID");
+            }
+        } catch (Exception e) {
+        }
+        return staffID;
+    }
+
     // Method to add a new staff member
-    public void addAccount(String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
+    public void addAccount(String username, String password, String fullname, String email, String phone,
+            String address, String birthday, String gender) {
         String query = "INSERT INTO Accounts "
                 + "(Username, Password, Fullname, Email, Phone, Address, Birthday, Gender, isAdmin, CreatedAt)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?)";
 
-//      
-//        
+        //
+        //
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);
@@ -85,15 +112,16 @@ public class StaffDAO {
             ps.setString(10, day.getCurrentDate()); // Sử dụng phương thức để lấy ngày hiện tại
             ps.executeUpdate();
 
-//            // Thêm bản ghi mới vào bảng Staff
-//            ps = conn.prepareStatement(queryStaff);
-//            ps.setInt(1, userID);
-//            // Các giá trị còn lại có thể được set từ tham số hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
-//            // Ví dụ:
-//            ps.setString(2, "xxxx");
-//            ps.setString(3, "VietNam");
-//            ps.setString(4, "2024-11-11");
-//            ps.executeUpdate();
+            // // Thêm bản ghi mới vào bảng Staff
+            // ps = conn.prepareStatement(queryStaff);
+            // ps.setInt(1, userID);
+            // // Các giá trị còn lại có thể được set từ tham số hoặc giá trị mặc định tùy
+            // thuộc vào yêu cầu của bạn
+            // // Ví dụ:
+            // ps.setString(2, "xxxx");
+            // ps.setString(3, "VietNam");
+            // ps.setString(4, "2024-11-11");
+            // ps.executeUpdate();
             // Commit transaction sau khi thêm mới thành công vào cả hai bảng
             conn.commit();
             System.out.println("Account added successfully.");
@@ -132,15 +160,16 @@ public class StaffDAO {
             ps.setString(4, licenseDate);
             ps.executeUpdate();
 
-//            // Thêm bản ghi mới vào bảng Staff
-//            ps = conn.prepareStatement(queryStaff);
-//            ps.setInt(1, userID);
-//            // Các giá trị còn lại có thể được set từ tham số hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
-//            // Ví dụ:
-//            ps.setString(2, "xxxx");
-//            ps.setString(3, "VietNam");
-//            ps.setString(4, "2024-11-11");
-//            ps.executeUpdate();
+            // // Thêm bản ghi mới vào bảng Staff
+            // ps = conn.prepareStatement(queryStaff);
+            // ps.setInt(1, userID);
+            // // Các giá trị còn lại có thể được set từ tham số hoặc giá trị mặc định tùy
+            // thuộc vào yêu cầu của bạn
+            // // Ví dụ:
+            // ps.setString(2, "xxxx");
+            // ps.setString(3, "VietNam");
+            // ps.setString(4, "2024-11-11");
+            // ps.executeUpdate();
             // Commit transaction sau khi thêm mới thành công vào cả hai bảng
             conn.commit();
             System.out.println("Staff added successfully.");
@@ -278,7 +307,8 @@ public class StaffDAO {
             while (rs.next()) {
                 // Lấy thông tin từ ResultSet và trả về đối tượng StaffModel
                 return new StaffModel(rs.getInt("UserID"), rs.getString("Username"), rs.getString("Password"),
-                        rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"), rs.getString("ResetToken"),
+                        rs.getString("Fullname"), rs.getString("Email"), rs.getString("Phone"),
+                        rs.getString("ResetToken"),
                         rs.getString("Address"), rs.getDate("Birthday"), rs.getString("Gender"),
                         rs.getString("IsAdmin"), rs.getDate("CreatedAt"), rs.getString("IDNumber"),
                         rs.getString("IssuedBy"), rs.getDate("LicenseDate"));
@@ -311,7 +341,8 @@ public class StaffDAO {
         }
     }
 
-    public void editAccount(String staffId, String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
+    public void editAccount(String staffId, String username, String password, String fullname, String email,
+            String phone, String address, String birthday, String gender) {
         String queryAccounts = "UPDATE Accounts "
                 + " SET username = ?,"
                 + " Fullname = ?, "

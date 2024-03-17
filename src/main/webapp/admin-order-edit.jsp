@@ -1,3 +1,6 @@
+<%@page import="Daos.OrderDAO"%>
+<%@page import="Daos.StaffDAO"%>
+<%@page import="Model.UserModel"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Daos.OrderID_DAOad"%>
 <%@page import="Model.OrderModel"%>
@@ -58,6 +61,11 @@
 
                     }
                 }
+                
+                UserModel user = (UserModel) session.getAttribute("acc");
+                StaffDAO callStaffFunc = new StaffDAO();
+                int staffID = callStaffFunc.getStaffIDByUserID(user.getUserID());
+
                 OrderID_DAOad od = new OrderID_DAOad();
                 ResultSet userOrderInfor = od.getUserOrderInfor(oid);
                 int orderStatus = 1;
@@ -80,6 +88,7 @@
 
                     <form  method="post" action='/OrderID_ad' onsubmit="return validateFormOrder()">
                         <input name='oid' value='<%=oid%>' hidden />
+                        <input name='staffID' value='<%=staffID%>'hidden/>
                         <div class='row '>
                             <div class='col-md-4 card'>
                                 <h5 class="card-title">Order Detail</h5>
@@ -166,6 +175,12 @@
                         <a class='btn btn-secondary' href="/OrderID_ad">back to list</a>
                         <input class='btn btn-info' type="submit" id='btn-up' style="display:none" value="Update" name ="Create" />
 
+                        <%--OrderDAO o = new OrderDAO();
+                UserModel user = (UserModel) session.getAttribute("acc");
+                StaffDAO callStaffFunc = new StaffDAO();
+                int staffID = callStaffFunc.getStaffIDByUserID(user.getUserID());
+                o.updateStaffIDForOrder(oid, staffID);
+                        --%>
                     </form>
 
                 </div>

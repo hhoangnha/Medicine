@@ -1,5 +1,5 @@
-
-<% String isCollapsed = "collapsed";%>
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@taglib  prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
@@ -161,6 +161,17 @@
                     </li>
                 </ul>
 
+      <!-- vinh -->
+    </li>
+    <c:if test="${sessionScope.IsAdmin==1}">
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/ManufacturerController">
+        <i class="bi bi-grid"></i>
+        <span>Manufacturer</span>
+      </a>
+    </li>
+    </c:if>
+  </ul>
                 <!-- vinh -->
             </li>
 
