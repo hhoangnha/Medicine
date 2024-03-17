@@ -84,19 +84,6 @@ public class ManageStaffController extends HttpServlet {
             String editIssuedBy = request.getParameter("issuedBy");
             String editLicenseDate = request.getParameter("licenseDate");
 
-            System.out.println(editId);
-            System.out.println("Username: " + editUsername);
-            System.out.println("Password: " + editPassword);
-            System.out.println("Fullname: " + editFullname);
-            System.out.println("Email: " + editEmail);
-            System.out.println("Phone: " + editPhone);
-            System.out.println("Address: " + editAddress);
-            System.out.println("Birthday: " + editBirthday);
-            System.out.println("Gender: " + editGender);
-            System.out.println("ID Number: " + editIdNumber);
-            System.out.println("Issued By: " + editIssuedBy);
-            System.out.println("License Date: " + editLicenseDate);
-
             dao.editStaff(editId, editIdNumber, editIssuedBy, editLicenseDate);
             dao.editAccount(editId, editUsername, editPassword, editFullname, editEmail, editPhone, editAddress, editBirthday, editGender);
 
@@ -115,7 +102,7 @@ public class ManageStaffController extends HttpServlet {
             if (dao.isUsernameExists(username)) {
                 HttpSession session = request.getSession();
                 String exist = "This username have existed aldready!!!";
-                session.setAttribute("exist", exist);
+                request.setAttribute("exist", exist);
                 request.getRequestDispatcher("admin-add-staff.jsp").forward(request, response);
             } else {
                 dao.addAccount(username, password, fullname, email, phone, address, birthday, gender);

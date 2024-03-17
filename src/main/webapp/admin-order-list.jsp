@@ -166,14 +166,14 @@
 
                                             while (rs.next()) {
                                                 String t = "";
-                                                if (rs.getInt("OrderStatus") == 1) {
+                                                if (rs.getInt("OrderStatus") == 1){
                                                     t = "Waiting for confirm";
-                                                } else if (rs.getInt("OrderStatus") == 2) {
+                                                } else if (rs.getInt("OrderStatus") == 2){
                                                     t = "Order Accepted";
-                                                } else if (rs.getInt("OrderStatus") == 3) {
+                                                } else if (rs.getInt("OrderStatus") == 3){
                                                     t = "Delivered";
-                                                } else if (rs.getInt("OrderStatus") == 4) {
-                                                    t = "Cancle Order";
+                                                } else if (rs.getInt("OrderStatus") == 4){
+                                                    t = "Cancel Order";
                                                 }
                                         %>
                                         <tr>
