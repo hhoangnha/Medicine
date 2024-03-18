@@ -12,14 +12,25 @@ package Model;
 public class UnitModel {
     private int UnitID;
     private String UnitName;
-
+    private int UnitStatus;
     public UnitModel() {
     }
 
-    public UnitModel(int UnitID, String UnitName) {
+    public UnitModel(int UnitID, String UnitName, int UnitStatus) {
         this.UnitID = UnitID;
         this.UnitName = UnitName;
+        this.UnitStatus = UnitStatus;
     }
+
+    public int getUnitStatus() {
+        return UnitStatus;
+    }
+
+    public void setUnitStatus(int UnitStatus) {
+        this.UnitStatus = UnitStatus;
+    }
+
+    
 
     public void setUnitID(int UnitID) {
         this.UnitID = UnitID;

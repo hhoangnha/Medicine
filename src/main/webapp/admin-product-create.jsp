@@ -21,9 +21,7 @@
         <meta content="" name="description">
         <meta content="" name="keywords"> 
 
-        <!-- Favicons -->
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
 
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">

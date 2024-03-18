@@ -225,10 +225,9 @@ public class AdminDao {
     }
 
     public double getRevenue() {
-        String query = "SELECT SUM(OD.Quantity * UP.Price) AS TotalRevenue\n"
-                + "FROM Orders O\n"
-                + "JOIN OrderDetails OD ON O.OrderID = OD.OrderID\n"
-                + "JOIN UnitProduct UP ON OD.ProID = UP.ProID";
+        String query ="SELECT SUM(Total) AS TotalRevenue\n"
+                + "FROM Orders\n"
+                + "WHERE OrderStatus = 3;";
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);

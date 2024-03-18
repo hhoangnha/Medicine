@@ -36,7 +36,7 @@ public class ProductDAO {
     public ResultSet getAllDeletedList() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select p.ProID, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
+            ResultSet rs = st.executeQuery("select p.ProID, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity,p.ProCode, p.ProImage from Products p\n"
                     + "                    join Categories c on c.CateID = p.CateID\n"
                     + "                    join Brand b on b.BrandID = p.BrandID\n"
                     + "                    join Manufacturer m on m.ManuID = p.ManuID\n"
@@ -51,7 +51,7 @@ public class ProductDAO {
     public ResultSet getAll() {
         try {
             Statement st = conn.createStatement();
-              ResultSet rs = st.executeQuery("select p.ProID, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
+              ResultSet rs = st.executeQuery("select p.ProID,p.ProCode, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
                     + "                    join Categories c on c.CateID = p.CateID\n"
                     + "                    join Brand b on b.BrandID = p.BrandID\n"
                     + "                    join Manufacturer m on m.ManuID = p.ManuID\n"
@@ -335,7 +335,7 @@ public class ProductDAO {
             if (rs.next()) {
                 return -1;
             } else {
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,ManufactureDate,ExpirationDate,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage, ProStatus ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)", Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, ProCode);
                 ps.setString(2, ProName);
                 ps.setString(3, ProDescription);

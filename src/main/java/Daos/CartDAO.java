@@ -50,15 +50,13 @@ public class CartDAO {
     public List<CartItem> getCartItems(int customerId) {
         List<CartItem> cartItems = new ArrayList<>();
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT Carts.CartID,Carts.ProID, Carts.Quantity, Units.* FROM Carts JOIN Units ON Units.UnitID = Carts.UnitID WHERE CustomerID = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT Carts.ProID, Carts.Quantity, Units.* FROM Carts JOIN Units ON Units.UnitID = Carts.UnitID WHERE CustomerID = ?");
             ps.setInt(1, customerId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int productId = rs.getInt("ProID");
                 int quantity = rs.getInt("Quantity");
-                int cartID = rs.getInt("CartID");
                 CartItem cartItem = new CartItem();
-                cartItem.setCartID(cartID);
                 cartItem.setCustomerID(customerId);
                 cartItem.setProId(productId);
                 cartItem.setQuantity(quantity);
@@ -88,11 +86,11 @@ public class CartDAO {
                 int currentQuantity = rs.getInt("Quantity");
                 int newQuantity = currentQuantity + Quantity;
 
-                PreparedStatement updatePs = conn.prepareStatement("UPDATE Carts SET Quantity = ? WHERE CustomerID = ? AND ProID = ? AND UnitID = ?");
+                PreparedStatement updatePs = conn.prepareStatement("UPDATE Carts SET Quantity = ? WHERE CustomerID = ? AND ProID = ?");
                 updatePs.setInt(1, newQuantity);
                 updatePs.setInt(2, CustomerID);
                 updatePs.setInt(3, ProID);
-                updatePs.setInt(4, Unit);
+
                 count = updatePs.executeUpdate();
                 System.out.println(count + " rows updated");
                 System.out.println("Cart item updated successfully");
@@ -140,7 +138,7 @@ public class CartDAO {
             ps.setInt(1, unitID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                ac = new UnitModel(rs.getInt("UnitID"), rs.getString("UnitName"));
+                ac = new UnitModel(rs.getInt("UnitID"), rs.getString("UnitName"), rs.getInt("UnitStatus"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);

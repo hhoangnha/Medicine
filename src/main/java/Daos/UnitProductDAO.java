@@ -101,7 +101,7 @@ public class UnitProductDAO {
             while (rs.next()) {
                 int uID = rs.getInt("UnitID");
                 String unitName = rs.getString("UnitName");
-                um = new UnitModel(uID, unitName);
+                um = new UnitModel(uID, unitName, 1);
             }
         } catch (SQLException ex) {
             System.out.println("Failed to get cart items");
@@ -120,7 +120,7 @@ public class UnitProductDAO {
             while (rs.next()) {
                 int uID = rs.getInt("UnitID");
                 String unitName = rs.getString("UnitName");
-                um = new UnitModel(uID, unitName);
+                um = new UnitModel(uID, unitName, 1);
             }
         } catch (SQLException ex) {
             System.out.println("Failed to get cart items");

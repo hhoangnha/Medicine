@@ -37,20 +37,7 @@
     </head>
 
     <body>
-        <%
-            // L?y d? li?u t? session
-            String msgSuccess = (String) session.getAttribute("msgSuccess");
-            if (msgSuccess != null) {
-        %>
-        <script>
-            // S? d?ng SweetAlert ?? hi?n th? thông báo
-            alertify.success("Thành công");
-        </script>
-        <%
-                // Xóa thông báo sau khi hi?n th?
-                session.removeAttribute("message");
-            }
-        %>
+    
 
 
         <jsp:include page="admin-header.jsp" />
@@ -194,8 +181,8 @@
                                             <td><%= t%></td>
                                             <td><%= rs.getInt("Total")%></td>
                                             <td style="text-align: center">
-                                                <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/confirmOrder/<%= rs.getInt("OrderID")%>" >Confirm</a>
-                                                <a style="color:white" onclick="return confirm('Are you sure? Order can not restore');" class="btn btn-danger btn-sm" href="/OrderController/deleteOrder/<%= rs.getString("OrderID")%>" >Cancel</a>  
+<!--                                                <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/confirmOrder/<%= rs.getInt("OrderID")%>" >Confirm</a>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Order can not restore');" class="btn btn-danger btn-sm" href="/OrderController/deleteOrder/<%= rs.getString("OrderID")%>" >Cancel</a>  -->
                                                 <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/editOrderStatus/<%= rs.getString("OrderID")%>" >Edit Status</a>
                                             </td>
                                         </tr>

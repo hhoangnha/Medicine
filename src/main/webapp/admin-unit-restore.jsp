@@ -1,4 +1,4 @@
-<%@page import="Daos.ProductDAO"%>
+<%@page import="Daos.UnitDAO"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,15 +6,28 @@
     <%@page import="Daos.userad_ad"%>
     <%@page import="java.sql.ResultSet"%>
     <%@page import="Model.UserModel"%>
+    <%@page import="Daos.cate_ad"%>
+    <%@page import="Daos.userad_ad"%>
+    <%@page import="java.sql.ResultSet"%>
+    <%@page import="Model.CategorieModel"%>
+    <%@page import="Daos.userad_ad"%>
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Product</title>
+        <title>User</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
-       
+        <!-- Favicons -->
+        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
+        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
         <!-- Vendor CSS Files -->
         <link href="/resources/AdminAssets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/AdminAssets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -35,27 +48,39 @@
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
 
-     
+        <!-- =======================================================
+        * Template Name: NiceAdmin
+        * Updated: Sep 18 2023 with Bootstrap v5.3.2
+        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
     </head>
 
     <body>
+        <style>
+            .CateNameColumn{
+                width: 15%;
+            }
+        </style>
         <%
-            // L?y d? li?u t? session
+            // Lấy dữ liệu từ session
             String msgSuccess = (String) session.getAttribute("msgSuccess");
             if (msgSuccess != null) {
         %>
         <script>
-            // S? d?ng SweetAlert ?? hi?n th? th�ng b�o
-            alertify.success("Th�nh c�ng");
+            // Sử dụng SweetAlert để hiển thị thông báo
+            alertify.success("Thành công");
         </script>
         <%
-                // X�a th�ng b�o sau khi hi?n th?
+                // Xóa thông báo sau khi hiển thị
                 session.removeAttribute("message");
             }
         %>
-        <jsp:include page="admin-header.jsp" />
 
+        <jsp:include page="admin-header.jsp" />
         <jsp:include page="admin-aside.jsp" />
+
 
         <main id="main" class="main">
 
@@ -64,8 +89,7 @@
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Data</li>
+                        <li class="breadcrumb-item active">Unit</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -76,67 +100,42 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Product</h5>
-<!--                                <a href="/ProductController/Create" class="btn btn-primary ">Add new</a>-->
-
+                                <h5 class="card-title">Unit</h5>
                                 <!-- Table with stripped rows -->
                                 <table class="table datatable">
                                     <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Quantity</th>
-                                            <th >Name</th>  
-                          
-                                            <th>Pro Code</th>
-                                            <th>Category</th>
-                                            <th>Brand</th>
-                                            <th class="w-50">Manufacturer</th>
+                                        <tr>     
+                                            <th>UnitID</th>
+                                            <th>UnitName</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%
-                                            ProductDAO cDAO = new ProductDAO();
-                                            ResultSet rs = cDAO.getAllDeletedList();
+                                        <% UnitDAO d = new UnitDAO();
+                                            ResultSet rs = d.getAllUnitDeleted();
                                             while (rs.next()) {
-
                                         %>
                                         <tr>
-                                            <td><%= rs.getInt("ProID")%></td>
-                                             <td>
-                                                 <%=rs.getString("ProCode")%>
-                                                
-                                            </td>
-                                            <td><%= rs.getString("ProName")%></td>
-                                            <td><%=  rs.getInt("Quantity")%></td>
-                                            
-                                            <td><%=  rs.getString("CateName")%></td>
-                                            <td><%=  rs.getString("BrandName")%></td>
-                                            <td><%=  rs.getString("ManuName")%></td>
-                                            <td>
-                                                <a href="/ProductController/Restore/<%=rs.getString("ProID")%>"><button class="btn btn-sm btn-info">Restore</button> </a>
+                                            <td><%= rs.getInt("UnitID")%></td>
+                                            <td class="CateNameColumn"><%= rs.getString("UnitName")%></td>
+                                            <td style="text-align: center">
+                                                <a style="color:white" class="btn bg-primary btn-sm " href="/UnitController/UnitRestore/<%= rs.getInt("UnitID")%>" >Restore</a>
                                             </td>
                                         </tr>
-
-                                        <%
-                                            }
-                                        %>
+                                        <% }%>
 
                                     </tbody>
                                 </table>
-                                <!--            <div class="col-sm-8" id="lbtn">
-                                                <a href='/ProductController' class="btn btn-secondary" id="btl"><button>Back to List</button></a>  
-                                            </div>-->
+                                <!-- End Table with stripped rows -->
+
                             </div>
-                            </div>
+                        </div>
 
                     </div>
                 </div>
             </section>
 
         </main><!-- End #main -->
-
-
 
         <!-- Vendor JS Files -->
         <script src="/resources/AdminAssets/vendor/apexcharts/apexcharts.min.js"></script>
