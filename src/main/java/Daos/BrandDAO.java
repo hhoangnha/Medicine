@@ -55,7 +55,7 @@ public class BrandDAO {
     public void editBrand(String brandId, String brandName, String origin) {
         String query = "UPDATE Brand "
                 + "SET BrandName = ?, "
-                + "Origin = ?, "
+                + "Origin = ? "
                 + "WHERE BrandID = ?";
 
         try {
@@ -82,7 +82,7 @@ public class BrandDAO {
         } catch (Exception e) {
         }
     }
-    
+
     public boolean isExist(String name) {
         String query = "SELECT COUNT(*) FROM Brand WHERE BrandName = ?";
         try {
@@ -117,8 +117,8 @@ public class BrandDAO {
     }
 
     public static void main(String[] args) {
-        BrandDAO test = new BrandDAO();
-        System.out.println(test.getBrandById("1"));
+//        BrandDAO test = new BrandDAO();
+//        System.out.println(test.getBrandById("1"));
 
     }
 }

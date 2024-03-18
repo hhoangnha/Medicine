@@ -10,11 +10,6 @@
         <title>Order</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
-
-        <!-- Favicons -->
-        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
-        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
         <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -39,13 +34,6 @@
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
 
-        <!-- =======================================================
-        * Template Name: NiceAdmin
-        * Updated: Sep 18 2023 with Bootstrap v5.3.2
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
     </head>
 
     <body>
@@ -164,8 +152,8 @@
                                     <thead>
                                         <tr>
                                             <th>OrderID</th>
-                                            <th>StaffID</th>
-                                            <th>CustomerID</th>
+                                            <th>Staff</th>
+                                            <th>Customer</th>
                                             <th>Date</th>
                                             <th>Status</th>
                                             <th>Total</th>
@@ -175,25 +163,35 @@
                                     <tbody>
                                         <% OrderDAO o = new OrderDAO();
                                             ResultSet rs = o.getAll();
-                                            
+
                                             while (rs.next()) {
-                                            String t = "";
-                                            if (rs.getInt("OrderStatus") == 1){
-                                                t = "Waiting for confirm";
-                                            } else if (rs.getInt("OrderStatus") == 2){
-                                                t = "Order Accepted";
-                                            } else if (rs.getInt("OrderStatus") == 3){
-                                                t = "Delivered";
-                                            } else if (rs.getInt("OrderStatus") == 4){
-                                                t = "Cancle Order";
-                                            }
+                                                String t = "";
+                                                if (rs.getInt("OrderStatus") == 1){
+                                                    t = "Waiting for confirm";
+                                                } else if (rs.getInt("OrderStatus") == 2){
+                                                    t = "Order Accepted";
+                                                } else if (rs.getInt("OrderStatus") == 3){
+                                                    t = "Delivered";
+                                                } else if (rs.getInt("OrderStatus") == 4){
+                                                    t = "Cancel Order";
+                                                }
                                         %>
                                         <tr>
                                             <td><%= rs.getInt("OrderID")%></td>
-                                            <td><%= rs.getInt("StaffID")%></td>
-                                            <td><%= rs.getInt("CustomerID")%></td>
+                                            <td>
+                                                <%
+                                                    if (rs.getInt("StaffID") == 0) {
+                                                %>
+                                                No staff
+                                                <%} else {%>
+                                                <%= rs.getInt("StaffID")%>
+                                                <%}
+                                                %>
+
+                                            </td>
+                                            <td><%= rs.getString("Username")%></td>
                                             <td><%= rs.getDate("OrderDate")%></td>
-                                            <td><%= t %></td>
+                                            <td><%= t%></td>
                                             <td><%= rs.getInt("Total")%></td>
                                             <td style="text-align: center">
                                                 <a style="color:white" class="btn bg-primary btn-sm " href="/OrderController/confirmOrder/<%= rs.getInt("OrderID")%>" >Confirm</a>

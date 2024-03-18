@@ -28,7 +28,6 @@ public class BrandController extends HttpServlet {
         List<BrandModel> listB = dao.getAll();
 
         request.setAttribute("listB", listB);
-        System.out.println("ok brand");
         request.getRequestDispatcher("admin-brand-list.jsp").forward(request, response);
     }
 
@@ -39,7 +38,6 @@ public class BrandController extends HttpServlet {
         String deleteID = request.getParameter("delete");
         String editId = request.getParameter("edit");
         BrandDAO dao = new BrandDAO();
-        System.out.println(deleteID);
         if (deleteID != null) {
             dao.deleteBrand(deleteID);
             response.sendRedirect("/BrandController");
@@ -61,13 +59,14 @@ public class BrandController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String editId = request.getParameter("edit");
+        String editId = request.getParameter("brandID");
         String editBrandName = request.getParameter("brandName");
         String editOrigin = request.getParameter("origin");
         BrandDAO dao = new BrandDAO();
-
+        System.out.println(editId);
         if (editId != null) {
             BrandModel manu = dao.getBrandById(editId);
+
             dao.editBrand(editId, editBrandName, editOrigin);
 
         } else {
@@ -80,7 +79,10 @@ public class BrandController extends HttpServlet {
                 request.getRequestDispatcher("admin-brand-create.jsp").forward(request, response);
             } else {
                 dao.addBrand(brandName, origin);
-                session.removeAttribute("exist");
+
+            }
+            if (session != null) {
+                session.invalidate();
             }
 
         }

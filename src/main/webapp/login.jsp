@@ -351,9 +351,9 @@
                             <a class="form-recovery" href="/EmailForgot.jsp">Forgot password?</a>
                             </label><a class="form-recovery" href="/SigUpController">Register?</a>
                         </div>
-                    <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block mb-4"/></div>
-                </form>
-
+                        <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block mb-4"/>
+                    </form>
+                </div>
             </div>
         </div>
 <div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back to home</a> </div>

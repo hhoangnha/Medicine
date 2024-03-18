@@ -81,62 +81,85 @@ public class OrderDAO {
     }
 
     public int addNewOrder(int customerID, int staffID, String orderDate, int orderStatus, int total, String[] selectCarts) {
-        int result = 0;
-        try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Orders(CustomerID, StaffID, OrderDate, OrderStatus, Total) VALUES(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, customerID);
-            ps.setInt(2, staffID);
-            ps.setString(3, orderDate);
-            ps.setInt(4, orderStatus);
-            ps.setDouble(5, total);
+    int result = 0;
+    double orderTotal = 0; // Biến để tính tổng tiền đơn hàng
+    try {
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO Orders(CustomerID, StaffID, OrderDate, OrderStatus, Total) VALUES(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, customerID);
+        ps.setInt(2, staffID);
+        ps.setString(3, orderDate);
+        ps.setInt(4, orderStatus);
+        ps.setDouble(5, total);
 
-            int count = ps.executeUpdate();
+        int count = ps.executeUpdate();
 
-            if (count > 0) {
-                ResultSet generatedKeys = ps.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int orderID = generatedKeys.getInt(1);
-                    System.out.println("ID của order mới là ");
-                    System.out.println(orderID);
+        if (count > 0) {
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int orderID = generatedKeys.getInt(1);
+                System.out.println("ID của order mới là ");
+                System.out.println(orderID);
 
-                    for (String selectCart : selectCarts) {
-                        int cartID = Integer.parseInt(selectCart);
-                        // get product by cartiD
-                        PreparedStatement psCart = conn.prepareStatement("SELECT ProID, UnitID, Quantity FROM Carts WHERE CartID = ?");
-                        psCart.setInt(1, cartID);
-                        ResultSet rsCart = psCart.executeQuery();
+                for (String selectCart : selectCarts) {
+                    int cartID = Integer.parseInt(selectCart);
+                    // get product by cartiD
+                    PreparedStatement psCart = conn.prepareStatement("SELECT ProID, UnitID, Quantity FROM Carts WHERE CartID = ?");
+                    psCart.setInt(1, cartID);
+                    ResultSet rsCart = psCart.executeQuery();
 
-                        if (rsCart.next()) {
-                            int proID = rsCart.getInt("ProID");
-                            int unitID = rsCart.getInt("UnitID");
-                            int quantity = rsCart.getInt("Quantity");
-                            // add detail to OrderDetail
-                            PreparedStatement psOrderDetail = conn.prepareStatement("INSERT INTO OrderDetails(OrderID, ProID, UnitID, Quantity) VALUES(?, ?, ?, ?)");
-                            psOrderDetail.setInt(1, orderID);
-                            psOrderDetail.setInt(2, proID);
-                            psOrderDetail.setInt(3, unitID);
-                            psOrderDetail.setInt(4, quantity);
-                            // Thực hiện chèn dữ liệu
-                            psOrderDetail.executeUpdate();
+                    if (rsCart.next()) {
+                        int proID = rsCart.getInt("ProID");
+                        int unitID = rsCart.getInt("UnitID");
+                        int quantity = rsCart.getInt("Quantity");
 
-                            // delete cart when create success
-                            PreparedStatement psDeleteCart = conn.prepareStatement("DELETE FROM Carts WHERE CartID = ?");
-                            psDeleteCart.setInt(1, cartID);
-                            psDeleteCart.executeUpdate();
+                        // Truy vấn để lấy giá sản phẩm từ bảng UnitProducts
+                        PreparedStatement psUnitProduct = conn.prepareStatement("SELECT Price FROM UnitProduct WHERE ProID = ? AND UnitID = ?");
+                        psUnitProduct.setInt(1, proID);
+                        psUnitProduct.setInt(2, unitID);
+                        ResultSet rsUnitProduct = psUnitProduct.executeQuery();
+
+                        if (rsUnitProduct.next()) {
+                            double price = rsUnitProduct.getDouble("Price");
+                            orderTotal += price * quantity; // Tính tổng tiền cho sản phẩm này
                         }
-                    }
 
-//                    newOrder = new OrderModel(orderID, customerID, staffID, orderDate, orderStatus, total);
+                        // add detail to OrderDetail
+                        PreparedStatement psOrderDetail = conn.prepareStatement("INSERT INTO OrderDetails(OrderID, ProID, UnitID, Quantity) VALUES(?, ?, ?, ?)");
+                        psOrderDetail.setInt(1, orderID);
+                        psOrderDetail.setInt(2, proID);
+                        psOrderDetail.setInt(3, unitID);
+                        psOrderDetail.setInt(4, quantity);
+                        // Thực hiện chèn dữ liệu
+                        psOrderDetail.executeUpdate();
+
+                        PreparedStatement psUpdateStock = conn.prepareStatement("UPDATE Products SET Quantity = Quantity - ? WHERE ProID = ?");
+                        psUpdateStock.setInt(1, quantity);
+                        psUpdateStock.setInt(2, proID);
+                        psUpdateStock.executeUpdate();
+
+                        // delete cart when create success
+                        PreparedStatement psDeleteCart = conn.prepareStatement("DELETE FROM Carts WHERE CartID = ?");
+                        psDeleteCart.setInt(1, cartID);
+                        psDeleteCart.executeUpdate();
+                    }
                 }
+
+                // Cập nhật tổng tiền vào bảng Orders
+                PreparedStatement psUpdateOrderTotal = conn.prepareStatement("UPDATE Orders SET Total = ? WHERE OrderID = ?");
+                psUpdateOrderTotal.setDouble(1, orderTotal);
+                psUpdateOrderTotal.setInt(2, orderID);
+                psUpdateOrderTotal.executeUpdate();
             }
-            result = 1;
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex);
-            result = 0;
         }
-        return result;
+        result = 1;
+    } catch (SQLException ex) {
+        Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println(ex);
+        result = 0;
     }
+    return result;
+}
+
 
     public boolean checkQuanProduct(int proid, int quan) {
         boolean check = false;
@@ -161,7 +184,7 @@ public class OrderDAO {
         ResultSet rs = null;
         try {
             Statement st = conn.createStatement(); // tạo đối tượng thực thi câu lệnh
-            PreparedStatement ps = conn.prepareStatement("select * from Orders");
+            PreparedStatement ps = conn.prepareStatement("select * from Orders JOIN Accounts ON Accounts.UserID = Orders.CustomerID");
             rs = ps.executeQuery();
             return rs;
         } catch (SQLException ex) {
@@ -178,6 +201,18 @@ public class OrderDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UnitDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public int updateStaffIDForOrder(int OrderID, int staffID) {
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("update Orders set StaffID = ? where OrderID = ?");;
+            ps.setInt(1, staffID);
+            ps.setInt(2, OrderID);
+            count = ps.executeUpdate();
+        } catch (Exception e) {
+        }
+        return (count == 0) ? 0 : 1;
     }
 
     public int updateStatus(int OrderID, int orderStatus) {
@@ -200,7 +235,7 @@ public class OrderDAO {
         while (rs.next()) {
             OrderID_DAOad dod = new OrderID_DAOad();
             System.out.println("START WHILE1 ORDERID:" + rs.getInt("OrderID"));
-            System.out.println(">>>"+rs.getInt("OrderID"));
+            System.out.println(">>>" + rs.getInt("OrderID"));
             ResultSet rsc = dod.getProductOrder(rs.getInt("OrderID"));
             while (rsc.next()) {
                 System.out.println("WHILE2 ORDERID:" + rs.getInt("OrderID"));

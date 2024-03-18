@@ -110,7 +110,7 @@
                                 <% }%>
                             </div>
                             <span class="price" >
-                                Giá: <span class="price" id="productPrice"></span>
+                                Price: <span class="price" id="productPrice"></span>
                             </span>
                             <span>Description: <%= p.getProDescription()%></span>
                             <span>Type: <%=rs.getString("CateName")%></span>
@@ -190,6 +190,19 @@ let pr = null;
 
             function addToCart(id) {
                 let quan = $("#quan").val();
+                if($('#unitId').val() == null || $('#unitId').val() == ''){
+                            Swal.fire({
+                                title: 'Please choose unit!',
+                                icon: 'error',
+                                showCancelButton: false,
+                                confirmButtonText: 'Confirm'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+//                                   
+                                }
+                            });
+                        return false;
+                }
                 $.ajax({
                     url: '/UserCartController/AddToCart/' + id + "?quan=" + quan+'&unit='+$('#unitId').val(),
                     method: 'GET',
@@ -206,8 +219,22 @@ let pr = null;
                                 }
                             });
                         }
+                        
                     },
                     error: function(err){
+                        console.log(err)
+//                        if(response.status == -1){
+//                            Swal.fire({
+//                                title: 'Please choose unit!',
+//                                icon: 'error',
+//                                showCancelButton: false,
+//                                confirmButtonText: 'Confirm'
+//                            }).then((result) => {
+//                                if (result.isConfirmed) {
+////                                   
+//                                }
+//                            });
+//                        }
                          Swal.fire({
                                 title: 'You are not logged in yet, log in now!',
                                 icon: 'error',

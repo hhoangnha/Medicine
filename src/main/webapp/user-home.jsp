@@ -201,7 +201,7 @@
                                         <div class="hover-content">
                                             <ul>
                                                 <li><a href='/UserHomeController/Detail/<%=rs.getInt("ProID")%>'><i class="fa fa-eye"></i></a></li>
-                                                <li><a onclick='addToCart(<%=rs.getInt("ProID")%>)'><i class="fa fa-shopping-cart"></i></a></li>
+                                                <!--<li><a onclick='addToCart(<%=rs.getInt("ProID")%>)'><i class="fa fa-shopping-cart"></i></a></li>-->
                                             </ul>
                                         </div>
                                         <img style="max-height:300px" src="/resources/images/<%= rs.getString("ProImage")%>" alt="">

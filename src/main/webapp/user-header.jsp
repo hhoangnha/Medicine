@@ -20,21 +20,45 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
+
+        <%
+
+            if (session.getAttribute("orderCreated") != null) {
+        %>
+        <script>
+            // Hiển thị đoạn script ở đây
+            Swal.fire({
+                title: 'Success to order',
+                icon: 'success',
+                showCancelButton: true,
+                cancelButtonText: "Close",
+            }).then((result) => {
+
+            });
+        </script>
+        <%
+                // Sau khi hiển thị xong, xoá session
+                session.removeAttribute("orderCreated");
+            }
+        %>
+
+
         <%
             cate_ad cateP = new cate_ad();
             ResultSet cate = cateP.getAll();
             ProductDAO pDAO = new ProductDAO();
             int totalItems = 0;
-            
-             UserModel uM = (UserModel) session.getAttribute("acc");
+
+            UserModel uM = (UserModel) session.getAttribute("acc");
             CartDAO cd = new CartDAO();
             List<CartItem> cartItems = null;
             if (uM != null) {
                 cartItems = cd.getCartItems(uM.getUserID());
             }
-            
+
             UnitProductDAO udD = new UnitProductDAO();
 
             if (cartItems != null) {
@@ -56,11 +80,11 @@
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="/UserHomeController/Products">Products</a></li>
-                         
-                               
-                                
+
+
+
                                 <li class="scroll-to-section"><a href="/UserCartController">Cart (<span class='text-danger'><%=totalItems%></span>)</a></li>
-                                <c:if test="${sessionScope.acc != null}" >
+                                    <c:if test="${sessionScope.acc != null}" >
                                     <li class="submenu">
                                         <a href="javascript:;">${sessionScope.fullname}</a>
                                         <ul>
@@ -72,7 +96,11 @@
                                         </ul>
                                     </li>
                                 </c:if>
+<<<<<<< HEAD
                                     <c:if test="${sessionScope.acc == null}">
+=======
+                                <c:if test="${sessionScope.acc == null}">
+>>>>>>> 4c071f131a4e421950a9c467a552212a1f115e19
                                     <li><a class='text-info' href="/loginController" class="btn btn-primary btn-block">Login</a></li></c:if>
                             </ul>
                             <a class='menu-trigger'>
@@ -84,5 +112,9 @@
                 </div>
             </div>
         </header>
+        <script>
+
+            
+        </script>
     </body>
 </html>

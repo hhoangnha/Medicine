@@ -56,12 +56,9 @@
     </head>
 
     <body>
-        
-        <script>
-            // Sử dụng SweetAlert để hiển thị thông báo
-          alertify.success("Thành công");
-        </script>
-       
+
+ 
+
         <jsp:include page="admin-header.jsp" />
         <jsp:include page="admin-aside.jsp" />
 
@@ -87,7 +84,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Brand</h5>
                                 <a href="/admin-brand-create.jsp" class="btn btn-primary ">Add new</a>
-                               <!-- Table with stripped rows -->
+                                <!-- Table with stripped rows -->
                                 <table class="table datatable">
                                     <thead>
                                         <tr>

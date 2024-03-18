@@ -78,6 +78,23 @@ public class ManufacturerDAO {
         }
         return rs;
     }
+    
+    public boolean isExist(String name) {
+        String query = "SELECT COUNT(*) FROM Manufacturer WHERE ManuName = ?";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với SQL
+            ps = conn.prepareStatement(query);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0; // Trả về true nếu username tồn tại, ngược lại trả về false
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
     public void deleteManufacturer(String ManuID) {
         String query = "delete from Manufacturer\n"
@@ -149,9 +166,6 @@ public class ManufacturerDAO {
     public static void main(String[] args) {
         ManufacturerDAO manuDAO = new ManufacturerDAO();
         List<ManufacturerModel> rsManu = manuDAO.getAllManufacturer();
-        for (int i = 0; i < rsManu.size(); i++) {
-            System.out.println(rsManu.get(i).getManuID());
-            System.out.println(rsManu.get(i).getManuName());
-        }
+        System.out.println(  manuDAO.isExist("è"));
     }
 }

@@ -5,6 +5,7 @@
 package Controllers;
 
 import static Controllers.loginController.checkAdmin;
+import Daos.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -130,6 +131,10 @@ public class OrderID_ad extends HttpServlet {
                 od = new OrderID_DAOad();
                 int l = Integer.parseInt(request.getParameter("oid"));
                 int y = Integer.parseInt(request.getParameter("a"));
+                int staffID = Integer.parseInt(request.getParameter("staffID"));
+                OrderDAO o = new OrderDAO();
+                o.updateStaffIDForOrder(l, staffID);
+                System.out.println("staffID: "+staffID);    
                 if(y == 0){
                         System.out.println("trạng thái huỷ đơ");
                     ResultSet pl = od.getProductOrder(l);

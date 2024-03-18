@@ -49,13 +49,19 @@
 
 
         <%
+            int orderN = (int) request.getAttribute("orderN");
+            int orderNew = (int) request.getAttribute("orderNew");
+            int orderSuccess = (int) request.getAttribute("orderSuccess");
+            int orderCancel = (int) request.getAttribute("orderCancel");
+            int cusN = (int) request.getAttribute("cusN");
+            double revenueTotal = (double) request.getAttribute("revenueTotal");
 
             int totalOrder = 0;
             int totalCustomer = 0;
             int totalRe = 0;
             int month = 0;
-            
-            int on =0;
+
+            int on = 0;
             int os = 0;
             int oc = 0;
 
@@ -71,7 +77,7 @@
 //            ResultSet coutR = ac.countTotalOrder(month);
 //            ResultSet topPro = ac.topProduct(month);
 
-            
+
         %>
 
         <main id="main" class="main">
@@ -135,9 +141,9 @@
                                                 <i class="bi bi-cart"></i>
                                             </div>
                                             <div class="ps-3">
-                                                <h6><%=totalOrder%></h6>
-                                                <span class="text-info small pt-1 fw-bold"><%=on%></span> <span class="text-muted small pt-2 ps-1">New</span><br/>
- <span class="text-success small pt-1 fw-bold"><%=os%></span><span class="text-muted small pt-2 ps-1">Success</span> <span class="text-danger small pt-1 fw-bold"><%=oc%></span><span class="text-muted small pt-2 ps-1">Đã huỷ</span>
+                                                <h6><%=orderN%></h6>
+                                                <span class="text-info small pt-1 fw-bold"><%=orderNew %></span> <span class="text-muted small pt-2 ps-1">New</span><br/>
+                                                <span class="text-success small pt-1 fw-bold"><%=orderSuccess%></span><span class="text-muted small pt-2 ps-1">Success</span> <span class="text-danger small pt-1 fw-bold"><%=orderCancel%></span><span class="text-muted small pt-2 ps-1">Đã huỷ</span>
                                             </div>
                                         </div>
                                     </div>
@@ -158,7 +164,7 @@
                                                 <i class="bi bi-currency-dollar"></i>
                                             </div>
                                             <div class="ps-3">
-                                                <h6><%=totalRe%></h6>
+                                                <h6><%= revenueTotal%></h6>
                                                 <!--<span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>-->
 
                                             </div>
@@ -183,7 +189,7 @@
                                                 <i class="bi bi-people"></i>
                                             </div>
                                             <div class="ps-3">
-                                                <h6><%=totalCustomer%></h6>
+                                                <h6><%= cusN%></h6>
                                                 <!--<span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>-->
 
                                             </div>
@@ -215,7 +221,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                              
+
+
 
 
                                             </tbody>
@@ -227,7 +234,8 @@
                             </div><!-- End Recent Sales -->
 
                             <!-- Top Selling -->
-                           
+
+
 
                         </div>
                     </div><!-- End Left side columns -->
@@ -239,7 +247,8 @@
 
         </main><!-- End #main -->
 
-       
+
+
 
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

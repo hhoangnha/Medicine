@@ -255,12 +255,14 @@ public class ProductController extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             String ProCode = request.getParameter("code");
             String ProName = request.getParameter("name");
+            String currentImage = request.getParameter("currentImage");
             String manufactureDateStr = request.getParameter("manufacturedate");
             String expirationDate = request.getParameter("expirationdate");
             int catid = Integer.parseInt(request.getParameter("catid"));
             int brandid = Integer.parseInt(request.getParameter("brandid"));
             int manuid = Integer.parseInt(request.getParameter("manuid"));
-            Part newFilePart = request.getPart("newImage");
+            Part newFilePart = request.getPart("image");
+            String newFileName;
 
             String des = request.getParameter("des");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -269,7 +271,12 @@ public class ProductController extends HttpServlet {
             String using = request.getParameter("using");
             String element = request.getParameter("element");
             String madein = request.getParameter("madein");
-            String newFileName = extractFileName(newFilePart);
+
+            if (newFilePart != null) {
+                newFileName = extractFileName(newFilePart);
+            } else {
+                newFileName = null;
+            }
             if (newFilePart != null) {
                 String allowedExtensions = ".jpg,.jpeg,.png,.gif";
                 String[] fileParts = newFileName.split("\\.");
@@ -304,21 +311,22 @@ public class ProductController extends HttpServlet {
 //                newFilePart.write(realPart + "/" + newFileName);
 
             }
-            if (!newFileName.contains(".jpg") && !newFileName.contains(".jpeg") && !newFileName.contains(".png") && !newFileName.contains(".webp") && !newFileName.contains(".gif")) {
-                response.sendRedirect("/ProductController/ErrorPicture");
+            ProductModel newSP = new ProductModel();
+            ProductDAO cDAO = new ProductDAO();
+            String fileName = "";
+            if (newFilePart != null) {
+                fileName = newFileName;
             } else {
-                ProductModel newSP = new ProductModel();
-                ProductDAO cDAO = new ProductDAO();
-                String fileName = "";
-                int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
-                if (rsUpdate == 0) {// cap nhat that bai
-                    ProductModel thongtincu = cDAO.getProduct(id);
-                    HttpSession session = request.getSession();
-                    session.setAttribute("thongtinsanpham", thongtincu);
-                    response.sendRedirect("/ProductController/Edit/" + id);
-                } else {
-                    response.sendRedirect("/ProductController");
-                }
+                fileName = currentImage;
+            }
+            int rsUpdate = cDAO.update(ProCode, ProName, des, catid, brandid, manuid, manufactureDateStr, expirationDate, element, quantity, indicaction, contraindication, using, madein, fileName, id);
+            if (rsUpdate == 0) {// cap nhat that bai
+                ProductModel thongtincu = cDAO.getProduct(id);
+                HttpSession session = request.getSession();
+                session.setAttribute("thongtinsanpham", thongtincu);
+                response.sendRedirect("/ProductController/Edit/" + id);
+            } else {
+                response.sendRedirect("/ProductController");
             }
 
         }

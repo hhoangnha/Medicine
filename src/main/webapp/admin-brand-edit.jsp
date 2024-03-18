@@ -33,35 +33,41 @@
 
     <body>
 
-        <div class="col-lg-12  container mt-5">
-            <%
-                BrandModel nh = (BrandModel) request.getAttribute("detail");
+        <div class="col-lg-12 container mt-5">
+            <% BrandModel nh = (BrandModel) request.getAttribute("detail");
+
+                String exist = (String) request.getAttribute("exist");
             %>
+
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Edit Brand</h5>
 
                     <!-- Horizontal Form -->
-                    <form  name="productForm" method="post" action='/BrandController' onsubmit="return validateForm()">
+                    <form name="productForm" method="post" action='/BrandController' onsubmit="return validateForm()">
 
-                        <div class="row">
-                            <div class="col-sm-2"><p>Brand ID</p></div>
-                            <div class="col-sm-8"><input  class="form-control" readonly="" type="number" name="brandID" value="<%= nh.getBrandID()%>"  /></div>
-                        </div>
                         <div class="row mb-3">
-                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Brand name</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-2"><p>Brand ID</p></div>
+                            <div class="col-sm-4">
+                                <input class="form-control bg-secondary-subtle" readonly type="number" name="brandID" value="<%= nh.getBrandID()%>" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <span id="nameWarning" style="color: red; "><%= exist != null ? exist : ""%></span>
+
+                            <label for="brandName" class="col-sm-2 col-form-label">Brand name</label>
+                            <div class="col-sm-4">
                                 <input type="text" id="brandName" name="brandName" value="<%= nh.getBrandName()%>" class="form-control">
                             </div>
                         </div>
 
                         <div class="row mb-3">
-                            <label for="origin"  class="col-sm-2 col-form-label">Origin</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="origin" name="origin" value="<%= nh.getOrigin() %>" class="form-control">
+                            <label for="origin" class="col-sm-2 col-form-label">Origin</label>
+                            <div class="col-sm-4">
+                                <input type="text" id="origin" name="origin" value="<%= nh.getOrigin()%>" class="form-control">
                             </div>
                         </div>
-
 
                         <div class="text-left">
                             <input class="btn btn-primary" id="submit" type="submit" name="btnBrandUpdate" value="Update"/>
@@ -70,7 +76,9 @@
                     </form><!-- End Horizontal Form -->
 
                 </div>
-            </div></div>
+            </div>
+        </div>
+
 
 
 

@@ -41,16 +41,16 @@
                     <form  name="productForm" method="post" action='/BrandController' onsubmit="return validateForm()">
                         <div class="row mb-3">
                             <h5 style="color: red"> <%= exist != null ? exist : ""%></h5>
-                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Brand name</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="origin" name="brandName" class="form-control">
+                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Brand name  <span style="color: red">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" id="origin" name="brandName" class="form-control"required>
                             </div>
                         </div>
 
                         <div class="row mb-3">
-                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Origin</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="brandName" name="origin" class="form-control">
+                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Origin  <span style="color: red">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" id="brandName" name="origin" class="form-control" required>
                             </div>
                         </div>
 
@@ -79,7 +79,7 @@
                         function validateForm() {
                             var brandName = document.getElementById("brandName").value;
                             var origin = document.getElementById("origin").value;
-                            if (brandName || origin === "") {
+                            if (brandName.equals("") || origin.equals("")) ) {
                                 alert("Please enter all data");
                                 return false;
                             }

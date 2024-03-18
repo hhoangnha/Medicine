@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 public class AdminDao {
 
     Connection conn;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
 
     public AdminDao() {
         try {
@@ -105,6 +107,152 @@ public class AdminDao {
 //            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         return null;
+    }
+
+    public Integer getNumberOfOrder() {
+        String query = "SELECT COUNT(*) AS total_orders FROM Orders ";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
+            ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và nhận kết quả
+
+            // Xử lý kết quả
+            if (rs.next()) {
+                int totalOrders = rs.getInt("total_orders");
+                // Đóng kết nối và tài nguyên
+                rs.close();
+                ps.close();
+                conn.close();
+                return totalOrders;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return 0; // Trả về null nếu có lỗi xảy ra
+    }
+
+    public Integer getNumberOfOrderNew() {
+        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE OrderStatus = 1 ";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
+            ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và nhận kết quả
+
+            // Xử lý kết quả
+            if (rs.next()) {
+                int totalOrders = rs.getInt("total_orders");
+                // Đóng kết nối và tài nguyên
+                rs.close();
+                ps.close();
+                conn.close();
+                return totalOrders;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return 0; // Trả về null nếu có lỗi xảy ra
+    }
+
+    public Integer getNumberOfOrderSuccess() {
+        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE OrderStatus = 3 ";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
+            ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và nhận kết quả
+
+            // Xử lý kết quả
+            if (rs.next()) {
+                int totalOrders = rs.getInt("total_orders");
+                // Đóng kết nối và tài nguyên
+                rs.close();
+                ps.close();
+                conn.close();
+                return totalOrders;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return 0; // Trả về null nếu có lỗi xảy ra
+    }
+
+    public Integer getNumberOfOrderCancel() {
+        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE OrderStatus = 4 ";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
+            ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và nhận kết quả
+
+            // Xử lý kết quả
+            if (rs.next()) {
+                int totalOrders = rs.getInt("total_orders");
+                // Đóng kết nối và tài nguyên
+                rs.close();
+                ps.close();
+                conn.close();
+                return totalOrders;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return 0; // Trả về null nếu có lỗi xảy ra
+    }
+
+    public Integer getNumberOfCustomer() {
+        String query = "SELECT COUNT(*) AS total_cus FROM Accounts WHERE IsAdmin IS NULL OR IsAdmin = 0";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
+            ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và nhận kết quả
+
+            // Xử lý kết quả
+            if (rs.next()) {
+                int totalCus = rs.getInt("total_cus");
+                // Đóng kết nối và tài nguyên
+                rs.close();
+                ps.close();
+                conn.close();
+                return totalCus;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null; // Trả về null nếu có lỗi xảy ra
+    }
+
+    public double getRevenue() {
+        String query = "SELECT SUM(OD.Quantity * UP.Price) AS TotalRevenue\n"
+                + "FROM Orders O\n"
+                + "JOIN OrderDetails OD ON O.OrderID = OD.OrderID\n"
+                + "JOIN UnitProduct UP ON OD.ProID = UP.ProID";
+        try {
+            conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
+            ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery(); // Thực thi truy vấn và nhận kết quả
+
+            // Xử lý kết quả
+            if (rs.next()) {
+                double totalRevenue = rs.getDouble("TotalRevenue");
+                // Đóng kết nối và tài nguyên
+                rs.close();
+                ps.close();
+                conn.close();
+                return totalRevenue;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return 0.0; // Trả về 0.0 nếu có lỗi xảy ra hoặc không có doanh thu
+    }
+
+    public static void main(String[] args) {
+        AdminDao test = new AdminDao();
+        System.out.println(test.getRevenue());
     }
 
 }

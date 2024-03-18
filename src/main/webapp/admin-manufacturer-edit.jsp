@@ -12,15 +12,6 @@
         <meta content="" name="description">
         <meta content="" name="keywords">
 
-       
-        
-        
-        
-        
-        
-        
-        
-        
         <link href="https://fonts.gstatic.com" rel="preconnect">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
@@ -41,59 +32,57 @@
     <body>
         <%
             ManufacturerModel manu = (ManufacturerModel) request.getAttribute("detail");
+
+            String existName = (String) request.getAttribute("existName");
+            String validPhone = (String) request.getAttribute("validPhone");
+            String manuPhone = (String) request.getAttribute("manuPhone");
             // Tiến hành sử dụng giá trị 'manu' ở đây...
 %>
 
-        <div class="col-lg-12  container mt-5">
-
+        <div class="container mt-5">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Update Manufacturer</h5>
-
                     <!-- Horizontal Form -->
-                    <form  name="productForm" method="post" action='/ManufacturerController?edit=<%= manu.getManuID()%>' onsubmit="return validateForm()">
-
-                        <div class="row">
+                    <form name="productForm" method="post" action='/ManufacturerController?edit=<%= manu.getManuID()%>' onsubmit="return validateForm()">
+                        <div class="row mb-3">
                             <div class="col-sm-2"><p>Manufacturer ID</p></div>
-                            <div class="col-sm-8"><input class="form-control" readonly="" type="number" name="ManuName" value="<%=  manu.getManuID()%>"  /></div>
+                            <div class="col-sm-8"><input class="form-control" readonly disabled type="number" name="ManuName" value="<%=  manu.getManuID()%>" /></div>
                         </div>
                         <div class="row mb-3">
-                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Manufacturer name</label>
+                            <label for="ManuName" class="col-sm-2 col-form-label">Manufacturer name  <span style="color: red">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" id="ManuName" name="manuName" value="<%=  manu.getManuName()%>" class="form-control">
+                                <input type="text" id="ManuName" required  name="manuName" value="<%=  manu.getManuName()%>" class="form-control">
+                                <span id="nameWarning" style="color: red; "><%= existName != null ? existName : ""%></span>
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="inputEmail3"  class="col-sm-2 col-form-label">License</label>
+                            <label for="ManuLicense" class="col-sm-2 col-form-label">License  <span style="color: red">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" id="ManuName" name="manuLicense" value="<%=  manu.getMfgLicense()%>" class="form-control">
+                                <input type="text" id="ManuLicense" name="manuLicense" value="<%=  manu.getMfgLicense()%>" class="form-control" required>
                             </div>
                         </div>
-                              <div class="row mb-3">
-                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Address</label>
+                        <div class="row mb-3">
+                            <label for="ManuAddress" class="col-sm-2 col-form-label">Address  <span style="color: red">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" id="ManuName" name="manuAddress" value="<%=  manu.getManuAddress()%>" class="form-control">
+                                <input type="text" id="ManuAddress" name="manuAddress" value="<%=  manu.getManuAddress()%>" class="form-control" required>
                             </div>
                         </div>
-                              <div class="row mb-3">
-                            <label for="inputEmail3"  class="col-sm-2 col-form-label">Phone</label>
+                        <div class="row mb-3">
+                            <label for="Phone" class="col-sm-2 col-form-label">Phone  <span style="color: red">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" id="ManuName" name="phone" value="<%=  manu.getPhone()%>" class="form-control">
+                                <input type="number" id="Phone" name="phone" value="<%= (manuPhone != null ? manuPhone : manu.getPhone())%>" class="form-control" required>
+                                <span  style="color: red; "><%= validPhone != null ? validPhone : ""%></span>
                             </div>
                         </div>
-                            <!-- comment -->
-
-
                         <div class="text-left">
-                            <input class="btn btn-primary" id="submit" type="submit" name="btnBrandUpdate" value="Update"/>
+                            <input class="btn btn-primary" id="submit" type="submit" name="btnBrandUpdate" value="Update" />
                             <a href='/ManufacturerController' class="btn btn-secondary">Back to list</a>
                         </div>
                     </form><!-- End Horizontal Form -->
-
                 </div>
-            </div></div>
-
-
+            </div>
+        </div>
 
         <!-- Vendor JS Files -->
         <script src="/resources/AdminAssets/vendor/apexcharts/apexcharts.min.js"></script>

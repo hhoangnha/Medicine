@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import xuly.md5;
 
 /**
  * @Thai Vinh
@@ -19,6 +20,7 @@ import java.util.List;
 public class ManageStaffController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    md5 hash = new md5();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,7 +58,6 @@ public class ManageStaffController extends HttpServlet {
             StaffModel detail = dao.getStaffById(editId);
             System.out.println(detail);
             request.setAttribute("detail", detail);
-
             request.getRequestDispatcher("admin-staff-edit.jsp").forward(request, response);
         } else {
             // Nếu không phải yêu cầu xóa, tiếp tục xử lý các yêu cầu khác
@@ -84,21 +85,8 @@ public class ManageStaffController extends HttpServlet {
             String editIssuedBy = request.getParameter("issuedBy");
             String editLicenseDate = request.getParameter("licenseDate");
 
-            System.out.println(editId);
-            System.out.println("Username: " + editUsername);
-            System.out.println("Password: " + editPassword);
-            System.out.println("Fullname: " + editFullname);
-            System.out.println("Email: " + editEmail);
-            System.out.println("Phone: " + editPhone);
-            System.out.println("Address: " + editAddress);
-            System.out.println("Birthday: " + editBirthday);
-            System.out.println("Gender: " + editGender);
-            System.out.println("ID Number: " + editIdNumber);
-            System.out.println("Issued By: " + editIssuedBy);
-            System.out.println("License Date: " + editLicenseDate);
-
             dao.editStaff(editId, editIdNumber, editIssuedBy, editLicenseDate);
-            dao.editAccount(editId, editUsername, editPassword, editFullname, editEmail, editPhone, editAddress, editBirthday, editGender);
+            dao.editAccount(editId, editUsername, hash.getMd5(editPassword), editFullname, editEmail, editPhone, editAddress, editBirthday, editGender);
 
         } else {
             String username = request.getParameter("username");
@@ -115,10 +103,10 @@ public class ManageStaffController extends HttpServlet {
             if (dao.isUsernameExists(username)) {
                 HttpSession session = request.getSession();
                 String exist = "This username have existed aldready!!!";
-                session.setAttribute("exist", exist);
+                request.setAttribute("exist", exist);
                 request.getRequestDispatcher("admin-add-staff.jsp").forward(request, response);
             } else {
-                dao.addAccount(username, password, fullname, email, phone, address, birthday, gender);
+                dao.addAccount(username, hash.getMd5(password), fullname, email, phone, address, birthday, gender);
                 dao.addStaff(idNumber, issuedBy, licenseDate);
             }
 

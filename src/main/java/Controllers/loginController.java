@@ -133,7 +133,7 @@ public class loginController extends HttpServlet {
                     System.out.println("Đang chuyển hướng sang admin");
                     response.sendRedirect("/AdminController");
                 } else {
-
+                    
                     response.sendRedirect("/UserHomeController");
                 }
 
@@ -143,10 +143,10 @@ public class loginController extends HttpServlet {
 
     public static boolean checkAdmin(HttpSession session) {
         try {
-            System.out.println("Check is admin");
-            System.out.println(session.getAttribute("IsAdmin"));
-            System.out.println((int) session.getAttribute("IsAdmin") == 1);
-            return (int) session.getAttribute("IsAdmin") == 1;
+            System.out.println("Check is admin" );
+            System.out.println("line148:"+session.getAttribute("IsAdmin"));
+            System.out.println((int)session.getAttribute("IsAdmin") == 1 || (int)session.getAttribute("IsAdmin") == 2);
+            return (int)session.getAttribute("IsAdmin") == 1 || (int)session.getAttribute("IsAdmin") == 2;
         } catch (Exception e) {
             return false;
         }
