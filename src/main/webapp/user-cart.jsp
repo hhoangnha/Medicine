@@ -243,9 +243,9 @@
                             <p>Fullname</p>
                             <input type="text" name="name" value="${sessionScope.fullname}" placeholder="">
                             <p>Phone number</p>
-                            <input type="text" value="<%=udd.getPhone()%>" name="phone" >
+                            <input type="text" value="<%=uM.getPhone()%>" name="phone" >
                             <p>Address</p>
-                            <textarea name='address'><%=udd.getAddress()%></textarea>
+                            <textarea id="address" name='address'>${sessionScope.thongtinkhachhang.address}</textarea>
 
 
                             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">

@@ -86,7 +86,7 @@ public class ManageStaffController extends HttpServlet {
             String editLicenseDate = request.getParameter("licenseDate");
 
             dao.editStaff(editId, editIdNumber, editIssuedBy, editLicenseDate);
-            dao.editAccount(editId, editUsername, hash.getMd5(editPassword), editFullname, editEmail, editPhone, editAddress, editBirthday, editGender);
+            dao.editAccount(editId, editUsername, hash.getMd5(editPassword).toUpperCase(), editFullname, editEmail, editPhone, editAddress, editBirthday, editGender);
 
         } else {
             String username = request.getParameter("username");
@@ -106,7 +106,7 @@ public class ManageStaffController extends HttpServlet {
                 request.setAttribute("exist", exist);
                 request.getRequestDispatcher("admin-add-staff.jsp").forward(request, response);
             } else {
-                dao.addAccount(username, hash.getMd5(password), fullname, email, phone, address, birthday, gender);
+                dao.addAccount(username, hash.getMd5(password).toUpperCase(), fullname, email, phone, address, birthday, gender);
                 dao.addStaff(idNumber, issuedBy, licenseDate);
             }
 

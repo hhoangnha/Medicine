@@ -96,12 +96,7 @@
                                         </ul>
                                     </li>
                                 </c:if>
-<<<<<<< HEAD
-                                    <c:if test="${sessionScope.acc == null}">
-=======
-                                <c:if test="${sessionScope.acc == null}">
->>>>>>> 4c071f131a4e421950a9c467a552212a1f115e19
-                                    <li><a class='text-info' href="/loginController" class="btn btn-primary btn-block">Login</a></li></c:if>
+                                <c:if test="${sessionScope.acc == null}"><li><a class='text-info' href="/loginController" class="btn btn-primary btn-block">Login</a></li></c:if>
                             </ul>
                             <a class='menu-trigger'>
                                 <span>Menu</span>

@@ -55,7 +55,7 @@ public class UserDAO {
         try {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(password).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (LOWER(Username) = LOWER(?) Or LOWER(Email) = LOWER(?)) AND LOWER(Password) = LOWER(?)");
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (LOWER(Username) = LOWER(?) Or LOWER(Email) = LOWER(?)) AND Password = ? AND UserStatus = 1");
             ps.setString(1, username);
             ps.setString(2, username);
             ps.setString(3, hasPassword);
@@ -152,7 +152,7 @@ public class UserDAO {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(pass).toUpperCase();
             PreparedStatement ps = conn.prepareStatement("INSERT INTO Accounts (Username, Password, Fullname, Email, Phone, ResetToken, Address, Birthday, Gender, IsAdmin, CreatedAt, UserStatus) \n"
-                    + "VALUES (?, ?, ?, ?, ?, '', '', '', '', 0, ?, 0);");
+                    + "VALUES (?, ?, ?, ?, ?, '', '', '', '', 0, ?, 1);");
             ps.setString(1, user);
             ps.setString(2, hasPassword);
             ps.setString(3, fullname);

@@ -92,8 +92,8 @@ public class StaffDAO {
     public void addAccount(String username, String password, String fullname, String email, String phone,
             String address, String birthday, String gender) {
         String query = "INSERT INTO Accounts "
-                + "(Username, Password, Fullname, Email, Phone, Address, Birthday, Gender, IsAdmin, CreatedAt)"
-                + "VALUES(?,?,?,?,?,?,?,?,?,?)";
+                + "(Username, Password, Fullname, Email, Phone, Address, Birthday, Gender, IsAdmin, CreatedAt, UserStatus)"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,1)";
 
         //
         //
