@@ -101,14 +101,14 @@
 
                                         <% //CusDAO cd = new CusDAO();
                                             OrderDAO d = new OrderDAO();
-                                            ResultSet rs = d.getAll( kh.getUsername());
+                                            ResultSet rs = d.getAllOrderByUserID(kh.getUserID());
                                             // list<user> lu = d.getAdminUser("user");
                                             while (rs.next()) {
                                         %>
 
                                         <tr>
                                             <td><%=  rs.getString("OrderDate")%></td>
-                                            <td><%= rs.getString("OrderTotal")%> </td>
+                                            <td><%= rs.getString("Total")%> </td>
                                             <td>
                                                 <%if (rs.getString("OrderStatus").equals("1")) {%><p>Đơn mới</p><%}%>
                                                 <%if (rs.getString("OrderStatus").equals("2")) {%><p>Đang đóng gói</p><%}%>
@@ -125,7 +125,7 @@
                                             </td>
 
                                         </tr>
-                                    <div class="modal fade" id="basicModal<%=rs.getInt("OrderID")%>" tabindex="-1">
+<!--                                    <div class="modal fade" id="basicModal<%=rs.getInt("OrderID")%>" tabindex="-1">
                                         <div class="modal-dialog modal-xl">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -155,7 +155,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div><!-- End Basic Modal-->
+                                    </div>-->
                                     <%}%>
 
 

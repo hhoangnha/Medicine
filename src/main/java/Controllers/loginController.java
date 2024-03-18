@@ -34,7 +34,7 @@ public class loginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -127,13 +127,13 @@ public class loginController extends HttpServlet {
                 cookieUsername.setMaxAge(60 * 60 * 24 * 3);
                 response.addCookie(cookieUsername);
                 response.addCookie(cookieFullname);
-                   
+
                 System.out.println(rs.getIsAdmin());
-                if (rs.getIsAdmin()==1 || rs.getIsAdmin() == 2) {
+                if (rs.getIsAdmin() == 1 || rs.getIsAdmin() == 2) {
                     System.out.println("Đang chuyển hướng sang admin");
                     response.sendRedirect("/AdminController");
                 } else {
-                    
+
                     response.sendRedirect("/UserHomeController");
                 }
 
@@ -143,10 +143,10 @@ public class loginController extends HttpServlet {
 
     public static boolean checkAdmin(HttpSession session) {
         try {
-            System.out.println("Check is admin" );
+            System.out.println("Check is admin");
             System.out.println(session.getAttribute("IsAdmin"));
-            System.out.println((int)session.getAttribute("IsAdmin") == 1);
-            return (int)session.getAttribute("IsAdmin") == 1;
+            System.out.println((int) session.getAttribute("IsAdmin") == 1);
+            return (int) session.getAttribute("IsAdmin") == 1;
         } catch (Exception e) {
             return false;
         }

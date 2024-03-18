@@ -73,7 +73,7 @@
                                     </li>
                                 </c:if>
                                     <c:if test="${sessionScope.acc == null}">
-                                    <li><a class='text-info' href="/loginController" class="btn btn-primary btn-block">Sign In</a></li></c:if>
+                                    <li><a class='text-info' href="/loginController" class="btn btn-primary btn-block">Login</a></li></c:if>
                             </ul>
                             <a class='menu-trigger'>
                                 <span>Menu</span>

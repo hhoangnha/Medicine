@@ -22,7 +22,7 @@
                 height: 100%;
             }
             body {
-                /*background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);*/
+                background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 100%, rgba(66, 245, 189, 0.4) 100%);
                 color: rgba(0, 0, 0, 0.6);
                 font-family: "Roboto", sans-serif;
                 font-size: 14px;
@@ -288,7 +288,7 @@
 
 
             var patt_phone = /^(0|84)[2-9]\d{8}$/;
-            var patt_password = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+             var patt_password = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
             var patt_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
             function check() {
@@ -298,7 +298,7 @@
                 repass = document.getElementById("user-repass").value;
 
                 if (patt_password.test(pass) == false) {
-                    document.getElementById("txtPassMessage").innerHTML = "Password includes 8 characters (Including uppercase letters, lowercase letters, numbers and characters)";
+                    document.getElementById("txtPassMessage").innerHTML = "Password includes 6 characters (Including letters, numbers)";
                     return false;
                 } else {
                     document.getElementById("txtPassMessage").innerHTML = "";
@@ -372,7 +372,7 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input name="pass" type="password" id="user-pass"  required="required"/>
-                        <p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>
+<!--                        <p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>-->
                         <div class="error" id="txtPassMessage"></div>
                     </div>
                     <div class="form-group">

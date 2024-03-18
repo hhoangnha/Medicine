@@ -288,40 +288,22 @@
 
 
             var patt_phone = /^(0|84)[2-9]\d{8}$/;
-            var patt_password = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+              var patt_password = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
             var patt_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-//            function check() {
-////                phone = document.getElementById("txtphone").value;
-//                pass = document.getElementById("user-pass").value;
-////                email = document.getElementById("txtemail").value;
-//                repass = document.getElementById("user-repass").value;
-//
-//                if (patt_password.test(pass) == false) {
-//                    document.getElementById("txtPassMessage").innerHTML = "Password includes 8 characters (Including uppercase letters, lowercase letters, numbers and characters)";
-//                    return false;
-//                } else {
-//                    document.getElementById("txtPassMessage").innerHTML = "";
-//                }
-////                if (patt_email.test(email) == false) {
-////                    document.getElementById("txtEmailMessage").innerHTML = "Email is invalid, Please Enter Email Again";
-////                    return false;
-////                } else {
-////                    document.getElementById("txtEmailMessage").innerHTML = "";
-////                }
-////                if (patt_phone.test(phone) == false) {
-////                    document.getElementById("txtPhoneMessage").innerHTML = "Phone Number is invalid, Please Enter Phone Number Again";
-////                    return false;
-////                } else {
-////                    document.getElementById("txtPhoneMessage").innerHTML = "";
-////                }
-//                if (pass != repass) {
-//                    document.getElementById("txtRepass").innerHTML = "Confim pass incorrect";
-//                    return false;
-//                } else {
-//                    document.getElementById("txtRepass").innerHTML = "";
-//                }
-//                return true;
+            function check() {
+               phone = document.getElementById("txtphone").value;
+                pass = document.getElementById("user-pass").value;
+               email = document.getElementById("txtemail").value;
+                repass = document.getElementById("user-repass").value;
+
+                if (patt_password.test(pass) == false) {
+                    document.getElementById("txtPassMessage").innerHTML = "Password includes 6 characters (Including letters, numbers)";
+                    return false;
+                } else {
+                    document.getElementById("txtPassMessage").innerHTML = "";
+                }
+////              
             }
         </script>
 
@@ -347,7 +329,7 @@
                         <label for="password">Enter New Password</label>
                         <input name="newpass" type="password" id="user-pass"  required="required"/>
                         <div class="error" id="txtPassMessage"></div>
-                        <p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>
+                        <!--<p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>-->
 
                     </div>
                     <div class="form-group">
@@ -363,7 +345,7 @@
             </div>
         </div>
     </div>
-    <div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back Home</a><a href="#" target="_blank">Contact ?<i class="material-icons">arrow_forward</i></a></div>
+    <div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back to Home</a><a href="#" target="_blank">Contact ?<i class="material-icons">arrow_forward</i></a></div>
     <!-- partial -->
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

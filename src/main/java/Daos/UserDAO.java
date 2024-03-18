@@ -55,7 +55,7 @@ public class UserDAO {
         try {
             Statement st = conn.createStatement();
             String hasPassword = getMd5(password).toUpperCase();
-            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (Username = ? Or Email = ?) AND Password = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT *  FROM Accounts WHERE (LOWER(Username) = LOWER(?) Or LOWER(Email) = LOWER(?)) AND LOWER(Password) = LOWER(?)");
             ps.setString(1, username);
             ps.setString(2, username);
             ps.setString(3, hasPassword);

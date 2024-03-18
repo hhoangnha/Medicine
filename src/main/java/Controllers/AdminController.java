@@ -71,7 +71,7 @@ public class AdminController extends HttpServlet {
                     String proid = (s[s.length - 1]);
                     System.out.println("tesst" + proid);
                     userad_ad pr = new userad_ad();
-                    pr.delete(proid, 1);
+                    pr.delete(proid, 0);
                     session.setAttribute("DeleteSuccess", "Account deleted successfully");
                     response.sendRedirect("/AdminController/Users");
                 } catch (Exception ex) {
@@ -83,7 +83,7 @@ public class AdminController extends HttpServlet {
                 try {
                     String proid = (s[s.length - 1]);
                     userad_ad pr = new userad_ad();
-                    pr.delete(proid, 0);
+                    pr.delete(proid, 1);
                     session.setAttribute("RestoreSuccess", "Account restore successful");
                     System.out.println(session.getAttribute("RestoreSuccess"));
                    response.sendRedirect("/AdminController/RestoreUsers");
