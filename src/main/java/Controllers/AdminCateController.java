@@ -108,7 +108,7 @@ public class AdminCateController extends HttpServlet {
                 try {
                     int cateid = Integer.parseInt(s[s.length - 1]);
                     cate_ad ct = new cate_ad();
-//                    ct.delete(cateid, 1);
+                    ct.updateStatus(cateid);
                     session.setAttribute("msgSuccess", "Thành công");
                     response.sendRedirect("/AdminCateController");
                 } catch (Exception ex) {

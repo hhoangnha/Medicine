@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -26,8 +27,10 @@ public class BrandController extends HttpServlet {
             throws ServletException, IOException {
         BrandDAO dao = new BrandDAO();
         List<BrandModel> listB = dao.getAll();
+        List<BrandModel> listBrandRestore = dao.getAllDeletedList();
 
         request.setAttribute("listB", listB);
+        request.setAttribute("listBrandRestore", listBrandRestore);
         System.out.println("ok brand");
         request.getRequestDispatcher("admin-brand-list.jsp").forward(request, response);
     }
@@ -38,8 +41,18 @@ public class BrandController extends HttpServlet {
 
         String deleteID = request.getParameter("delete");
         String editId = request.getParameter("edit");
+        String restoreID = request.getParameter("restore");
         BrandDAO dao = new BrandDAO();
         System.out.println(deleteID);
+        String p = request.getRequestURI();
+        if (p.endsWith("/BrandController")) {
+            response.sendRedirect("/BrandController");
+        } else if (p.endsWith("/BrandController/Restore")) {
+            //         if (restoreID != null) {
+            //            request.getRequestDispatcher("admin-brand-restore.jsp").forward(request, response);
+            //        } 
+            response.sendRedirect("admin-brand-restore.jsp");
+        }
         if (deleteID != null) {
             dao.deleteBrand(deleteID);
             response.sendRedirect("/BrandController");

@@ -1,4 +1,5 @@
-<%@page import="Daos.ProductDAO"%>
+<%@page import="Model.BrandModel"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,15 +7,25 @@
     <%@page import="Daos.userad_ad"%>
     <%@page import="java.sql.ResultSet"%>
     <%@page import="Model.UserModel"%>
+    <%@page import="Daos.cate_ad"%>
+    <%@page import="Daos.userad_ad"%>
+    <%@page import="java.sql.ResultSet"%>
+    <%@page import="Model.CategorieModel"%>
+    <%@page import="Daos.userad_ad"%>
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Product</title>
+        <title>Category</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
         <!-- Favicons -->
+        <link href="/resources/AdminAssets/img/favicon.png" rel="icon">
+        <link href="/resources/AdminAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
         <link href="https://fonts.gstatic.com" rel="preconnect">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
@@ -27,14 +38,6 @@
         <link href="/resources/AdminAssets/vendor/remixicon/remixicon.css" rel="stylesheet">
         <link href="/resources/AdminAssets/vendor/simple-datatables/style.css" rel="stylesheet">
 
-        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-
-        <!-- CSS -->
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-        <!-- Default theme -->
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-        <!-- Semantic UI theme -->
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
         <!-- Template Main CSS File -->
         <link href="/resources/AdminAssets/css/style.css" rel="stylesheet">
 
@@ -48,23 +51,10 @@
     </head>
 
     <body>
-        <%
-            // L?y d? li?u t? session
-            String msgSuccess = (String) session.getAttribute("msgSuccess");
-            if (msgSuccess != null) {
-        %>
-        <script>
-            // S? d?ng SweetAlert ?? hi?n th? thông báo
-            alertify.success("Thành công");
-        </script>
-        <%
-                // Xóa thông báo sau khi hi?n th?
-                session.removeAttribute("message");
-            }
-        %>
-        <jsp:include page="admin-header.jsp" />
 
+        <jsp:include page="admin-header.jsp" />
         <jsp:include page="admin-aside.jsp" />
+
 
         <main id="main" class="main">
 
@@ -85,54 +75,40 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Product</h5>
-                                <a href="/ProductController/Create" class="btn btn-primary ">Add new</a>
-
+                                <h5 class="card-title">Brand</h5>
+<!--                                <a href="/admin-brand-create.jsp" class="btn btn-primary ">Add new</a>-->
                                 <!-- Table with stripped rows -->
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th >Name</th>  
-                                            <th>Quantity</th>
-                                            <th>Picture</th>
-                                            <th>CateID</th>
-                                            <th>BrandID</th>
-                                            <th class="w-50">ManuID</th>
-                                            <th></th>
+                                            <th>Brand name</th>
+                                            <th>Origin</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        <%
-                                            ProductDAO cDAO = new ProductDAO();
-                                            ResultSet rs = cDAO.getAll();
-                                            while (rs.next()) {
 
+                                        <%
+                                            List<BrandModel> listBrandRestore = (List<BrandModel>) request.getAttribute("listBrandRestore");
+                                            if (listBrandRestore != null) {
+                                                for (BrandModel o : listBrandRestore) {
                                         %>
-
-
                                         <tr>
-                                            <td><%= rs.getInt("ProID")%></td>
-                                            <td><%= rs.getString("ProName")%></td>
-                                            <td><%=  rs.getInt("Quantity")%></td>
-                                            <td>
-                                                <!-- Hi?n th? ?nh -->
-                                                <img src="resources/images/<%=rs.getString("ProImage")%>" alt="Product Image" width="100px" height="100px">
-                                            </td>
-                                            <td><%=  rs.getString("CateName")%></td>
-                                            <td><%=  rs.getString("BrandName")%></td>
-                                            <td><%=  rs.getString("ManuName")%></td>
-                                            <td>
-                                                <a class="btn btn-sm btn-info" href="/ProductController/Edit/<%=rs.getString("ProID")%>">Edit </a>
-                                                <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure');" href="/ProductController/Delete/<%=rs.getString("ProID")%>">Delete</a>
-                                            </td>
+                                            <td><%= o.getBrandID()%></td>
+                                            <td><%= o.getBrandName()%></td>
+                                            <td><%= o.getOrigin()%></td>
 
+                                            <td>
+                                                <a style="color:white" onclick="return confirm('Are you sure? Brand will restore');" class="btn bg-primary btn-sm " href="/BrandController?restore<%= o.getBrandID()%>" >Restore</a> <br>  
+                                            </td>
                                         </tr>
-
                                         <%
+                                                }
                                             }
                                         %>
+
 
                                     </tbody>
                                 </table>
@@ -146,8 +122,6 @@
             </section>
 
         </main><!-- End #main -->
-
-
 
         <!-- Vendor JS Files -->
         <script src="/resources/AdminAssets/vendor/apexcharts/apexcharts.min.js"></script>

@@ -13,14 +13,24 @@ public class BrandModel {
     private int BrandID;
     private String BrandName;
     private String origin;
+    private int BrandStatus;
 
     public BrandModel() {
     }
 
-    public BrandModel(int BrandID, String BrandName, String origin) {
+    public BrandModel(int BrandID, String BrandName, String origin, int BrandStatus) {
         this.BrandID = BrandID;
         this.BrandName = BrandName;
         this.origin = origin;
+        this.BrandStatus = BrandStatus;
+    }
+
+    public int getBrandStatus() {
+        return BrandStatus;
+    }
+
+    public void setBrandStatus(int BrandStatus) {
+        this.BrandStatus = BrandStatus;
     }
 
     

@@ -85,11 +85,11 @@
             <i class="bi bi-circle"></i><span>Products Manager</span>
           </a>
         </li>
-        <!--                <li>
-                    <a href="/ProductController/RestoreProduct" >
-                        <i class="bi bi-circle"></i><span>Products Restore</span>
-                    </a>
-                </li>-->
+        <li>
+            <a href="/ProductController/RestoreProduct" >
+                <i class="bi bi-circle"></i><span>Products Restore</span>
+            </a>
+        </li>
       </ul>
     </li>
     <!-- End Icons Nav -->
@@ -114,6 +114,11 @@
             <i class="bi bi-circle"></i><span>Brand Manager</span>
           </a>
         </li>
+<!--        <li>
+          <a href="/BrandController/Restore">
+            <i class="bi bi-circle"></i><span>Brand Restore</span>
+          </a>
+        </li>-->
       </ul>
     </li>
 

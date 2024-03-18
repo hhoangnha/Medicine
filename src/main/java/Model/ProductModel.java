@@ -28,11 +28,12 @@ public class ProductModel {
     private String Using;
     private String MadeIn;
     private String ProImage;
+    private int ProStatus;
 
     public ProductModel() {
     }
 
-    public ProductModel(int ProID, String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage) {
+    public ProductModel(int ProID, String ProCode, String ProName, String ProDescription, int CateID, int BrandID, int ManuID, String ManufactureDate, String ExpirationDate, String Element, int Quantity, String Indication, String Contraindication, String Using, String MadeIn, String ProImage, int ProStatus) {
         this.ProID = ProID;
         this.ProCode = ProCode;
         this.ProName = ProName;
@@ -49,6 +50,7 @@ public class ProductModel {
         this.Using = Using;
         this.MadeIn = MadeIn;
         this.ProImage = ProImage;
+        this.ProStatus = ProStatus;
     }
     
     public int getProID() {
@@ -113,6 +115,9 @@ public class ProductModel {
 
     public String getProImage() {
         return ProImage;
+    }
+    public int getProStatus() {
+        return ProStatus;
     }
 
     public void setProID(int ProID) {
@@ -179,5 +184,7 @@ public class ProductModel {
         this.ProImage = ProImage;
     }
 
-    
+    public void setProStatus(int ProStatus) {
+        this.ProStatus = ProStatus;
+    }
 }
