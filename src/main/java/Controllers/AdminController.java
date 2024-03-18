@@ -5,6 +5,7 @@
 package Controllers;
 
 import static Controllers.loginController.checkAdmin;
+import Daos.AdminDao;
 import Daos.UserDAO;
 import Daos.userad_ad;
 import Model.UserModel;
@@ -86,7 +87,7 @@ public class AdminController extends HttpServlet {
                     pr.delete(proid, 0);
                     session.setAttribute("RestoreSuccess", "Account restore successful");
                     System.out.println(session.getAttribute("RestoreSuccess"));
-                   response.sendRedirect("/AdminController/RestoreUsers");
+                    response.sendRedirect("/AdminController/RestoreUsers");
                 } catch (Exception ex) {
 
                 }
@@ -113,6 +114,14 @@ public class AdminController extends HttpServlet {
                 request.getRequestDispatcher("/admin-user-restore.jsp").forward(request, response);
 
             } else {
+                AdminDao dao = new AdminDao();
+                System.out.println(dao.getNumberOfOrder());
+                request.setAttribute("orderN", dao.getNumberOfOrder());
+                request.setAttribute("orderNew", dao.getNumberOfOrderNew());
+                request.setAttribute("orderSuccess", dao.getNumberOfOrderSuccess());
+                request.setAttribute("orderCancel", dao.getNumberOfOrderCancel());
+                request.setAttribute("cusN", dao.getNumberOfCustomer());
+                request.setAttribute("revenueTotal", dao.getRevenue());
                 request.getRequestDispatcher("/admin-index.jsp").forward(request, response);
             }
         } else {

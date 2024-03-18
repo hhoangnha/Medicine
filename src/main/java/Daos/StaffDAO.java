@@ -65,7 +65,7 @@ public class StaffDAO {
     // Method to add a new staff member
     public void addAccount(String username, String password, String fullname, String email, String phone, String address, String birthday, String gender) {
         String query = "INSERT INTO Accounts "
-                + "(Username, Password, Fullname, Email, Phone, Address, Birthday, Gender, isAdmin, CreatedAt)"
+                + "(Username, Password, Fullname, Email, Phone, Address, Birthday, Gender, IsAdmin, CreatedAt)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?)";
 
 //      
@@ -382,6 +382,6 @@ public class StaffDAO {
         StaffDAO staffManager = new StaffDAO();
 
         StaffDAO test = new StaffDAO();
-        System.out.println(test.day.getCurrentDate());
+       test.addAccount("vinh2k3", "12345", "Hà Thái Vinh", "hathaivinhs@gmail.com", "0982989262", "Hau GIang", "2003-11-11", "1");
     }
 }

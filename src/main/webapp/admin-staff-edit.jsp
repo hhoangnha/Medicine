@@ -60,7 +60,7 @@
                         <div class="row mb-3">
                             <label for="password" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-10">
-                                <input type="text" id="password" name="password" value="<%= staff.getPassword()%>" class="form-control">
+                                <input type="password" id="password" name="password" value="" class="form-control">
                             </div>
                         </div>
                         <div class="row mb-3">
