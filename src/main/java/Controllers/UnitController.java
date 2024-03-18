@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.LinkedList;
 
 /**
  *
@@ -65,11 +66,14 @@ public class UnitController extends HttpServlet {
         if (path.endsWith("/UnitController")) {
             request.getRequestDispatcher("unit-manage.jsp").forward(request, response);
         } else {
-            if (path.endsWith("/UnitController/AddnewUnit")) {
+            if(path.endsWith("/UnitController/RestoreUnit")) {
+                request.getRequestDispatcher("/admin-unit-restore.jsp").forward(request, response);
+            }
+            else if (path.endsWith("/UnitController/AddnewUnit")) {
                 request.getRequestDispatcher("/addnewUnit.jsp").forward(request, response);
             } else if (path.startsWith("/UnitController/updateUnit")) {
                 String[] s = path.split("/");
-                String UnitID = s[s.length - 1];
+                int UnitID = Integer.parseInt(s[s.length - 1]);
                 UnitDAO udao = new UnitDAO();
                 UnitModel unitOld = udao.getUnit(UnitID);
                 session.setAttribute("unitOld", unitOld);
@@ -90,13 +94,23 @@ public class UnitController extends HttpServlet {
                     int UnitID = Integer.parseInt(s[s.length - 1]);
                     UnitDAO udao = new UnitDAO();
 //                    ct.delete(cateid, 0);
-                    udao.delete(UnitID);
+                    udao.updateStatus(UnitID, 0);
                     session.setAttribute("msgSuccess", "Delete successfully!");
                     response.sendRedirect("/UnitController");
                 } catch (Exception ex) {
                     response.sendRedirect("/UnitController");
                 }
-
+            }
+            if (path.startsWith("/UnitController/UnitRestore")) {
+                String[] s = path.split("/");
+                try {
+                    int UnitID = Integer.parseInt(s[s.length - 1]);
+                    UnitDAO o = new UnitDAO();
+                    o.updateStatus(UnitID,1);
+                    response.sendRedirect("/UnitController/RestoreUnit");
+                } catch (Exception ex) {
+                    response.sendRedirect("/UnitController/RestoreUnit");
+                }
             }
         }
     }
@@ -113,32 +127,54 @@ public class UnitController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UnitDAO udao = new UnitDAO();
+
         if (request.getParameter("btnAddUnit") != null) {
+            boolean t = true;
             String UnitName = request.getParameter("UnitName");
-            UnitModel unit = new UnitModel(1, UnitName);
-            UnitModel newUnit = udao.addnew(unit);
-            if (newUnit != null) {
+            LinkedList<String> checkUnitName = udao.getAllUnitName();
+            for (String string : checkUnitName) {
+                if (string.equalsIgnoreCase(UnitName)) {
+                    t = false;
+                    break;
+                }
+            }
+
+            if (t == true) {
+                UnitModel unit = new UnitModel(1, UnitName, 1);
+                UnitModel newUnit = udao.addnew(unit);
                 response.sendRedirect("/UnitController");
-            } else {
+            } else if (t == false) {
+                HttpSession session = request.getSession();
+                session.setAttribute("errorMessage", "Failed to add new unit. Please try again.");
                 response.sendRedirect("/UnitController/AddnewUnit");
             }
         }
         if (request.getParameter("btnUpdateUnit") != null) {
+            boolean t = true;
+            LinkedList<String> checkUnitName = udao.getAllUnitName();
             int UnitID = Integer.parseInt(request.getParameter("UnitID"));
             String UnitName = request.getParameter("UnitName");
-            UnitModel unit = new UnitModel(UnitID, UnitName);
-            UnitModel updateUnit = udao.update(UnitID, unit);
+            for (String string : checkUnitName) {
+                if (string.equalsIgnoreCase(UnitName)) {
+                    t = false;
+                    break;
+                }
+            }
 
-            if (updateUnit != null) {
+            if (t == true) {
+                UnitModel unit = new UnitModel(UnitID, UnitName, 1);
+                UnitModel updateUnit = udao.update(UnitID, unit);
                 response.sendRedirect("/UnitController");
-            } else {
+            } else if(t == false){
+                HttpSession session = request.getSession();
+                session.setAttribute("errorMessage", "Failed to update unit. Please try again.");
                 response.sendRedirect("/UnitController/updateUnit/" + UnitID);
             }
         }
         if (request.getParameter("btnDeleteUnit") != null) {
             int UnitID = Integer.parseInt(request.getParameter("UnitID"));
             try {
-                udao.delete(UnitID);
+                udao.updateStatus(UnitID, 0);
                 response.sendRedirect("/UnitController");
             } catch (Exception e) {
                 response.sendRedirect("/UnitController/deleteUnit/" + UnitID);
