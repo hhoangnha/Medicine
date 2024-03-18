@@ -190,6 +190,11 @@
             <i class="bi bi-circle"></i><span>Unit Manager</span>
           </a>
         </li>
+        <li>
+          <a href="/UnitController/RestoreUnit">
+            <i class="bi bi-circle"></i><span>Unit Restore</span>
+          </a>
+        </li>
       </ul>
 
       <!-- vinh -->
