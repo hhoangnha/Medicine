@@ -142,8 +142,8 @@
                                             </div>
                                             <div class="ps-3">
                                                 <h6><%=orderN%></h6>
-                                                <span class="text-info small pt-1 fw-bold"><%= orderNew%></span> <span class="text-muted small pt-2 ps-1">New</span><br/>
-                                                <span class="text-success small pt-1 fw-bold"><%= orderSuccess%></span><span class="text-muted small pt-2 ps-1">Success</span> <span class="text-danger small pt-1 fw-bold"><%=  2%></span><span class="text-muted small pt-2 ps-1">Đã huỷ</span>
+                                                <span class="text-info small pt-1 fw-bold"><%=orderNew %></span> <span class="text-muted small pt-2 ps-1">New</span><br/>
+                                                <span class="text-success small pt-1 fw-bold"><%=orderSuccess%></span><span class="text-muted small pt-2 ps-1">Success</span> <span class="text-danger small pt-1 fw-bold"><%=orderCancel%></span><span class="text-muted small pt-2 ps-1">Đã huỷ</span>
                                             </div>
                                         </div>
                                     </div>
@@ -224,6 +224,7 @@
 
 
 
+
                                             </tbody>
                                         </table>
 
@@ -235,6 +236,7 @@
                             <!-- Top Selling -->
 
 
+
                         </div>
                     </div><!-- End Left side columns -->
 
@@ -244,6 +246,7 @@
             </section>
 
         </main><!-- End #main -->
+
 
 
 
