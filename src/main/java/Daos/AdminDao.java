@@ -133,7 +133,7 @@ public class AdminDao {
     }
 
     public Integer getNumberOfOrderNew() {
-        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE orderStatus = 1 ";
+        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE OrderStatus = 1 ";
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);
@@ -156,7 +156,7 @@ public class AdminDao {
     }
 
     public Integer getNumberOfOrderSuccess() {
-        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE orderStatus = 3 ";
+        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE OrderStatus = 3 ";
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);
@@ -179,7 +179,7 @@ public class AdminDao {
     }
 
     public Integer getNumberOfOrderCancel() {
-        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE orderStatus = 4 ";
+        String query = "SELECT COUNT(*) AS total_orders FROM Orders WHERE OrderStatus = 4 ";
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);
@@ -202,7 +202,7 @@ public class AdminDao {
     }
 
     public Integer getNumberOfCustomer() {
-        String query = "SELECT COUNT(*) AS total_cus FROM Accounts WHERE isAdmin IS NULL OR isAdmin = 0";
+        String query = "SELECT COUNT(*) AS total_cus FROM Accounts WHERE IsAdmin IS NULL OR IsAdmin = 0";
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);

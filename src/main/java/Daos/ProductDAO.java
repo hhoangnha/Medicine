@@ -75,24 +75,127 @@ public class ProductDAO {
         return null;
     }
 
-    public ResultSet searchProduct(String keyword, int page) {
+    public ResultSet searchProduct(String keyword, String[] categories, String[] brands, int page) {
         int recordsPerPage = 10;
         int start = (page - 1) * recordsPerPage;
 
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Products JOIN Brand ON Brand.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' ORDER BY Products.ProID");
-//            ps.setString(1, keyword);
-//            ps.setInt(2, start);
-//            ps.setInt(3, recordsPerPage);
+            String query = "SELECT * FROM Products "
+                    + "JOIN Brand ON Brand.BrandID = Products.BrandID "
+                    + "LEFT JOIN Categories ON Categories.CateID = Products.CateID "
+                    + "WHERE Products.ProName LIKE ?";
+            // Thêm điều kiện cho các danh mục được chọn
+            if (categories != null && categories.length > 0) {
+                query += " AND Products.CateID IN (";
+                for (int i = 0; i < categories.length; i++) {
+                    if (i > 0) {
+                        query += ",";
+                    }
+                    query += "?";
+                }
+                query += ")";
+            }
+
+            // Thêm điều kiện cho các thương hiệu được chọn
+            if (brands != null && brands.length > 0) {
+                query += " AND Products.BrandID IN (";
+                for (int i = 0; i < brands.length; i++) {
+                    if (i > 0) {
+                        query += ",";
+                    }
+                    query += "?";
+                }
+                query += ")";
+            }
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, "%" + keyword + "%");
+
+            // Thiết lập các danh mục được chọn vào câu truy vấn
+            int parameterIndex = 2;
+            if (categories != null && categories.length > 0) {
+                for (String category : categories) {
+                    ps.setString(parameterIndex++, category);
+                }
+            }
+
+            // Thiết lập các thương hiệu được chọn vào câu truy vấn
+            if (brands != null && brands.length > 0) {
+                for (String brand : brands) {
+                    ps.setString(parameterIndex++, brand);
+                }
+            }
+
             rs = ps.executeQuery();
-            System.out.println("SELECT * FROM Products JOIN Brand ON Brand.BrandID = Products.BrandID LEFT JOIN Categories ON Categories.CateID = Products.CateID WHERE Products.ProName LIKE '%" + keyword + "%' ORDER BY Products.ProID");
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
+    
+    public int countProducts(String keyword, String[] categories, String[] brands) {
+    try {
+        String query = "SELECT COUNT(*) AS total FROM Products "
+                + "JOIN Brand ON Brand.BrandID = Products.BrandID "
+                + "LEFT JOIN Categories ON Categories.CateID = Products.CateID "
+                + "WHERE Products.ProName LIKE ? OR Products.Using LIKE ? OR Products.Element LIKE ?";
+
+        // Thêm điều kiện cho các danh mục được chọn
+        if (categories != null && categories.length > 0) {
+            query += " AND Products.CateID IN (";
+            for (int i = 0; i < categories.length; i++) {
+                if (i > 0) {
+                    query += ",";
+                }
+                query += "?";
+            }
+            query += ")";
+        }
+
+        // Thêm điều kiện cho các thương hiệu được chọn
+        if (brands != null && brands.length > 0) {
+            query += " AND Products.BrandID IN (";
+            for (int i = 0; i < brands.length; i++) {
+                if (i > 0) {
+                    query += ",";
+                }
+                query += "?";
+            }
+            query += ")";
+        }
+
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, "%" + keyword + "%");
+        ps.setString(2, "%" + keyword + "%");
+        ps.setString(3, "%" + keyword + "%");
+
+        // Thiết lập các danh mục được chọn vào câu truy vấn
+        int parameterIndex = 4;
+        if (categories != null && categories.length > 0) {
+            for (String category : categories) {
+                ps.setString(parameterIndex++, category);
+            }
+        }
+
+        // Thiết lập các thương hiệu được chọn vào câu truy vấn
+        if (brands != null && brands.length > 0) {
+            for (String brand : brands) {
+                ps.setString(parameterIndex++, brand);
+            }
+        }
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("total");
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return 0;
+}
+
 
     public ProductModel getProduct(int pro_id) {
         ProductModel kh = null;
@@ -285,10 +388,10 @@ public class ProductDAO {
 
                 if (count > 0) {
                     idNewProduct = rs.getInt("ProID");
-                    
+
                     return 2;// trả về 2 nếu cập nhật
                 }
-                
+
             } else {
                 // Nếu sản phẩm chưa tồn tại, thực hiện thêm mới sản phẩm
                 PreparedStatement ps = conn.prepareStatement("INSERT INTO Products(ProCode,ProName,ProDescription,CateID,BrandID,ManuID,Element,Quantity,Indication,Contraindication,[Using],MadeIn,ProImage) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -316,7 +419,7 @@ public class ProductDAO {
 //                        idNewProduct = generatedKeys.getInt(1);
 //                    }
 //                }
-return 1; // trả về 1 nếu thành công
+                return 1; // trả về 1 nếu thành công
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);

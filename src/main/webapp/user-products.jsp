@@ -52,6 +52,9 @@
                 String pageParam = request.getParameter("page");
                 int pageQ = 0; // Giá trị mặc định
                 String queryParam = request.getParameter("q");
+                String[] selectedCategories = request.getParameterValues("cate[]");
+                String[] selectedBrands = request.getParameterValues("brand[]");
+                String[] selectedManu = request.getParameterValues("manu[]");
                 String qQ = "";
 
                 if (pageParam != null && !pageParam.isEmpty()) {
@@ -69,6 +72,11 @@
                 ManufacturerDAO mDao = new ManufacturerDAO();
                 cate_ad cDao = new cate_ad();
                 BrandDAO bDao = new BrandDAO();
+                ProductDAO pDAO = new ProductDAO();
+
+                int totalProducts = pDAO.countProducts(qQ, selectedCategories, selectedBrands);
+                int totalPages = (int) Math.ceil((double) totalProducts / 10);
+
             %>
 
             <div class="container">
@@ -96,8 +104,7 @@
 
                             <h5>Category</h5>
                             <div class="form-check">
-                                <%
-                                    List<CategorieModel> cateData = cDao.getListCateModel();
+                                <%                                    List<CategorieModel> cateData = cDao.getListCateModel();
 
                                     for (CategorieModel citem : cateData) {%>
 
@@ -129,34 +136,18 @@
 
                             </div>
                             <hr/>
-                            <h5>Manufacturer</h5>
-                            <div class="form-check">
-                                <%
-                                    List<ManufacturerModel> manuData = mDao.getAllManufacturer();
 
-                                    for (ManufacturerModel mitem : manuData) {%>
-
-                                <input class="form-check-input" name="manu[]" type="checkbox" value="<%= mitem.getManuID()%>" id="manucheck<%= mitem.getManuID()%>">
-                                <label class="form-check-label" for="manucheck<%= mitem.getManuID()%>">
-                                    <%= mitem.getManuName()%>
-                                </label>
-                                <br/>
-                                <%}
-                                %>
-
-                            </div>
-                            <hr/>
                         </form>
                     </div>
                     <div class="col-md-9">
                         <div class="row mt-4">
                             <%
-                                ProductDAO pDAO = new ProductDAO();
-                                ResultSet rs = pDAO.searchProduct(qQ, 1);
+//                                ResultSet rs = pDAO.searchProduct(qQ, 1);
+                                ResultSet rs = pDAO.searchProduct(qQ, selectedCategories, selectedBrands, pageQ);
                                 if (pageQ > 0) {
-                                    rs = pDAO.searchProduct(qQ, pageQ);
+//                                    rs = pDAO.searchProduct(qQ, pageQ);
+                                    rs = pDAO.searchProduct(qQ, selectedCategories, selectedBrands, pageQ);
                                 }
-
                                 while (rs.next()) {
                             %>
                             <div class="col-lg-4">
@@ -168,7 +159,14 @@
                                                 <!--<li><a onclick='addToCart(<%=rs.getInt("ProID")%>)'><i class="fa fa-shopping-cart"></i></a></li>-->
                                             </ul>
                                         </div>
-                                        <img style="max-height:300px" src='/resources/images/<%=rs.getString("ProImage")%>' alt="">
+                                        <%
+                                            String imageUrl = rs.getString("ProImage");
+                                            if (imageUrl == null || imageUrl.trim().isEmpty()) {
+                                                imageUrl = "noimage.jpeg";
+                                            }
+                                        %>
+                                        <img style="max-height:300px" 
+                                             src='/resources/images/<%=imageUrl%>' alt="">
                                     </div>
                                     <div class="down-content">
                                         <h5><%= rs.getString("ProName")%></h5>
@@ -182,26 +180,20 @@
                                 </div>
                             </div>
                             <% }%>
-
-
-
-
                             <div class="col-lg-12">
                                 <div class="pagination">
                                     <ul>
-                                        <% for (int pageNumber = 0; pageNumber <= 5; pageNumber++) { %>
+                                        <% for (int pageNumber = 0; pageNumber < totalPages; pageNumber++) { %>
                                         <%
                                             String isActive = "";
                                             if (pageNumber == pageQ) {
                                                 isActive = "active";
                                             }
-
                                         %>
                                         <li class="<%= isActive%>">
                                             <a href="/UserHomeController/Products?q=${param.q}&page=<%= pageNumber%>"><%= pageNumber + 1%></a>
                                         </li>
                                         <% }%>
-
                                     </ul>
                                 </div>
                             </div>
@@ -241,6 +233,30 @@
 
 
         <script>
+            window.onload = function () {
+                var urlParams = new URLSearchParams(window.location.search);
+
+                // Lấy giá trị của tham số "cate[]" từ URL
+                var selectedCategories = urlParams.getAll("cate[]");
+
+                // Lặp qua mỗi checkbox và kiểm tra nếu giá trị của checkbox tồn tại trong tham số "cate[]" của URL
+                var checkboxes = document.querySelectorAll('input[name="cate[]"]');
+                checkboxes.forEach(function (checkbox) {
+                    if (selectedCategories.includes(checkbox.value)) {
+                        checkbox.checked = true; // Check checkbox nếu tìm thấy giá trị trong tham số "cate[]"
+                    }
+                });
+
+                var selectedBrands = urlParams.getAll("brand[]");
+
+                // Lặp qua mỗi checkbox và kiểm tra nếu giá trị của checkbox tồn tại trong tham số "brand[]" của URL
+                var checkboxes2 = document.querySelectorAll('input[name="brand[]"]');
+                checkboxes2.forEach(function (checkbox) {
+                    if (selectedBrands.includes(checkbox.value)) {
+                        checkbox.checked = true; // Check checkbox nếu tìm thấy giá trị trong tham số "brand[]"
+                    }
+                });
+            };
             function addToCart(id) {
                 let quan = 1;
                 $.ajax({
