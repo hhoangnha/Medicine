@@ -413,6 +413,6 @@ public class StaffDAO {
         StaffDAO staffManager = new StaffDAO();
 
         StaffDAO test = new StaffDAO();
-        System.out.println(test.day.getCurrentDate());
+       test.addAccount("vinh2k3", "12345", "Hà Thái Vinh", "hathaivinhs@gmail.com", "0982989262", "Hau GIang", "2003-11-11", "1");
     }
 }

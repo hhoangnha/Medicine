@@ -50,11 +50,12 @@
 
         <%
             int orderN = (int) request.getAttribute("orderN");
-            int cusN = (int) request.getAttribute("cusN");
             int orderNew = (int) request.getAttribute("orderNew");
-             int orderSuccess = (int) request.getAttribute("orderSuccess");
-                 int orderCancel = (int) request.getAttribute("orderCancel");
-             double revenueTotal = (double) request.getAttribute("revenueTotal");
+            int orderSuccess = (int) request.getAttribute("orderSuccess");
+            int orderCancel = (int) request.getAttribute("orderCancel");
+            int cusN = (int) request.getAttribute("cusN");
+            double revenueTotal = (double) request.getAttribute("revenueTotal");
+
             int totalOrder = 0;
             int totalCustomer = 0;
             int totalRe = 0;
@@ -163,7 +164,7 @@
                                                 <i class="bi bi-currency-dollar"></i>
                                             </div>
                                             <div class="ps-3">
-                                                <h6><%=revenueTotal%></h6>
+                                                <h6><%= revenueTotal%></h6>
                                                 <!--<span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>-->
 
                                             </div>
@@ -188,7 +189,7 @@
                                                 <i class="bi bi-people"></i>
                                             </div>
                                             <div class="ps-3">
-                                                <h6><%=cusN%></h6>
+                                                <h6><%= cusN%></h6>
                                                 <!--<span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>-->
 
                                             </div>
@@ -223,6 +224,7 @@
 
 
 
+
                                             </tbody>
                                         </table>
 
@@ -234,6 +236,7 @@
                             <!-- Top Selling -->
 
 
+
                         </div>
                     </div><!-- End Left side columns -->
 
@@ -243,6 +246,7 @@
             </section>
 
         </main><!-- End #main -->
+
 
 
 

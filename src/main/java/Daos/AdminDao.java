@@ -225,12 +225,10 @@ public class AdminDao {
     }
 
     public double getRevenue() {
-        String query = "SELECT SUM(up.Price * od.Quantity) AS TotalRevenue "
-                + "FROM Orders o "
-                + "JOIN OrderDetails od ON o.OrderID = od.OrderID "
-                + "JOIN Products p ON od.ProID = p.ProID "
-                + "JOIN UnitProduct up ON p.ProID = up.ProID "
-                + "WHERE o.OrderStatus = 3";
+        String query = "SELECT SUM(OD.Quantity * UP.Price) AS TotalRevenue\n"
+                + "FROM Orders O\n"
+                + "JOIN OrderDetails OD ON O.OrderID = OD.OrderID\n"
+                + "JOIN UnitProduct UP ON OD.ProID = UP.ProID";
         try {
             conn = new DBConnection().connect(); // Mở kết nối với cơ sở dữ liệu
             ps = conn.prepareStatement(query);
@@ -254,6 +252,7 @@ public class AdminDao {
 
     public static void main(String[] args) {
         AdminDao test = new AdminDao();
-        System.out.println(test.getNumberOfOrderSuccess());
+        System.out.println(test.getRevenue());
     }
+
 }
