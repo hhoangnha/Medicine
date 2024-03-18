@@ -20,13 +20,14 @@
                 height: 100%;
             }
             body {
-                background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+                background: linear-gradient( rgba(66, 183, 245, 0.8) 100%, rgba(66, 245, 189, 0.4) 100%);
                 color: rgba(0, 0, 0, 0.6);
                 font-family: "Roboto", sans-serif;
                 font-size: 14px;
                 line-height: 1.6em;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
+                max-height: 100%;
             }
             .overlay, .form-panel.one:before {
                 position: absolute;
@@ -301,6 +302,7 @@
         <%
             // Lấy dữ liệu từ session
             String msgSuccess = (String) session.getAttribute("Success");
+            String ForgotSuccess = (String) session.getAttribute("SuccessPass");
             if (msgSuccess != null) {
         %>
 
@@ -309,12 +311,23 @@
             alertify.success("Sigup Successfully");
         </script>
         <%
-                // Xóa thông báo sau khi hiển thị
-                session.removeAttribute("Success");
+            // Xóa thông báo sau khi hiển thị
+            session.removeAttribute("Success");
 
-            }
+        } else if (ForgotSuccess != null) {
         %>
 
+        <script>
+            // Sử dụng SweetAlert để hiển thị thông báo
+            alertify.success("Reset password Successfully");
+        </script>
+        <%
+                // Xóa thông báo sau khi hiển thị
+                session.removeAttribute("SuccessPass");
+
+            } else if (ForgotSuccess != null) {
+            }
+        %>
         <!-- partial:index.partial.html -->
         <!-- Form-->
         <div class="form">
@@ -336,17 +349,14 @@
                         <div> <p class="text-danger">${mess}</p></div>
                         <div class="form-group">
                             <a class="form-recovery" href="/EmailForgot.jsp">Forgot password?</a>
-                            </label><a class="form-recovery" href="/SigUpController">Sign up?</a>
+                            </label><a class="form-recovery" href="/SigUpController">Register?</a>
                         </div>
                         <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block mb-4"/>
                     </form>
                 </div>
             </div>
         </div>
-
-    </div>
-</div>
-<div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back to home</a>
+<div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back to home</a> </div>
     <!-- partial -->
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

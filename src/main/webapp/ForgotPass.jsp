@@ -298,8 +298,8 @@
                         <div class="form-group">
                             <label for="forgotpass">Enter new password</label>
                             <input name="forgotpass" id="user-pass"  type="password" required="required"/>
-                            <p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>
-
+                            <!--<p>Password 8 characters (including uppercase letters, lowercase letters, numbers and special characters)</p>-->
+                            <div class="error text-danger" id="txtPassMessage"></div>
                         </div>
                         <div class="form-group">
                             <label for="cforgotpass">Confirm new password</label>
@@ -307,7 +307,7 @@
                         </div>
                         <div class="error" id="txtRepass"></div
                         <div> <p class="text-danger">${mess}</p></div>
-                    <input type="submit" name="submit" value="Xác nhận" class="btn btn-primary btn-block mb-4"/></div>
+                    <input type="submit" name="submit" value="SAVE" class="btn btn-primary btn-block mb-4"/></div>
                 </form>
 
             </div>
@@ -315,10 +315,11 @@
 
     </div>
 </div>
-<div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Về trang chủ</a></div>
+<div class="pen-footer"><a href="/UserHomeController"><i class="material-icons">arrow_backward</i>Back to home</a></div>
 <!-- partial -->
 <script>
 
+    var patt_password = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
     function check() {
 
@@ -329,13 +330,18 @@
         console.log(pass)
         console.log(repass)
 //        return false;
-
+        if (patt_password.test(pass) == false) {
+            document.getElementById("txtPassMessage").innerHTML = "Password includes 6 characters (Including letters, numbers)";
+            return false;
+        } else {
+            document.getElementById("txtPassMessage").innerHTML = "";
+        }
         if (pass == repass) {
             document.getElementById("txtRepass").innerHTML = "";
             return true;
 //           
         } else {
-            document.getElementById("txtRepass").innerHTML = "Nhập lại mật khẩu không đúng";
+            document.getElementById("txtRepass").innerHTML = "Repassword incorrect, please try again.";
             return false;
         }
 
