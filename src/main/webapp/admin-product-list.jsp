@@ -108,7 +108,6 @@
                                             <th>BrandID</th>
                                             <th class="w-50">ManuID</th>
                                             <th></th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -140,7 +139,6 @@
                                         </tr>
 
                                         <%
-
                                             }
                                         %>
 

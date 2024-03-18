@@ -13,14 +13,14 @@ public class CategorieModel {
     private int CateID;
     private String CateName;
     private String CateDescription;
-//    private int CateStatus;
+    private int CateStatus;
     
-//    public CategorieModel(int CateID, String CateName, String CateDescription, int CateStatus) {
-        public CategorieModel(int CateID, String CateName, String CateDescription) {
+    public CategorieModel(int CateID, String CateName, String CateDescription, int CateStatus) {
+//        public CategorieModel(int CateID, String CateName, String CateDescription) {
         this.CateID = CateID;
         this.CateName = CateName;
         this.CateDescription = CateDescription;
-//        this.CateStatus = CateStatus;
+        this.CateStatus = CateStatus;
     }
     
     public CategorieModel() {
@@ -50,6 +50,13 @@ public class CategorieModel {
         this.CateDescription = CateDescription;
     }
     
+    public int getCateStatus() {
+        return CateStatus;
+    }
+
+    public void setCateStatus(int CateStatus) {
+        this.CateStatus = CateStatus;
+    }
     @Override
     public String toString() {
         return CateID+"-"+CateName;

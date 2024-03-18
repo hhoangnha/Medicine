@@ -36,9 +36,11 @@ public class ProductDAO {
     public ResultSet getAllDeletedList() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select ProID, ProName, Description, Price, Quantity, Size, Image, Categories.CateName, Brand.BrandName, Color from Products\n"
-                    + "left JOIN Categories on Products.CateID = Categories.CateID\n"
-                    + "left JOIN Brand on Products.BrandID = Brand.BrandID where ProStatus = 0");
+            ResultSet rs = st.executeQuery("select p.ProID, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
+                    + "                    join Categories c on c.CateID = p.CateID\n"
+                    + "                    join Brand b on b.BrandID = p.BrandID\n"
+                    + "                    join Manufacturer m on m.ManuID = p.ManuID\n"
+                    + "                    WHERE p.ProStatus = 0");
             return rs;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,11 +51,11 @@ public class ProductDAO {
     public ResultSet getAll() {
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select p.ProID,p.ProCode , p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
-                    + "join Categories c on c.CateID = p.CateID\n"
-                    + "join Brand b on b.BrandID = p.BrandID\n"
-                    + "join Manufacturer m on m.ManuID = p.ManuID "
-                    + "Order By p.ProID DESC");
+              ResultSet rs = st.executeQuery("select p.ProID, p.ProName, c.CateName, b.BrandName, m.ManuName, p.Quantity, p.ProImage from Products p\n"
+                    + "                    join Categories c on c.CateID = p.CateID\n"
+                    + "                    join Brand b on b.BrandID = p.BrandID\n"
+                    + "                    join Manufacturer m on m.ManuID = p.ManuID\n"
+                    + "                    WHERE p.ProStatus = 1");
             return rs;
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -220,6 +222,7 @@ public class ProductDAO {
                 String Using = rs.getString("Using");
                 String MadeIn = rs.getString("MadeIn");
                 String ProImage = rs.getString("ProImage");
+                int ProStatus = rs.getInt("ProStatus");
                 kh = new ProductModel(ProID,
                         ProCode,
                         ProName,
@@ -235,7 +238,8 @@ public class ProductDAO {
                         Contraindication,
                         Using,
                         MadeIn,
-                        ProImage);
+                        ProImage,
+                        ProStatus);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -294,13 +298,13 @@ public class ProductDAO {
     public void delete(int ProID) {
 //        int count = 0;
         try {
-//            PreparedStatement ps = conn.prepareStatement("UPDATE Products SET ProStatus=? WHERE ProID=?");
-            PreparedStatement ps = conn.prepareStatement(" DELETE FROM Products WHERE ProID=?");
-//            ps.setInt(1, 0);
-            ps.setInt(1, ProID);
+            PreparedStatement ps = conn.prepareStatement("UPDATE Products SET ProStatus=? WHERE ProID=?");
+//            PreparedStatement ps = conn.prepareStatement(" DELETE FROM Products WHERE ProID=?");
+            ps.setInt(1, 0);
+            ps.setInt(2, ProID);
             ResultSet rs = ps.executeQuery();
-            ps = conn.prepareStatement("DBCC CHECKIDENT ('[Products]', RESEED, 0);\n"
-                    + "GO");
+//            ps = conn.prepareStatement("DBCC CHECKIDENT ('[Products]', RESEED, 0);\n"
+//                    + "GO");
             rs = ps.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);

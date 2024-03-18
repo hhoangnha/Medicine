@@ -50,54 +50,43 @@
 
         <div class="col-lg-12  container mt-5">
             <%
-               UserModel kh = (UserModel)session.getAttribute("thongtinkh");
+                UserModel kh = (UserModel) session.getAttribute("thongtinkh");
 
             %>
             <div class="">
                 <div class="card-body m-5">
-
                     <form  method="post" >
                         <input name='oid'  hidden />
                         <div class='row '>
                             <div class='col-md-4 card'>
-                                <h5 class="card-title">Thông tin khách hàng</h5>
-                                 <div class='card-body'></b>
-                       
+                                <h5 class="card-title">Customer Information</h5>
+                                <div class='card-body'></b>
                                     <br>
-                                   Username: <%= kh.getUsername() %>
-
+                                    Username: <%= kh.getUsername()%>
                                     <br>
-                                    Họ tên: <b class="text-danger"><%= kh.getFullname()%></b>
-
-                                
+                                    Full Name: <b class="text-danger"><%= kh.getFullname()%></b>
                                     <br>
-                                    Địa chỉ: <i><%= kh.getAddress()%></i>
-
+                                    Address: <i><%= kh.getAddress()%></i>
                                     <br>
-                                    Điện thoại: <%= kh.getPhone()%>
-
-                                
-                                    <br></div>
-                                 
+                                    Phone: <%= kh.getPhone()%>
+                                    <br>
+                                </div>
                             </div>
-                            <div class='col-md-8'>
 
+                            <div class='col-md-8'>
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Lịch sử mua hàng</h5>
-                                                    
-                                       <table class="table ">
-                                    <thead>
-                                        <tr>
-                                            <th>Ngày đặt</th>
-                                            <th>Tổng tiền</th>
-                                            <th>Trạng thái</th>
-                                            <th></th>
-                                            <!--<th></th>-->
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                        <h5 class="card-title">User Order History</h5>
+                                        <table class="table ">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order Date</th>
+                                                    <th>Total</th>
+                                                    <th>Order Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
                                         <% //CusDAO cd = new CusDAO();
                                             OrderDAO d = new OrderDAO();
@@ -134,24 +123,25 @@
                                                 </div>
                                                 <div class="modal-body">
 
-                                                    <%
-                                                        OrderID_DAOad dod = new OrderID_DAOad();
-                                                        ResultSet rsc = dod.getProductOrder(rs.getInt("OrderID"));
-                                                        while (rsc.next()) {%>
-                                                    <div class="row">
-                                                        <div class="col-md-2">ID: <%=rsc.getInt("OrderDetailID")%></div> 
-                                                        <div class="col-md-4">Tên: <%=rsc.getString("ProName")%></div>
-                                                        <div class="col-md-2">Giá: <%=rsc.getString("Price")%></div>
-                                                        <div class="col-md-2">Số lượng: <%=rsc.getString("OrderDetailQuan")%></div>
-                                                        <div class="col-md-2">Cỡ: <%=rsc.getString("Size")%></div>
+                                                            <%
+                                                                OrderID_DAOad dod = new OrderID_DAOad();
+                                                                ResultSet rsc = dod.getProductOrder(rs.getInt("OrderID"));
+                                                                while (rsc.next()) {
+                                                            %>
+
+                                                            <div class="row">
+                                                                <div class="col-md-2">ID: <%=rsc.getInt("OdID")%></div> 
+                                                                <div class="col-md-4">Name <%=rsc.getString("ProName")%></div>
+                                                                <div class="col-md-2">Price <%=rsc.getString("total_price")%></div>
+                                                                <div class="col-md-2">Quantity: <%=rsc.getString("Quantity")%></div>
+                                                            </div>
+
+                                                            <%
+                                                                }
+                                                            %>
+
+                                                        </div> 
                                                     </div>
-
-                                                    <% }
-                                                    %>
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -159,27 +149,20 @@
                                     <%}%>
 
 
-                                    </tbody>
-                                </table>
-
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
                         <a class='btn btn-secondary' href="/AdminController/Users">Back to list</a>
-                        
                     </form>
-
                 </div>
-            </div></div>
+            </div>
+        </div>
 
 
-<script src="/resources/UserAssets/js/jquery-2.1.0.min.js"></script>
+        <script src="/resources/UserAssets/js/jquery-2.1.0.min.js"></script>
         <!-- Vendor JS Files -->
         <script src="/resources/AdminAssets/vendor/apexcharts/apexcharts.min.js"></script>
         <script src="/resources/AdminAssets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -190,25 +173,25 @@
         <script src="/resources/AdminAssets/vendor/tinymce/tinymce.min.js"></script>
         <script src="/resources/AdminAssets/vendor/php-email-form/validate.js"></script>
         <script>
-                        function validateForm() {
-                            var brandName = document.getElementById("brandName").value;
-                            if (brandName === "") {
-                                alert("Please enter all files");
-                                return false;
-                            }
-                            return true;
-                        }
+            function validateForm() {
+                var brandName = document.getElementById("brandName").value;
+                if (brandName === "") {
+                    alert("Please enter all files");
+                    return false;
+                }
+                return true;
+            }
         </script>
         <!-- Template Main JS File -->
         <script src="/resources/AdminAssets/js/main.js"></script>
-<script>
-$(document).ready(function() {
-    $('#mySelect').change(function() {
-//        alert("Giá trị đã thay đổi thành: " + $(this).val());
-        $("#btn-up").show();
-    });
-});
-</script>
+        <script>
+            $(document).ready(function () {
+                $('#mySelect').change(function () {
+                    //        alert("Giá trị đã thay đổi thành: " + $(this).val());
+                    $("#btn-up").show();
+                });
+            });
+        </script>
     </body>
 
 </html>

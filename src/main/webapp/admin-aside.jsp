@@ -12,6 +12,125 @@
                 <span class="">Report</span>
             </a>
         </li>
+        <li>
+          <a href="/AdminCateController/RestoreCate">
+            <i class="bi bi-circle"></i><span>Categories Restore</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <!-- End Charts Nav -->
+
+    <li class="nav-item">
+      <a
+        class="nav-link collapsed"
+        data-bs-target="#icons-nav"
+        data-bs-toggle="collapse"
+        href="#"
+      >
+        <i class="bi bi-gem"></i><span>Products</span
+        ><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul
+        id="icons-nav"
+        class="nav-content collapse"
+        data-bs-parent="#sidebar-nav"
+      >
+        <li>
+          <a href="/ProductController">
+            <i class="bi bi-circle"></i><span>Products Manager</span>
+          </a>
+        </li>
+        <li>
+            <a href="/ProductController/RestoreProduct" >
+                <i class="bi bi-circle"></i><span>Products Restore</span>
+            </a>
+        </li>
+      </ul>
+    </li>
+    <!-- End Icons Nav -->
+
+    <li class="nav-item">
+      <a
+        class="nav-link collapsed"
+        data-bs-target="#icons-nav2"
+        data-bs-toggle="collapse"
+        href="#"
+      >
+        <i class="bi bi-pen"></i><span>Brand</span
+        ><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul
+        id="icons-nav2"
+        class="nav-content collapse"
+        data-bs-parent="#sidebar-nav"
+      >
+        <li>
+          <a href="/BrandController">
+            <i class="bi bi-circle"></i><span>Brand Manager</span>
+          </a>
+        </li>
+<!--        <li>
+          <a href="/BrandController/Restore">
+            <i class="bi bi-circle"></i><span>Brand Restore</span>
+          </a>
+        </li>-->
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a
+        class="nav-link collapsed"
+        data-bs-target="#icons-nav3"
+        data-bs-toggle="collapse"
+        href="#"
+      >
+        <i class="bi bi-box"></i><span>Order</span
+        ><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul
+        id="icons-nav3"
+        class="nav-content collapse"
+        data-bs-parent="#sidebar-nav"
+      >
+        <li>
+          <a href="/OrderID_ad">
+            <i class="bi bi-circle"></i><span>Order Manager</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link collapsed"
+        data-bs-target="#icons-nav4"
+        data-bs-toggle="collapse"
+        href="#"
+      >
+        <i class="bi bi-crosshair"></i><span>Unit</span
+        ><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul
+        id="icons-nav4"
+        class="nav-content collapse"
+        data-bs-parent="#sidebar-nav"
+      >
+        <li>
+          <a href="/UnitController">
+            <i class="bi bi-circle"></i><span>Unit Manager</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- vinh -->
+    </li>
+    <c:if test="${sessionScope.IsAdmin==1}">
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/ManufacturerController">
+        <i class="bi bi-grid"></i>
+        <span>Manufacturer</span>
+      </a>
+    </li>
     </c:if>
 
         <!-- End Tables Nav -->

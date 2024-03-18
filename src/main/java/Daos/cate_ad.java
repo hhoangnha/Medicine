@@ -6,10 +6,12 @@ package Daos;
 
 import DB.DBConnection;
 import Model.CategorieModel;
+import Model.ProductModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,22 +42,22 @@ public class cate_ad {
         ResultSet rs = null;
         try {
             // Create a PreparedStatement with a parameterized query
-            String sql = "SELECT * FROM Categories";
+            String sql = "SELECT * FROM Categories WHERE CateStatus = 1";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             // ps.setInt(1, st);  // 0 là tồn tại nên để lại 
             // Execute the query and store the result in the ResultSet
             rs = ps.executeQuery();
-            while(rs.next()){
-                listCategory.add(new CategorieModel(rs.getInt(1), rs.getString(2), rs.getString(3)));
+            while (rs.next()) {
+                listCategory.add(new CategorieModel(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
             }
         } catch (SQLException ex) {
             Logger.getLogger(userad_ad.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listCategory;
     }
-    
-    public ResultSet getAll(){
+
+    public ResultSet getAll() {
         ResultSet rs = null;
         try {
             String sql = "SELECT * FROM Categories";
@@ -66,21 +68,22 @@ public class cate_ad {
         }
         return rs;
     }
-    
-    public int checkDuplicate(int cateid, String cateName) throws SQLException{
+
+    public int checkDuplicate(int cateid, String cateName) throws SQLException {
 //        CategorieModel isDuplicate = new CategorieModel();
         int isDuplicate = 0;
-            String sql = "select * from Categories where CateID = ? or CateName = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, cateid);
-            ps.setString(2, cateName);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){
-                isDuplicate++;
-            }
+        String sql = "select * from Categories where CateID = ? or CateName = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, cateid);
+        ps.setString(2, cateName);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            isDuplicate++;
+        }
         return isDuplicate;
     }
 //    public int updateCategory(int cateid, String cateName, String cateDescription, int cateStatus) {
+
     public int updateCategory(int cateid, String cateName, String cateDescription) {
         int h = 0;
         try {
@@ -107,14 +110,14 @@ public class cate_ad {
         try {
             // Sử dụng PreparedStatement để thực hiện truy vấn INSERT
 //            String sql = "INSERT INTO Categories ( CateName, CateDescription, CateStatus) VALUES ( ?, ?, ?)";
-            String sql = "INSERT INTO Categories ( CateName, CateDescription) VALUES ( ?, ?)";
+            String sql = "INSERT INTO Categories ( CateName, CateDescription, CateStatus) VALUES ( ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             // Đặt các tham số cho câu truy vấn
             // ps.setInt(1, id);
             ps.setString(1, cateName);
             ps.setString(2, cateDescription);
-//            ps.setInt(3, 1);
+            ps.setInt(3, 1);
 
             // Thực hiện truy vấn INSERT
             int result = ps.executeUpdate();
@@ -128,19 +131,14 @@ public class cate_ad {
         }
     }
 
-//    public int delete(int cateid, int st) {
-        public int delete(int cateid) {
+    public int delete(int cateid) {
         int result = 0;
         try {
-//            String sql = "UPDATE Categories SET CateStatus = ? WHERE CateID = ?";
-            String sql = "delete from Categories where CateID = ?";
+            String sql = "UPDATE Categories SET CateStatus = 0 WHERE CateID = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             // Đặt các tham số cho câu truy vấn
-//            ps.setInt(1, st);
             ps.setInt(1, cateid);
-
             result = ps.executeUpdate();
-
             return result > 0 ? 1 : 0;
         } catch (SQLException ex) {
             Logger.getLogger(cate_ad.class.getName()).log(Level.SEVERE, null, ex);
@@ -148,43 +146,59 @@ public class cate_ad {
         return result;
     }
 
+    public ResultSet getAllDeletedList() {
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM Categories WHERE CateStatus = 0");
+            return rs;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public CategorieModel getCate(int cateid) {
         CategorieModel ct = null;
-
         try {
-            String sql = "SELECT * FROM Categories WHERE CateID = ?";
+            String sql = "SELECT * FROM Categories WHERE CateID = ? AND CateStatus = 1";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, cateid);
-
             // Thực hiện truy vấn SELECT
             ResultSet rs = ps.executeQuery();
-
             // Kiểm tra xem có bản ghi nào trả về hay không
             if (rs.next()) {
                 // Lấy dữ liệu từ ResultSet và tạo đối tượng CategorieModel
                 int id = rs.getInt("CateID");
                 String cateName = rs.getString("CateName");
                 String cateDescription = rs.getString("CateDescription");
-//                int cateStatus = rs.getInt("CateStatus");
+                int cateStatus = rs.getInt("CateStatus");
 
                 // Tạo đối tượng CategorieModel từ dữ liệu truy vấn
-//                ct = new CategorieModel(id, cateName, cateDescription, cateStatus);
-                ct = new CategorieModel(id, cateName, cateDescription);
+                ct = new CategorieModel(id, cateName, cateDescription, cateStatus);
             }
         } catch (SQLException ex) {
             Logger.getLogger(cate_ad.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return ct;
     }
+
+    public CategorieModel updateStatus(int CateID) {
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE Categories SET CateStatus=1 WHERE CateID=?");
+//            ps.setInt(1, 1);
+            ps.setInt(1, CateID);
+            count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (count == 0) ? null : getCate(CateID);
+    }
+    
     public static void main(String[] args) throws SQLException {
         cate_ad ct = new cate_ad();
-         List<CategorieModel> listCategory = ct.getListCateModel();
-         for(int i = 0; i < listCategory.size(); i++){
-             System.out.println(listCategory.get(i).getCateID());
-             System.out.println(listCategory.get(i).getCateName());
-             System.out.println(listCategory.get(i).getCateDescription());
-         }
-        
+        CategorieModel listCategory = ct.updateStatus(4);
+        System.out.println(listCategory);
+
     }
 }
